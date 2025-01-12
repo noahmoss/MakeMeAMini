@@ -1,0 +1,15 @@
+.gameWrapper {
+  border: 2px solid red;
+}
+
+.activeClueHeader {
+  background-color: var(--active-clue-color);
+
+  padding: 10px;
+  margin: 4px;
+}
+
+@media (min-width: 767px) {
+  .crossword-container {
+  }
+}

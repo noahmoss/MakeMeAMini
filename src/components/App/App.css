@@ -1,0 +1,19 @@
+body {
+  /* color: black; */
+  --background-color: hsl(25deg, 4%, 100%);
+  --default-text-color: black;
+  --active-clue-color: lightblue;
+}
+
+.App {
+  background-color: var(--background-color);
+  color: var(--default-text-color);
+
+  text-align: left;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: black;
+}
