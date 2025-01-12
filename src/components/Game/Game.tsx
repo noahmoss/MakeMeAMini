@@ -1,7 +1,12 @@
 // @format
 import { useState } from "react";
 import Grid, { Cell } from "../Grid";
-import { numberCells } from "../Grid/utils";
+import {
+  findWordBoundaries,
+  moveCursor,
+  numberCells,
+  startOfNextWord,
+} from "../Grid/utils";
 
 import styles from "./Game.module.css";
 
@@ -54,28 +59,45 @@ function Game() {
   });
 
   const updateCursorPosition = (row: number, col: number) => {
-    setCursor({ ...cursor, row: row, col: col })
-  }
+    setCursor({ ...cursor, row: row, col: col });
+  };
 
   const toggleCursorDirection = () => {
-    setCursor({ ...cursor, direction: cursor.direction === "row" ? "col" : "row" })
-  }
+    setCursor({
+      ...cursor,
+      direction: cursor.direction === "row" ? "col" : "row",
+    });
+  };
+
+  const advanceCursor = () => {
+    setCursor(moveCursor(cells, cursor, "forwards"))
+  };
 
   const toggleFilledCell = (row: number, col: number) => {
     let newCells = [...cells];
     newCells[row][col].filled = !cells[row][col].filled;
     setCells(newCells);
-  }
+  };
+
+  const setCurrentCellValue = (value: string) => {
+    let newCells = [...cells];
+    newCells[cursor.row][cursor.col].value = value;
+    setCells(newCells);
+    advanceCursor();
+  };
 
   const numberedCells = numberCells(cells);
 
   return (
     <div className={styles.gameWrapper}>
       <ActiveClueHeader />
-      <Grid cells={numberedCells} cursor={cursor}
+      <Grid
+        cells={numberedCells}
+        cursor={cursor}
         updateCursorPosition={updateCursorPosition}
         toggleCursorDirection={toggleCursorDirection}
         toggleFilledCell={toggleFilledCell}
+        setCurrentCellValue={setCurrentCellValue}
       />
     </div>
   );

@@ -28,7 +28,7 @@
 }
 
 .cursorCell {
-  background-color: var(--active-clue-color);
+  background-color: var(--active-cell-color);
 }
 
 .filledCell {
@@ -47,4 +47,13 @@
   font-size: 3rem;
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);
+}
+
+.hiddenInput {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  left: -9999px; /* Place it out of the viewport */
 }
