@@ -1,3 +1,50 @@
-.greeting {
-  color: red;
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  /* Define grid lines */
+  background-color: black;
+  gap: 2px;
+  border: 2px solid black;
+
+  user-select: none;
+}
+
+.gridCell {
+  /* Remove default input styling */
+  all: unset;
+
+  aspect-ratio: 1;
+  background-color: var(--background-color);
+  width: 100%;
+
+  position: relative;
+  display: grid;
+  place-content: center;
+}
+
+.cursorWord {
+  background-color: var(--cursor-color);
+}
+
+.cursorCell {
+  background-color: var(--active-clue-color);
+}
+
+.filledCell {
+  background-color: var(--filled-cell-color);
+}
+
+.gridCellNumber {
+  position: absolute;
+  font-size: 1.15rem;
+  line-height: 1rem;
+  top: 0.3rem;
+  left: 0.3rem;
+}
+
+.gridCellValue {
+  font-size: 3rem;
+  /* Shift cell value slightly down from center for visual balance */
+  transform: translate(0, 0.5rem);
 }

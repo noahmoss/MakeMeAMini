@@ -1,12 +1,13 @@
 // @format
 import { useState } from "react";
 import Grid, { Cell } from "../Grid";
+import { numberCells } from "../Grid/utils";
 
 import styles from "./Game.module.css";
 
-type Direction = "across" | "down";
+type Direction = "row" | "col";
 
-interface Cursor {
+export interface Cursor {
   row: number;
   col: number;
   direction: Direction;
@@ -32,27 +33,50 @@ function ActiveClueHeader() {
   );
 }
 
-function initialCells(rows: number, cols: number) {
-  const cells: Cell[][] = Array.from({ length: rows }, () =>
+function initialCells(rows: number, cols: number): Cell[][] {
+  return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
       filled: false,
-      value: "",
+      value: "A",
+      number: null,
     })),
   );
-
-  return cells;
 }
 
 function Game() {
   const rows = 5;
   const cols = 5;
   const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
+  const [cursor, setCursor] = useState<Cursor>({
+    row: 0,
+    col: 0,
+    direction: "row",
+  });
 
-  console.log(cells);
+  const updateCursorPosition = (row: number, col: number) => {
+    setCursor({ ...cursor, row: row, col: col })
+  }
+
+  const toggleCursorDirection = () => {
+    setCursor({ ...cursor, direction: cursor.direction === "row" ? "col" : "row" })
+  }
+
+  const toggleFilledCell = (row: number, col: number) => {
+    let newCells = [...cells];
+    newCells[row][col].filled = !cells[row][col].filled;
+    setCells(newCells);
+  }
+
+  const numberedCells = numberCells(cells);
+
   return (
     <div className={styles.gameWrapper}>
       <ActiveClueHeader />
-      <Grid cells={cells} />
+      <Grid cells={numberedCells} cursor={cursor}
+        updateCursorPosition={updateCursorPosition}
+        toggleCursorDirection={toggleCursorDirection}
+        toggleFilledCell={toggleFilledCell}
+      />
     </div>
   );
 }

@@ -3,6 +3,8 @@ body {
   --background-color: hsl(25deg, 4%, 100%);
   --default-text-color: black;
   --active-clue-color: lightblue;
+  --cursor-color: hsl(180deg, 100%, 97%);
+  --filled-cell-color: black;
 }
 
 .App {
