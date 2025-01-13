@@ -1,5 +1,7 @@
-import { Cell } from "./Grid";
-import { Clues, Cursor, CursorDirection, Direction } from "../Game";
+import { Cell, } from "./Grid";
+import { Cursor, CursorDirection, Direction } from "../Game";
+import { Clues } from "../Clues";
+
 
 function rowCount(cells: Cell[][]) {
   return cells.length;
@@ -93,7 +95,6 @@ export function startOfAdjacentWord(
   const { startCursor } = findWordBoundaries(cells, cursor);
 
   const clueNumber = cells[startCursor.row][startCursor.col].number;
-
   if (!clueNumber) {
     throw new Error("findWordBoundaries did not return a valid word start!");
   }

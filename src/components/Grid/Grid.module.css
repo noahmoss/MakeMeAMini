@@ -11,9 +11,6 @@
 }
 
 .gridCell {
-  /* Remove default input styling */
-  all: unset;
-
   aspect-ratio: 1;
   background-color: var(--background-color);
   width: 100%;
@@ -44,7 +41,8 @@
 }
 
 .gridCellValue {
-  font-size: 3rem;
+  font-size: min(10vw, 3rem);
+
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);
 }

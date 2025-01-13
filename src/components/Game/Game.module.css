@@ -6,8 +6,10 @@
 
 .activeClueHeader {
   background-color: var(--active-clue-color);
-
-  padding: 10px;
+  font-family: Arial, sans-serif;
+  font-size: 1.2em;
+  user-select: none;
+  padding: 20px;
   margin-bottom: 4px;
 }
 

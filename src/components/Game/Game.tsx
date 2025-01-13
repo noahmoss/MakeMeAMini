@@ -2,13 +2,13 @@
 import { useState } from "react";
 import Grid, { Cell } from "../Grid";
 import {
-  isStartOfWord,
   stepCursor,
   numberCells,
   startOfAdjacentWord,
 } from "../Grid/utils";
 
 import styles from "./Game.module.css";
+import { extractClues, getActiveClue } from "../Clues";
 
 export type CursorDirection = "row" | "col";
 
@@ -20,29 +20,24 @@ export interface Cursor {
   direction: CursorDirection;
 }
 
-type Clue = {
-  clue: string;
-  rowStart: number;
-  colStart: number;
-};
+//interface CrosswordData {
+//  filledPositions: string;
+//  width: number | null;
+//  height: number | null;
+//  clues: {
+//    across: Array<[number, string]>;
+//    down: Array<[number, string]>;
+//  };
+//}
 
-export interface Clues {
-  across: Clue[];
-  down: Clue[];
+type ActiveClueHeaderProps = {
+  clueNumber: number,
+  clueText: string,
 }
 
-interface CrosswordData {
-  filledPositions: string;
-  width: number | null;
-  height: number | null;
-  clues: {
-    across: Array<[number, string]>;
-    down: Array<[number, string]>;
-  };
-}
-function ActiveClueHeader() {
+function ActiveClueHeader({ clueNumber, clueText }: ActiveClueHeaderProps) {
   return (
-    <div className={styles.activeClueHeader}>3. This is the active clue</div>
+    <div className={styles.activeClueHeader}>{`${clueNumber}. ${clueText}`}</div>
   );
 }
 
@@ -65,44 +60,10 @@ function Game() {
     col: 0,
     direction: "row",
   });
-
-  let clues: Clues = { down: [], across: [] };
   const numberedCells = numberCells(cells);
-  numberedCells.forEach((row, rowIndex) => {
-    row.forEach((cell, colIndex) => {
-      if (cell.number) {
-        // Check for "across" clues
-        if (
-          isStartOfWord(cells, {
-            row: rowIndex,
-            col: colIndex,
-            direction: "row",
-          })
-        ) {
-          clues.across[cell.number] = {
-            clue: "col",
-            rowStart: rowIndex,
-            colStart: colIndex,
-          };
-        }
-
-        // Check for "down" clues
-        if (
-          isStartOfWord(cells, {
-            row: rowIndex,
-            col: colIndex,
-            direction: "col",
-          })
-        ) {
-          clues.down[cell.number] = {
-            clue: "",
-            rowStart: rowIndex,
-            colStart: colIndex,
-          };
-        }
-      }
-    });
-  });
+  const clues = extractClues(numberedCells);
+  const [activeClue, activeClueNumber, clueDir] = getActiveClue(numberedCells, clues, cursor);
+  console.log(activeClue, clueDir);
 
   const updateCursorPosition = (row: number, col: number) => {
     if (!cells[row][col].filled) setCursor({ ...cursor, row: row, col: col });
@@ -141,7 +102,11 @@ function Game() {
 
   return (
     <div className={styles.gameWrapper}>
-      <ActiveClueHeader />
+      <ActiveClueHeader
+        clueNumber={activeClueNumber}
+        clueText={activeClue.clue}
+
+      />
       <Grid
         cells={numberedCells}
         cursor={cursor}
