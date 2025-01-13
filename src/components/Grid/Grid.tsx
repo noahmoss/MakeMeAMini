@@ -45,10 +45,8 @@ function Grid({
 
   const isCurrentWord = (row: number, col: number, cursor: Cursor) => {
     const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
-    const wordStart = startCursor[turn(cursor.direction)]
-    const wordEnd = endCursor[turn(cursor.direction)]
-
-    console.log({ wordStart, wordEnd })
+    const wordStart = startCursor[turn(cursor.direction)];
+    const wordEnd = endCursor[turn(cursor.direction)];
 
     return (
       (cursor.direction === "row" &&
@@ -82,23 +80,22 @@ function Grid({
     //e.preventDefault();
     hiddenInputRef.current?.focus();
 
-
     const upperKey = e.key.toUpperCase();
     if (/^[A-Z]$/.test(upperKey)) {
       setCurrentCellValue(upperKey);
       advanceCursor();
-    } else if (upperKey === 'TAB') {
+    } else if (upperKey === "TAB") {
       e.preventDefault();
       if (e.shiftKey) {
-        skipWord('backwards')
+        skipWord("backwards");
       } else {
-        skipWord('forwards');
+        skipWord("forwards");
       }
-    } else if (upperKey === ' ') {
+    } else if (upperKey === " ") {
       e.preventDefault();
       toggleCursorDirection();
-    } else if (upperKey === 'BACKSPACE') {
-      setCurrentCellValue(' ');
+    } else if (upperKey === "BACKSPACE") {
+      setCurrentCellValue(" ");
       reverseCursor();
     }
   };
@@ -115,7 +112,7 @@ function Grid({
         spellCheck="false"
         onKeyDown={handleKeyDown}
         onBlur={() => hiddenInputRef.current?.focus()}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />

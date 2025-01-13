@@ -3,9 +3,9 @@ import { useState } from "react";
 import Grid, { Cell } from "../Grid";
 import {
   isStartOfWord,
-  moveCursor,
+  stepCursor,
   numberCells,
-  startOfNextWord,
+  startOfAdjacentWord,
 } from "../Grid/utils";
 
 import styles from "./Game.module.css";
@@ -24,7 +24,7 @@ type Clue = {
   clue: string;
   rowStart: number;
   colStart: number;
-}
+};
 
 export interface Clues {
   across: Clue[];
@@ -73,7 +73,11 @@ function Game() {
       if (cell.number) {
         // Check for "across" clues
         if (
-          isStartOfWord(cells, { row: rowIndex, col: colIndex, direction: "row" })
+          isStartOfWord(cells, {
+            row: rowIndex,
+            col: colIndex,
+            direction: "row",
+          })
         ) {
           clues.across[cell.number] = {
             clue: "col",
@@ -84,7 +88,11 @@ function Game() {
 
         // Check for "down" clues
         if (
-          isStartOfWord(cells, { row: rowIndex, col: colIndex, direction: "col" })
+          isStartOfWord(cells, {
+            row: rowIndex,
+            col: colIndex,
+            direction: "col",
+          })
         ) {
           clues.down[cell.number] = {
             clue: "",
@@ -108,16 +116,16 @@ function Game() {
   };
 
   const reverseCursor = () => {
-    setCursor(moveCursor(cells, cursor, "backwards"));
-  }
+    setCursor(stepCursor(numberedCells, cursor, "backwards", clues));
+  };
 
   const advanceCursor = () => {
-    setCursor(moveCursor(cells, cursor, "forwards"));
+    setCursor(stepCursor(numberedCells, cursor, "forwards", clues));
   };
 
   const skipWord = (direction: Direction) => {
-    setCursor(startOfNextWord(numberedCells, cursor, direction, clues));
-  }
+    setCursor(startOfAdjacentWord(numberedCells, cursor, direction, clues));
+  };
 
   const toggleFilledCell = (row: number, col: number) => {
     let newCells = [...cells];

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-
 export function useKeydownListener(key: string): Boolean {
   const [keydown, setKeydown] = useState(false);
 
@@ -24,9 +23,7 @@ export function useKeydownListener(key: string): Boolean {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-
   }, [key]);
 
   return keydown;
 }
-

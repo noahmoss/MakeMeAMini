@@ -36,12 +36,14 @@ export const findWordBoundaries = (cells: Cell[][], cursor: Cursor) => {
   }
   wordEnd -= 1;
 
-  let startCursor = direction === "row" ?
-    { ...cursor, col: wordStart } :
-    { ...cursor, row: wordStart };
-  let endCursor = direction === "row" ?
-    { ...cursor, col: wordEnd } :
-    { ...cursor, row: wordEnd };
+  let startCursor =
+    direction === "row"
+      ? { ...cursor, col: wordStart }
+      : { ...cursor, row: wordStart };
+  let endCursor =
+    direction === "row"
+      ? { ...cursor, col: wordEnd }
+      : { ...cursor, row: wordEnd };
 
   return { startCursor, endCursor };
 };
@@ -51,9 +53,11 @@ export const isStartOfAnyWord = (
   row: number,
   col: number,
 ) => {
-  return isStartOfWord(cells, { row, col, direction: "row" })
-    || isStartOfWord(cells, { row, col, direction: "col" })
-}
+  return (
+    isStartOfWord(cells, { row, col, direction: "row" }) ||
+    isStartOfWord(cells, { row, col, direction: "col" })
+  );
+};
 
 export const isStartOfWord = (
   cells: readonly Cell[][],
@@ -64,15 +68,9 @@ export const isStartOfWord = (
   }
 
   if (direction === "row") {
-    return (
-      col === 0 ||
-      cells[row][col - 1].filled
-    )
+    return col === 0 || cells[row][col - 1].filled;
   } else if (direction === "col") {
-    return (
-      row === 0 ||
-      cells[row - 1][col].filled
-    )
+    return row === 0 || cells[row - 1][col].filled;
   }
 };
 
@@ -86,86 +84,13 @@ export function numberCells(cells: readonly Cell[][]) {
   );
 }
 
-// Moves the cursor to the next or previous non-black square, wrapping if necessary.
-export function moveCursor(
+export function startOfAdjacentWord(
   cells: Cell[][],
   cursor: Cursor,
   searchDir: Direction,
-): Cursor {
-  const numRows = cells.length;
-  const numCols = cells[0].length;
-  const isForwards = searchDir === "forwards";
-
-  const getNextPosition = ({ row, col, direction }: Cursor): Cursor => {
-    if (direction === "row") {
-      const nextCol = (col + (isForwards ? 1 : -1) + numCols) % numCols;
-      const nextRow =
-        nextCol === (isForwards ? 0 : numCols - 1)
-          ? (row + (isForwards ? 1 : -1) + numRows) % numRows
-          : row;
-
-      return { row: nextRow, col: nextCol, direction };
-    } else {
-      const nextRow = (row + (isForwards ? 1 : -1) + numRows) % numRows;
-      const nextCol =
-        nextRow === (isForwards ? 0 : numRows - 1)
-          ? (col + (isForwards ? 1 : -1) + numCols) % numCols
-          : col;
-
-      return { row: nextRow, col: nextCol, direction };
-    }
-  };
-
-  const { row, col, direction } = cursor;
-  let currRow = row;
-  let currCol = col;
-  let wrapped = false;
-
-  while (true) {
-    const { row: nextRow, col: nextCol } = getNextPosition({
-      row: currRow,
-      col: currCol,
-      direction,
-    });
-
-    // Detect if wraparound occurred
-    if (
-      (direction === "row" && nextRow < currRow) || // Wrapped past the last row
-      (direction === "col" && nextCol < currCol) // Wrapped past the last column
-    ) {
-      wrapped = true;
-    }
-
-    currRow = nextRow;
-    currCol = nextCol;
-
-    // Stop at the first non-filled square
-    if (!cells[currRow][currCol].filled) {
-      return {
-        row: currRow,
-        col: currCol,
-        direction: wrapped ? (direction === "row" ? "col" : "row") : direction,
-      };
-    }
-
-    // If we've wrapped back to the starting position, stop
-    if (currRow === row && currCol === col) {
-      return { row, col, direction };
-    }
-  }
-}
-
-
-export function startOfNextWord(
-  cells: Cell[][],
-  cursor: Cursor,
-  searchDir: Direction,
-  clues: Clues
+  clues: Clues,
 ): Cursor {
   const { startCursor } = findWordBoundaries(cells, cursor);
-
-  console.log({ cells });
-  console.log({ startCursor });
 
   const clueNumber = cells[startCursor.row][startCursor.col].number;
 
@@ -174,8 +99,12 @@ export function startOfNextWord(
   }
 
   // Extract sorted lists of valid clue numbers
-  const validAcrossNumbers = Object.keys(clues.across).map(Number).sort((a, b) => a - b);
-  const validDownNumbers = Object.keys(clues.down).map(Number).sort((a, b) => a - b);
+  const validAcrossNumbers = Object.keys(clues.across)
+    .map(Number)
+    .sort((a, b) => a - b);
+  const validDownNumbers = Object.keys(clues.down)
+    .map(Number)
+    .sort((a, b) => a - b);
 
   // Determine the current direction's clue list
   const currentClueNumbers =
@@ -220,4 +149,40 @@ export function startOfNextWord(
     col: nextClue.colStart,
     direction: nextClueDir,
   };
+}
+
+export function stepCursor(
+  cells: Cell[][],
+  cursor: Cursor,
+  stepDirection: Direction,
+  clues: Clues,
+): Cursor {
+  const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
+  const orthogonalDir = turn(cursor.direction);
+
+  if (stepDirection === "forwards") {
+    if (cursor[orthogonalDir] < endCursor[orthogonalDir]) {
+      let steppedCursor = { ...cursor };
+      steppedCursor[orthogonalDir] += 1;
+      return steppedCursor;
+    } else {
+      return startOfAdjacentWord(cells, cursor, stepDirection, clues);
+    }
+  } else if (stepDirection === "backwards") {
+    if (cursor[orthogonalDir] > startCursor[orthogonalDir]) {
+      let steppedCursor = { ...cursor };
+      steppedCursor[orthogonalDir] -= 1;
+      return steppedCursor;
+    } else {
+      const prevWordStart = startOfAdjacentWord(
+        cells,
+        cursor,
+        stepDirection,
+        clues,
+      );
+      const { endCursor } = findWordBoundaries(cells, prevWordStart);
+      return endCursor;
+    }
+  }
+  return cursor;
 }
