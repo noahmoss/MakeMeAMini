@@ -1,7 +1,7 @@
 import styles from "./Grid.module.css";
 
 import { Cursor, Direction } from "../Game";
-import { findWordBoundaries } from "./utils";
+import { turn, findWordBoundaries } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useRef } from "react";
 
@@ -44,7 +44,12 @@ function Grid({
   };
 
   const isCurrentWord = (row: number, col: number, cursor: Cursor) => {
-    const { wordStart, wordEnd } = findWordBoundaries(cells, cursor);
+    const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
+    const wordStart = startCursor[turn(cursor.direction)]
+    const wordEnd = endCursor[turn(cursor.direction)]
+
+    console.log({ wordStart, wordEnd })
+
     return (
       (cursor.direction === "row" &&
         cursor.row === row &&

@@ -10,7 +10,7 @@ import {
 
 import styles from "./Game.module.css";
 
-type CursorDirection = "row" | "col";
+export type CursorDirection = "row" | "col";
 
 export type Direction = "forwards" | "backwards";
 
@@ -66,43 +66,8 @@ function Game() {
     direction: "row",
   });
 
-  const updateCursorPosition = (row: number, col: number) => {
-    setCursor({ ...cursor, row: row, col: col });
-  };
-
-  const toggleCursorDirection = () => {
-    setCursor({
-      ...cursor,
-      direction: cursor.direction === "row" ? "col" : "row",
-    });
-  };
-
-  const reverseCursor = () => {
-    setCursor(moveCursor(cells, cursor, "backwards"));
-  }
-
-  const advanceCursor = () => {
-    setCursor(moveCursor(cells, cursor, "forwards"));
-  };
-
-  const skipWord = (direction: Direction) => {
-    setCursor(startOfNextWord(cells, cursor, direction));
-  }
-
-  const toggleFilledCell = (row: number, col: number) => {
-    let newCells = [...cells];
-    newCells[row][col].filled = !cells[row][col].filled;
-    setCells(newCells);
-  };
-
-  const setCurrentCellValue = (value: string) => {
-    let newCells = [...cells];
-    newCells[cursor.row][cursor.col].value = value;
-    setCells(newCells);
-  };
-  const numberedCells = numberCells(cells);
-
   let clues: Clues = { down: [], across: [] };
+  const numberedCells = numberCells(cells);
   numberedCells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
       if (cell.number) {
@@ -131,7 +96,40 @@ function Game() {
     });
   });
 
-  console.log(clues);
+  const updateCursorPosition = (row: number, col: number) => {
+    setCursor({ ...cursor, row: row, col: col });
+  };
+
+  const toggleCursorDirection = () => {
+    setCursor({
+      ...cursor,
+      direction: cursor.direction === "row" ? "col" : "row",
+    });
+  };
+
+  const reverseCursor = () => {
+    setCursor(moveCursor(cells, cursor, "backwards"));
+  }
+
+  const advanceCursor = () => {
+    setCursor(moveCursor(cells, cursor, "forwards"));
+  };
+
+  const skipWord = (direction: Direction) => {
+    setCursor(startOfNextWord(numberedCells, cursor, direction, clues));
+  }
+
+  const toggleFilledCell = (row: number, col: number) => {
+    let newCells = [...cells];
+    newCells[row][col].filled = !cells[row][col].filled;
+    setCells(newCells);
+  };
+
+  const setCurrentCellValue = (value: string) => {
+    let newCells = [...cells];
+    newCells[cursor.row][cursor.col].value = value;
+    setCells(newCells);
+  };
 
   return (
     <div className={styles.gameWrapper}>

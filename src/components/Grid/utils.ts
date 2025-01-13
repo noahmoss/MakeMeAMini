@@ -1,5 +1,5 @@
 import { Cell } from "./Grid";
-import { Clues, Cursor, Direction } from "../Game";
+import { Clues, Cursor, CursorDirection, Direction } from "../Game";
 
 function rowCount(cells: Cell[][]) {
   return cells.length;
@@ -9,10 +9,8 @@ function colCount(cells: Cell[][]) {
   return cells[0].length;
 }
 
-function turn(cursor: Cursor) {
-  return cursor.direction === "row" ?
-    { ...cursor, direction: "col" }
-    : { ...cursor, direction: "row" }
+export function turn(direction: CursorDirection): CursorDirection {
+  return direction === "row" ? "col" : "row";
 }
 
 // Returns two cursors for the beginning and end cells of the current word
@@ -162,70 +160,64 @@ export function startOfNextWord(
   cells: Cell[][],
   cursor: Cursor,
   searchDir: Direction,
-  clues: Clues,
+  clues: Clues
 ): Cursor {
   const { startCursor } = findWordBoundaries(cells, cursor);
 
-  const clueNumber = cells[startCursor.row][startCursor.col]?.number ?? 0;
-  const maxDown = clues.down.length - 1;
-  const maxAcross = clues.across.length - 1;
+  console.log({ cells });
+  console.log({ startCursor });
+
+  const clueNumber = cells[startCursor.row][startCursor.col].number;
 
   if (!clueNumber) {
-    throw new Error("findWordBoundaries did not return a valid word start!")
+    throw new Error("findWordBoundaries did not return a valid word start!");
   }
 
-  let nextClueNumber;
-  let nextClueDir;
-  if (searchDir === 'forwards') {
-    nextClueNumber = clueNumber + 1;
-    if ((cursor.direction === 'row' && nextClueNumber > maxAcross)
-      || (cursor.direction === 'col' && nextClueNumber > maxDown)) {
-      nextClueNumber = 1;
-      nextClueDir = turn(cursor).direction;
+  // Extract sorted lists of valid clue numbers
+  const validAcrossNumbers = Object.keys(clues.across).map(Number).sort((a, b) => a - b);
+  const validDownNumbers = Object.keys(clues.down).map(Number).sort((a, b) => a - b);
+
+  // Determine the current direction's clue list
+  const currentClueNumbers =
+    cursor.direction === "row" ? validAcrossNumbers : validDownNumbers;
+  const otherClueNumbers =
+    cursor.direction === "row" ? validDownNumbers : validAcrossNumbers;
+
+  const currentIndex = currentClueNumbers.indexOf(clueNumber);
+
+  let nextClueNumber = clueNumber;
+  let nextClueDir = cursor.direction;
+  if (searchDir === "forwards") {
+    // Move forward in the current list
+    if (currentIndex < currentClueNumbers.length - 1) {
+      nextClueNumber = currentClueNumbers[currentIndex + 1];
+    } else {
+      // Wrap to the other direction and pick the first clue
+      nextClueDir = nextClueDir === "row" ? "col" : "row";
+      nextClueNumber = otherClueNumbers[0];
     }
-  } else if (searchDir === 'backwards') {
-    nextClueNumber = clueNumber - 1;
-    if (nextClueNumber < 1) {
-      nextClueNumber = cursor.direction === 'row' ? maxDown : maxAcross;
-      nextClueDir = turn(cursor).direction;
+  } else if (searchDir === "backwards") {
+    // Move backward in the current list
+    if (currentIndex > 0) {
+      nextClueNumber = currentClueNumbers[currentIndex - 1];
+    } else {
+      // Wrap to the other direction and pick the last clue
+      nextClueDir = nextClueDir === "row" ? "col" : "row";
+      nextClueNumber = otherClueNumbers[otherClueNumbers.length - 1];
     }
   }
 
-  const nextClue = clues[nextClueDir === 'row' ? 'across' : 'down'][nextClueNumber]
-  //if ((cursor.direction === 'row' && nextClueNumber < 1)
-  //  || (cursor.direction === 'col' && nextClueNumber > maxDown)) {
-  //  nextClueNumber = 1;
-  //}
-}
+  // Find the next clue in the corresponding direction
+  const nextClue =
+    clues[nextClueDir === "row" ? "across" : "down"][nextClueNumber];
 
+  if (!nextClue) {
+    throw new Error("Could not find the next clue!");
+  }
 
-
-return cursor;
-
-  //let newCursor = cursor;
-  //if (searchDir === 'forwards') {
-  //
-  //  const wordEndCursor =
-  //    cursor.direction === 'row' ?
-  //      { ...cursor, col: wordEnd } :
-  //      { ...cursor, row: wordEnd };
-  //
-  //  console.log({ wordEndCursor });
-  //
-  //  newCursor = moveCursor(cells, wordEndCursor, 'forwards');
-  //  console.log({ newCursor });
-  //
-  //} else if (searchDir === 'backwards') {
-  //  const wordStartCursor =
-  //    cursor.direction === 'row' ?
-  //      { ...cursor, col: wordStart } :
-  //      { ...cursor, row: wordStart };
-  //  // Cursor pointing to the end of the previous word
-  //  newCursor = moveCursor(cells, wordStartCursor, 'backwards');
-  //  const { wordStart: newWordStart } = findWordBoundaries(cells, newCursor);
-  //  newCursor = newCursor.direction === 'row' ?
-  //    { ...newCursor, col: newWordStart } :
-  //    { ...newCursor, row: newWordStart };
-  //}
-  //return newCursor;
+  return {
+    row: nextClue.rowStart,
+    col: nextClue.colStart,
+    direction: nextClueDir,
+  };
 }
