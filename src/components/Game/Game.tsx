@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Grid, { Cell } from "../Grid";
 import {
-  findWordBoundaries,
+  isStartOfWord,
   moveCursor,
   numberCells,
   startOfNextWord,
@@ -10,17 +10,25 @@ import {
 
 import styles from "./Game.module.css";
 
-type Direction = "row" | "col";
+type CursorDirection = "row" | "col";
+
+export type Direction = "forwards" | "backwards";
 
 export interface Cursor {
   row: number;
   col: number;
-  direction: Direction;
+  direction: CursorDirection;
 }
 
-interface Clues {
-  across: [number, string][];
-  down: [number, string][];
+type Clue = {
+  clue: string;
+  rowStart: number;
+  colStart: number;
+}
+
+export interface Clues {
+  across: Clue[];
+  down: Clue[];
 }
 
 interface CrosswordData {
@@ -69,9 +77,17 @@ function Game() {
     });
   };
 
+  const reverseCursor = () => {
+    setCursor(moveCursor(cells, cursor, "backwards"));
+  }
+
   const advanceCursor = () => {
-    setCursor(moveCursor(cells, cursor, "forwards"))
+    setCursor(moveCursor(cells, cursor, "forwards"));
   };
+
+  const skipWord = (direction: Direction) => {
+    setCursor(startOfNextWord(cells, cursor, direction));
+  }
 
   const toggleFilledCell = (row: number, col: number) => {
     let newCells = [...cells];
@@ -83,10 +99,39 @@ function Game() {
     let newCells = [...cells];
     newCells[cursor.row][cursor.col].value = value;
     setCells(newCells);
-    advanceCursor();
   };
-
   const numberedCells = numberCells(cells);
+
+  let clues: Clues = { down: [], across: [] };
+  numberedCells.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
+      if (cell.number) {
+        // Check for "across" clues
+        if (
+          isStartOfWord(cells, { row: rowIndex, col: colIndex, direction: "row" })
+        ) {
+          clues.across[cell.number] = {
+            clue: "col",
+            rowStart: rowIndex,
+            colStart: colIndex,
+          };
+        }
+
+        // Check for "down" clues
+        if (
+          isStartOfWord(cells, { row: rowIndex, col: colIndex, direction: "col" })
+        ) {
+          clues.down[cell.number] = {
+            clue: "",
+            rowStart: rowIndex,
+            colStart: colIndex,
+          };
+        }
+      }
+    });
+  });
+
+  console.log(clues);
 
   return (
     <div className={styles.gameWrapper}>
@@ -98,6 +143,9 @@ function Game() {
         toggleCursorDirection={toggleCursorDirection}
         toggleFilledCell={toggleFilledCell}
         setCurrentCellValue={setCurrentCellValue}
+        advanceCursor={advanceCursor}
+        reverseCursor={reverseCursor}
+        skipWord={skipWord}
       />
     </div>
   );

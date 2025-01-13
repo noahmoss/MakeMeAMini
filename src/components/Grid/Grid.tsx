@@ -1,6 +1,6 @@
 import styles from "./Grid.module.css";
 
-import { Cursor } from "../Game";
+import { Cursor, Direction } from "../Game";
 import { findWordBoundaries } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useRef } from "react";
@@ -18,6 +18,9 @@ type GridProps = {
   toggleCursorDirection: () => void;
   toggleFilledCell: (row: number, col: number) => void;
   setCurrentCellValue: (value: string) => void;
+  advanceCursor: () => void;
+  reverseCursor: () => void;
+  skipWord: (direction: Direction) => void;
 };
 
 function Grid({
@@ -27,6 +30,9 @@ function Grid({
   toggleCursorDirection,
   toggleFilledCell,
   setCurrentCellValue,
+  advanceCursor,
+  reverseCursor,
+  skipWord,
 }: GridProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
@@ -68,12 +74,27 @@ function Grid({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    //e.preventDefault();
     hiddenInputRef.current?.focus();
+
 
     const upperKey = e.key.toUpperCase();
     if (/^[A-Z]$/.test(upperKey)) {
-      console.log(upperKey);
       setCurrentCellValue(upperKey);
+      advanceCursor();
+    } else if (upperKey === 'TAB') {
+      e.preventDefault();
+      if (e.shiftKey) {
+        skipWord('backwards')
+      } else {
+        skipWord('forwards');
+      }
+    } else if (upperKey === ' ') {
+      e.preventDefault();
+      toggleCursorDirection();
+    } else if (upperKey === 'BACKSPACE') {
+      setCurrentCellValue(' ');
+      reverseCursor();
     }
   };
 
@@ -82,7 +103,7 @@ function Grid({
       <input
         className={styles.hiddenInput}
         ref={hiddenInputRef}
-        type="text"
+        type=""
         autoComplete="off"
         autoCorrect="off"
         autoCapitalize="none"
@@ -123,9 +144,9 @@ function Grid({
                 onClick={() => {
                   handleCellClick(rowIndex, colIndex);
                 }}
+                tabIndex={-1}
               >
                 <div className={styles.gridCellNumber}>{cell.number}</div>
-
                 <div className={styles.gridCellValue}>{cell.value}</div>
               </div>
             );
