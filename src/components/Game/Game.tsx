@@ -105,7 +105,7 @@ function Game() {
   });
 
   const updateCursorPosition = (row: number, col: number) => {
-    setCursor({ ...cursor, row: row, col: col });
+    if (!cells[row][col].filled) setCursor({ ...cursor, row: row, col: col });
   };
 
   const toggleCursorDirection = () => {

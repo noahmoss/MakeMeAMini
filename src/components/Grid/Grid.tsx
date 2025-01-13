@@ -112,7 +112,7 @@ function Grid({
         spellCheck="false"
         onKeyDown={handleKeyDown}
         onBlur={() => hiddenInputRef.current?.focus()}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
