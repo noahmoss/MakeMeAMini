@@ -53,5 +53,6 @@
   pointer-events: none;
   height: 0;
   width: 0;
-  left: -9999px; /* Place it out of the viewport */
+  left: -9999px;
+  /* Place it out of the viewport */
 }

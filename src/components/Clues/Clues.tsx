@@ -1,6 +1,9 @@
+import { useState } from "react";
 import { Cursor } from "../Game";
 import { Cell } from "../Grid";
 import { findWordBoundaries, isStartOfWord } from "../Grid/utils";
+
+import styles from "./Clues.module.css";
 
 export type Clue = {
   clue: string;
@@ -53,7 +56,11 @@ export function extractClues(cells: Cell[][]): Clues {
   return clues;
 }
 
-export function getActiveClue(cells: Cell[][], clues: Clues, cursor: Cursor): [Clue, number, "across" | "down"] {
+export function getActiveClue(
+  cells: Cell[][],
+  clues: Clues,
+  cursor: Cursor,
+): [Clue, number, "across" | "down"] {
   const { startCursor } = findWordBoundaries(cells, cursor);
 
   const clueNumber = cells[startCursor.row][startCursor.col]?.number;
@@ -62,5 +69,40 @@ export function getActiveClue(cells: Cell[][], clues: Clues, cursor: Cursor): [C
   }
   const clueDir = cursor.direction === "row" ? "across" : "down";
 
-  return [clues[clueDir][clueNumber], clueNumber, clueDir]
+  return [clues[clueDir][clueNumber], clueNumber, clueDir];
+}
+
+type ClueListProps = {
+  clueList: Clue[]
+}
+
+function ClueList({ clueList }: ClueListProps) {
+  console.log(clueList);
+  return (
+    <ol className={styles.clueList}>
+      {clueList.map((clue, clueNumber) => (
+        < li className={styles.clueItem}>
+          {clueNumber}{" "}{clue.clue}
+        </li>
+      ))
+      }
+    </ol >
+  )
+}
+
+type CluesProps = {
+  clues: Clues;
+};
+
+export function ClueBox({ clues }: CluesProps) {
+  const [direction, setDirection] = useState("across");
+
+  return (
+    <div className={styles.cluesWrapper} >
+      <h2 className={styles.cluesHeader}>Across</h2>
+      <ClueList clueList={clues?.across} />
+      <h2 className={styles.cluesHeader}>Down</h2>
+      <ClueList clueList={clues?.down} />
+    </div >
+  )
 }

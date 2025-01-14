@@ -4,7 +4,7 @@ body {
   --default-text-color: black;
   --active-cell-color: hsl(60deg, 100%, 89%);
   --active-clue-color: lightblue;
-  --cursor-color: hsl(180deg, 100%, 97%);
+  --cursor-color: hsl(180deg, 100%, 93%);
   --filled-cell-color: black;
 }
 

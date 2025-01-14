@@ -1,7 +1,6 @@
-import { Cell, } from "./Grid";
+import { Cell } from "./Grid";
 import { Cursor, CursorDirection, Direction } from "../Game";
 import { Clues } from "../Clues";
-
 
 function rowCount(cells: Cell[][]) {
   return cells.length;
