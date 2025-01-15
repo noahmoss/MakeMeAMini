@@ -117,7 +117,7 @@ function Grid({
         value=""
       />
 
-      <div className={styles.gridContainer}>
+      <div className={styles.grid}>
         {cells.map((row: Cell[], rowIndex: number) =>
           row.map((cell: Cell, colIndex: number) => {
             if (cell.filled) {

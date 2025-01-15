@@ -1,20 +1,18 @@
 .cluesWrapper {
   display: flex;
   flex-direction: column;
+  flex: 1;
   padding-left: 10px;
-  gap: 30px;
+  gap: 10px;
 }
 
 .clueList {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  overflow-y: auto;
 }
 
 .cluesHeader {
   font-size: 1.2em;
-}
-
-.clueItem+clueItem {
-  margin-top: 20px;
 }

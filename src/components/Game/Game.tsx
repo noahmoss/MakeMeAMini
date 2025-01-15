@@ -34,11 +34,9 @@ type ActiveClueHeaderProps = {
 
 function ActiveClueBar({ clueNumber, clueText }: ActiveClueHeaderProps) {
   return (
-    <div>
-      <div
-        className={styles.activeClueHeader}
-      >{`${clueNumber}. ${clueText}`}</div>
-    </div>
+    <div
+      className={styles.activeClueHeader}
+    >{`${clueNumber}. ${clueText}`}</div>
   );
 }
 
@@ -106,6 +104,9 @@ function Game() {
 
   return (
     <div className={styles.gameWrapper}>
+      <h1 className={styles.crosswordTitle}>
+        Untitled Crossword
+      </h1>
       <div className={styles.gridWrapper}>
         <Grid
           cells={numberedCells}

@@ -1,32 +1,41 @@
 .gameWrapper {
   /*--game-wrapper-width: px;*/
-  --game-wrapper-padding: 4px;
+  /*--game-wrapper-padding: 50px;*/
   /*--grid-width: calc(var(--game-wrapper-width) - 2 * var(--game-wrapper-padding));*/
 
   font-family: Arial, sans-serif;
   font-size: 1.2em;
 
-  padding: var(--game-wrapper-padding);
+  padding: 4px;
+  /*padding: var(--game-wrapper-padding);*/
   /*max-width: var(--game-wrapper-width);*/
   /*width: 100%;*/
+
+  /*--grid-max-width: min(100vw, 600px);*/
+
   margin-left: auto;
   margin-right: auto;
 
   display: grid;
   grid-template-areas:
+    "title"
     "crossword"
     "active-clue"
     "clues";
+  gap: 10px;
+  justify-content: center;
 
   @media (min-width: 508px) {
     grid-template-areas:
-      "active-clue clues"
+      "title ."
+      "active-clue ."
       "crossword clues";
   }
+}
 
-  @media (min-width: 780px) {
-    /*margin-top: 80px;*/
-  }
+.crosswordTitle {
+  grid-area: title;
+  font-size: 2rem;
 }
 
 .gridWrapper {
@@ -39,6 +48,9 @@
   background-color: var(--active-clue-color);
 
   user-select: none;
+
+  max-width: var(--grid-max-width);
+  width: min(500px, 100%);
 
   margin-top: 4px;
   margin-bottom: 4px;
