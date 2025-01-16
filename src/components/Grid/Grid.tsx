@@ -112,7 +112,7 @@ function Grid({
         spellCheck="false"
         onKeyDown={handleKeyDown}
         onBlur={() => hiddenInputRef.current?.focus()}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />
@@ -123,7 +123,10 @@ function Grid({
             if (cell.filled) {
               return (
                 <div
-                  className={styles.filledCell}
+                  className={`
+                  ${styles.gridCell}
+                  ${styles.filledCell}
+                  `}
                   onClick={() => {
                     handleCellClick(rowIndex, colIndex);
                   }}

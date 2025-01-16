@@ -1,10 +1,13 @@
 body {
-  /* color: black; */
   --background-color: hsl(25deg, 4%, 100%);
   --default-text-color: black;
-  --active-cell-color: hsl(60deg, 100%, 89%);
-  --active-clue-color: lightblue;
-  --cursor-color: hsl(180deg, 100%, 93%);
+
+  --active-cell-color: #fff9d0;
+
+  --active-clue-color: #caf0ff;
+
+  --cursor-color: hsl(192.5deg, 100%, 89.6%);
+
   --filled-cell-color: black;
 }
 

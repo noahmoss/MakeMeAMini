@@ -44,7 +44,7 @@ function initialCells(rows: number, cols: number): Cell[][] {
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
       filled: false,
-      value: "A",
+      value: "",
       number: null,
     })),
   );
@@ -93,7 +93,13 @@ function Game() {
   const toggleFilledCell = (row: number, col: number) => {
     let newCells = [...cells];
     newCells[row][col].filled = !cells[row][col].filled;
+    newCells[row][col].value = "";
     setCells(newCells);
+
+    // If we're filling in the cell of the current cursor, advance it to the next cell
+    if (newCells[row][col].filled && cursor.row === row && cursor.col === col) {
+      advanceCursor();
+    }
   };
 
   const setCurrentCellValue = (value: string) => {
@@ -104,9 +110,7 @@ function Game() {
 
   return (
     <div className={styles.gameWrapper}>
-      <h1 className={styles.crosswordTitle}>
-        Untitled Crossword
-      </h1>
+      <h1 className={styles.crosswordTitle}>Untitled Crossword</h1>
       <div className={styles.gridWrapper}>
         <Grid
           cells={numberedCells}

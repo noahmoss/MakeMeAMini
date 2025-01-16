@@ -73,21 +73,19 @@ export function getActiveClue(
 }
 
 type ClueListProps = {
-  clueList: Clue[]
-}
+  clueList: Clue[];
+};
 
 function ClueList({ clueList }: ClueListProps) {
-  console.log(clueList);
   return (
     <ol className={styles.clueList}>
       {clueList.map((clue, clueNumber) => (
-        < li className={styles.clueItem}>
-          {clueNumber}{" "}{clue.clue}
+        <li className={styles.clueItem}>
+          {clueNumber} {clue.clue}
         </li>
-      ))
-      }
-    </ol >
-  )
+      ))}
+    </ol>
+  );
 }
 
 type CluesProps = {
@@ -98,11 +96,11 @@ export function ClueBox({ clues }: CluesProps) {
   const [direction, setDirection] = useState("across");
 
   return (
-    <div className={styles.cluesWrapper} >
+    <div className={styles.cluesWrapper}>
       <h2 className={styles.cluesHeader}>Across</h2>
       <ClueList clueList={clues?.across} />
       <h2 className={styles.cluesHeader}>Down</h2>
       <ClueList clueList={clues?.down} />
-    </div >
-  )
+    </div>
+  );
 }

@@ -11,12 +11,12 @@
 }
 
 .gridCell {
-  aspect-ratio: 1 / 1;
   background-color: var(--background-color);
+  aspect-ratio: 1 / 1;
+  line-height: 0;
+
   width: 100%;
   height: 100%;
-  line-height: 0;
-  /*padding: 1rem;*/
 
   position: relative;
   display: grid;
@@ -37,7 +37,7 @@
 
 .gridCellNumber {
   position: absolute;
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   line-height: 1rem;
   top: 0.3rem;
   left: 0.3rem;
@@ -47,7 +47,7 @@
   /* TODO -- figure out a better font scaling technique */
   /*font-size: min(10vw, 3rem);*/
 
-  font-size: 2.5rem;
+  font-size: min(10vw, 3rem);
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);
 }

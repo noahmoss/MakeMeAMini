@@ -1,17 +1,8 @@
 .gameWrapper {
-  /*--game-wrapper-width: px;*/
-  /*--game-wrapper-padding: 50px;*/
-  /*--grid-width: calc(var(--game-wrapper-width) - 2 * var(--game-wrapper-padding));*/
+  font-family: Helvetica, sans-serif;
 
-  font-family: Arial, sans-serif;
-  font-size: 1.2em;
-
-  padding: 4px;
-  /*padding: var(--game-wrapper-padding);*/
-  /*max-width: var(--game-wrapper-width);*/
-  /*width: 100%;*/
-
-  /*--grid-max-width: min(100vw, 600px);*/
+  padding: 10px;
+  padding-top: 50px;
 
   margin-left: auto;
   margin-right: auto;
@@ -25,7 +16,7 @@
   gap: 10px;
   justify-content: center;
 
-  @media (min-width: 508px) {
+  @media (min-width: 600px) {
     grid-template-areas:
       "title ."
       "active-clue ."
@@ -35,7 +26,7 @@
 
 .crosswordTitle {
   grid-area: title;
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 
 .gridWrapper {
@@ -45,22 +36,26 @@
 .activeClueHeader {
   grid-area: active-clue;
 
+  width: min(80vw, 500px);
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding: 1rem;
+
   background-color: var(--active-clue-color);
 
   user-select: none;
 
-  max-width: var(--grid-max-width);
-  width: min(500px, 100%);
-
-  margin-top: 4px;
-  margin-bottom: 4px;
-  padding: 20px;
+  font-size: 1.3rem;
 }
 
 .cluesWrapper {
   grid-area: clues;
 
-  @media (min-width: 780px) {
+  display: none;
+
+  @media (min-width: 500px) {
     margin-left: 20px;
+
+    display: block;
   }
 }
