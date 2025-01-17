@@ -1,6 +1,7 @@
 .grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(var(--grid-row-count), 1fr);
+  grid-template-rows: repeat(var(--grid-col-count), 1fr);
 
   /* Define grid lines */
   background-color: black;
@@ -36,6 +37,11 @@
 
 .filledCell {
   background-color: var(--filled-cell-color);
+}
+
+.fillCellHoverIndicator:hover {
+  background: gray;
+  opacity: 0.95;
 }
 
 .gridCellNumber {

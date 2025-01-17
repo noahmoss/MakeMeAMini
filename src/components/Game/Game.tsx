@@ -51,8 +51,8 @@ function initialCells(rows: number, cols: number): Cell[][] {
 }
 
 function Game() {
-  const rows = 5;
-  const cols = 5;
+  const rows = 6;
+  const cols = 6;
   const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,

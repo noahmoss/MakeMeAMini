@@ -36,7 +36,6 @@ function Grid({
 }: GridProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
-  const spacebarDown = useKeydownListener(" ");
   const shiftDown = useKeydownListener("Shift");
 
   const isCurrentCell = (row: number, col: number, cursor: Cursor) => {
@@ -64,7 +63,7 @@ function Grid({
     // Always refocus the hidden input
     hiddenInputRef.current?.focus();
 
-    if (spacebarDown || shiftDown) {
+    if (shiftDown) {
       toggleFilledCell(row, col);
       return;
     }
@@ -112,12 +111,20 @@ function Grid({
         spellCheck="false"
         onKeyDown={handleKeyDown}
         onBlur={() => hiddenInputRef.current?.focus()}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
 
-      <div className={styles.grid}>
+      <div
+        className={styles.grid}
+        style={
+          {
+            "--grid-row-count": cells.length,
+            "--grid-col-count": cells[0].length,
+          } as React.CSSProperties
+        }
+      >
         {cells.map((row: Cell[], rowIndex: number) =>
           row.map((cell: Cell, colIndex: number) => {
             if (cell.filled) {
@@ -144,6 +151,7 @@ function Grid({
                   ${styles.gridCell} 
                   ${currentWord && styles.cursorWord}
                   ${currentCell && styles.cursorCell}
+                  ${shiftDown && styles.fillCellHoverIndicator}
               `}
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => {
