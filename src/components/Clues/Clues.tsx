@@ -90,15 +90,17 @@ function ClueList({
   return (
     <ol className={styles.clueList}>
       {clueList.map((clue, clueNumber) => {
-        const isActiveClue = direction === activeClueDir && clueNumber === activeClueNumber;
-        const isOrthogonalClue = clueNumber === activeClueNumber && !isActiveClue;
-        return <li
-          className={`${styles.clueItem} ${isActiveClue ? styles.activeClueItem : undefined}`}
-          key={clueNumber}
-        >
-          <span className={`${styles.clueID} ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}>{clueNumber}</span>
-          <span className={styles.clueContents}>{clue.clue}</span>
-        </li>
+        const isActiveClue =
+          direction === activeClueDir && clueNumber === activeClueNumber;
+        return (
+          <li
+            className={`${styles.clueItem} ${isActiveClue ? styles.activeClueItem : undefined}`}
+            key={clueNumber}
+          >
+            <span className={`${styles.clueID}`}>{clueNumber}</span>
+            <span className={styles.clueContents}>{clue.clue}</span>
+          </li>
+        );
       })}
     </ol>
   );

@@ -25,17 +25,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+
   max-width: 300px;
   padding-left: 4px;
   padding-right: 10px;
+
+  @media (min-width: 900px) {
+    margin-bottom: 4px;
+  }
 }
 
 .activeClueItem {
-  background-color: var(--cursor-color);
-}
-
-.orthogonalClueID {
   background-color: var(--cursor-color);
 }
 
@@ -43,4 +43,11 @@
   margin-right: 15px;
   font-weight: bold;
   padding: 6px;
+  padding-right: 10px;
+  padding-left: 10px;
+  align-self: flex-start;
+}
+
+.orthogonalClueID {
+  background-color: var(--cursor-color);
 }

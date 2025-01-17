@@ -8,16 +8,23 @@
   margin-right: auto;
 
   display: grid;
+  justify-content: center;
+  gap: 8px;
   grid-template-areas:
     "title"
     "crossword"
     "active-clue"
     "clues";
-  gap: 8px;
-  justify-content: center;
 
   @media (min-width: 600px) {
     padding-top: 50px;
+    grid-template-areas:
+      "title ."
+      "active-clue clues"
+      "crossword clues";
+  }
+
+  @media (min-width: 900px) {
     grid-template-areas:
       "title ."
       "active-clue ."
