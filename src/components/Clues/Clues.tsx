@@ -79,6 +79,7 @@ type ClueListProps = {
   activeClueNumber: number;
   activeClueDir: ClueDirection;
   clueList: Clue[];
+  setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
 };
 
 function ClueList({
@@ -86,6 +87,7 @@ function ClueList({
   activeClueNumber,
   activeClueDir,
   clueList,
+  setActiveClue,
 }: ClueListProps) {
   return (
     <ol className={styles.clueList}>
@@ -96,6 +98,7 @@ function ClueList({
           <li
             className={`${styles.clueItem} ${isActiveClue ? styles.activeClueItem : undefined}`}
             key={clueNumber}
+            onClick={() => setActiveClue(clueNumber, direction)}
           >
             <span className={`${styles.clueID}`}>{clueNumber}</span>
             <span className={styles.clueContents}>{clue.clue}</span>
@@ -110,12 +113,14 @@ type CluesProps = {
   clues: Clues;
   activeClueNumber: number;
   activeClueDir: ClueDirection;
+  setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
 };
 
 export function ClueBox({
   clues,
   activeClueNumber,
   activeClueDir,
+  setActiveClue,
 }: CluesProps) {
   return (
     <div className={styles.cluesWrapper}>
@@ -126,6 +131,7 @@ export function ClueBox({
           activeClueNumber={activeClueNumber}
           activeClueDir={activeClueDir}
           clueList={clues?.across}
+          setActiveClue={setActiveClue}
         />
       </div>
       <div className={styles.cluesSection}>
@@ -135,6 +141,7 @@ export function ClueBox({
           activeClueNumber={activeClueNumber}
           activeClueDir={activeClueDir}
           clueList={clues?.down}
+          setActiveClue={setActiveClue}
         />
       </div>
     </div>

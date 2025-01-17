@@ -4,7 +4,7 @@ import Grid, { Cell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
 import styles from "./Game.module.css";
-import { ClueBox, extractClues, getActiveClue } from "../Clues";
+import { ClueBox, ClueDirection, extractClues, getActiveClue } from "../Clues";
 
 export type CursorDirection = "row" | "col";
 
@@ -109,6 +109,15 @@ function Game() {
     setCells(newCells);
   };
 
+  const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
+    const activeClue = clues[direction][clueNumber];
+    setCursor({
+      direction: direction === "across" ? "row" : "col",
+      row: activeClue.rowStart,
+      col: activeClue.colStart,
+    })
+  }
+
   return (
     <div className={styles.outerGameWrapper}>
       <div className={styles.gameWrapper}>
@@ -142,6 +151,7 @@ function Game() {
               clues={clues}
               activeClueNumber={activeClueNumber}
               activeClueDir={activeClueDir}
+              setActiveClue={setActiveClue}
             />
           </div>
         </div>
