@@ -16,3 +16,15 @@
 .cluesHeader {
   font-size: 1.2em;
 }
+
+.clueItem {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  max-width: 300px;
+}
+
+.clueID {
+  margin-right: 15px;
+  font-weight: bold;
+}

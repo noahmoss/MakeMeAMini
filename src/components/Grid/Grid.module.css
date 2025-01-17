@@ -21,6 +21,9 @@
   position: relative;
   display: grid;
   place-content: center;
+
+  container-name: grid-cell;
+  container-type: size;
 }
 
 .cursorWord {
@@ -44,10 +47,8 @@
 }
 
 .gridCellValue {
-  /* TODO -- figure out a better font scaling technique */
-  /*font-size: min(10vw, 3rem);*/
+  font-size: 70cqw;
 
-  font-size: min(10vw, 3rem);
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);
 }

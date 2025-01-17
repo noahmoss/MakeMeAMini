@@ -73,15 +73,21 @@ export function getActiveClue(
 }
 
 type ClueListProps = {
+  direction: "across" | "down";
   clueList: Clue[];
 };
 
-function ClueList({ clueList }: ClueListProps) {
+function ClueList({ direction, clueList }: ClueListProps) {
   return (
     <ol className={styles.clueList}>
       {clueList.map((clue, clueNumber) => (
         <li className={styles.clueItem}>
-          {clueNumber} {clue.clue}
+          <span className={styles.clueID}>
+            {clueNumber}
+          </span>
+          <span className={styles.clueContents}>
+            {clue.clue}
+          </span>
         </li>
       ))}
     </ol>
@@ -98,9 +104,9 @@ export function ClueBox({ clues }: CluesProps) {
   return (
     <div className={styles.cluesWrapper}>
       <h2 className={styles.cluesHeader}>Across</h2>
-      <ClueList clueList={clues?.across} />
+      <ClueList direction={direction} clueList={clues?.across} />
       <h2 className={styles.cluesHeader}>Down</h2>
-      <ClueList clueList={clues?.down} />
+      <ClueList direction={direction} clueList={clues?.down} />
     </div>
   );
 }
