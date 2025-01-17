@@ -3,6 +3,7 @@
   flex-direction: column;
   flex: 1;
   padding-left: 10px;
+  gap: 20px;
 
   @media (min-width: 900px) {
     flex-direction: row;
@@ -45,7 +46,9 @@
   padding: 6px;
   padding-right: 10px;
   padding-left: 10px;
+  width: 2rem;
   align-self: flex-start;
+  justify-self: flex-end
 }
 
 .orthogonalClueID {

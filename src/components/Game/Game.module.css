@@ -1,52 +1,47 @@
+.outerGameWrapper {
+  display: grid;
+  justify-content: center;
+}
+
 .gameWrapper {
   font-family: Helvetica, sans-serif;
 
-  padding: 10px;
-  padding-top: 20px;
+  margin-top: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  width: 100%;
 
-  margin-left: auto;
-  margin-right: auto;
-
-  display: grid;
-  justify-content: center;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
-  grid-template-areas:
-    "title"
-    "crossword"
-    "active-clue"
-    "clues";
+}
+
+.gridAndClues {
+  display: flex;
+  flex-direction: row;
+}
+
+.gridAndActiveClue {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 
   @media (min-width: 600px) {
-    padding-top: 50px;
-    grid-template-areas:
-      "title ."
-      "active-clue clues"
-      "crossword clues";
+    flex-direction: column-reverse;
+    justify-content: flex-end;
   }
 
-  @media (min-width: 900px) {
-    grid-template-areas:
-      "title ."
-      "active-clue ."
-      "crossword clues";
-  }
 }
 
 .crosswordTitle {
-  grid-area: title;
   font-size: 1.5rem;
 }
 
-.gridWrapper {
-  grid-area: crossword;
-}
+.gridWrapper {}
 
 .activeClueHeader {
-  grid-area: active-clue;
-
-  width: 80vw;
-
-  margin-top: 4px;
   padding: 15px;
 
   background-color: var(--active-clue-color);
@@ -55,20 +50,38 @@
 
   font-size: 1.3rem;
 
+  width: 70vw;
+
   @media (min-width: 600px) {
     width: min(50vw, 500px);
   }
 }
 
 .cluesWrapper {
-  grid-area: clues;
-
   display: none;
 
   @media (min-width: 600px) {
+    display: block;
+
     margin-left: 20px;
     margin-right: 20px;
+  }
 
+  @media (min-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+}
+
+.clueBoxSpacer {
+  font-size: 1.3rem;
+  padding: 15px;
+  display: none;
+
+  @media (min-width: 900px) {
     display: block;
+    visibility: hidden;
   }
 }

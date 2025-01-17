@@ -110,32 +110,41 @@ function Game() {
   };
 
   return (
-    <div className={styles.gameWrapper}>
-      <h1 className={styles.crosswordTitle}>Untitled Crossword</h1>
-      <div className={styles.gridWrapper}>
-        <Grid
-          cells={numberedCells}
-          cursor={cursor}
-          updateCursorPosition={updateCursorPosition}
-          toggleCursorDirection={toggleCursorDirection}
-          toggleFilledCell={toggleFilledCell}
-          setCurrentCellValue={setCurrentCellValue}
-          advanceCursor={advanceCursor}
-          reverseCursor={reverseCursor}
-          skipWord={skipWord}
-        />
-      </div>
-      <ActiveClueBar
-        skipWord={skipWord}
-        clueNumber={activeClueNumber}
-        clueText={activeClue.clue}
-      />
-      <div className={styles.cluesWrapper}>
-        <ClueBox
-          clues={clues}
-          activeClueNumber={activeClueNumber}
-          activeClueDir={activeClueDir}
-        />
+    <div className={styles.outerGameWrapper}>
+      <div className={styles.gameWrapper}>
+        <div>
+          <h1 className={styles.crosswordTitle}>Untitled Crossword</h1>
+        </div>
+        <div className={styles.gridAndClues}>
+          <div className={styles.gridAndActiveClue}>
+            <div className={styles.gridWrapper}>
+              <Grid
+                cells={numberedCells}
+                cursor={cursor}
+                updateCursorPosition={updateCursorPosition}
+                toggleCursorDirection={toggleCursorDirection}
+                toggleFilledCell={toggleFilledCell}
+                setCurrentCellValue={setCurrentCellValue}
+                advanceCursor={advanceCursor}
+                reverseCursor={reverseCursor}
+                skipWord={skipWord}
+              />
+            </div>
+            <ActiveClueBar
+              skipWord={skipWord}
+              clueNumber={activeClueNumber}
+              clueText={activeClue.clue}
+            />
+          </div>
+          <div className={styles.cluesWrapper}>
+            <div className={styles.clueBoxSpacer}>{"spacer"}</div>
+            <ClueBox
+              clues={clues}
+              activeClueNumber={activeClueNumber}
+              activeClueDir={activeClueDir}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
