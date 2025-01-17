@@ -8,7 +8,7 @@ import { ClueBox, extractClues, getActiveClue } from "../Clues";
 
 export type CursorDirection = "row" | "col";
 
-export type Direction = "forwards" | "backwards";
+export type MovementDirection = "forwards" | "backwards";
 
 export interface Cursor {
   row: number;
@@ -29,7 +29,7 @@ export interface Cursor {
 type ActiveClueHeaderProps = {
   clueNumber: number;
   clueText: string;
-  skipWord: (direction: Direction) => void;
+  skipWord: (direction: MovementDirection) => void;
 };
 
 function ActiveClueBar({ clueNumber, clueText }: ActiveClueHeaderProps) {
@@ -61,7 +61,8 @@ function Game() {
   });
   const numberedCells = numberCells(cells);
   const clues = extractClues(numberedCells);
-  const [activeClue, activeClueNumber, clueDir] = getActiveClue(
+
+  const [activeClue, activeClueNumber, activeClueDir] = getActiveClue(
     numberedCells,
     clues,
     cursor,
@@ -86,7 +87,7 @@ function Game() {
     setCursor(stepCursor(numberedCells, cursor, "forwards", clues));
   };
 
-  const skipWord = (direction: Direction) => {
+  const skipWord = (direction: MovementDirection) => {
     setCursor(startOfAdjacentWord(numberedCells, cursor, direction, clues));
   };
 
@@ -130,7 +131,11 @@ function Game() {
         clueText={activeClue.clue}
       />
       <div className={styles.cluesWrapper}>
-        <ClueBox clues={clues} />
+        <ClueBox
+          clues={clues}
+          activeClueNumber={activeClueNumber}
+          activeClueDir={activeClueDir}
+        />
       </div>
     </div>
   );

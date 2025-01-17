@@ -3,7 +3,11 @@
   flex-direction: column;
   flex: 1;
   padding-left: 10px;
-  gap: 10px;
+
+  @media (min-width: 900px) {
+    flex-direction: row;
+    gap: 40px;
+  }
 }
 
 .clueList {
@@ -20,11 +24,23 @@
 .clueItem {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-bottom: 8px;
   max-width: 300px;
+  padding-left: 4px;
+  padding-right: 10px;
+}
+
+.activeClueItem {
+  background-color: var(--cursor-color);
+}
+
+.orthogonalClueID {
+  background-color: var(--cursor-color);
 }
 
 .clueID {
   margin-right: 15px;
   font-weight: bold;
+  padding: 6px;
 }

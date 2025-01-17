@@ -16,6 +16,8 @@ export interface Clues {
   down: Clue[];
 }
 
+export type ClueDirection = "across" | "down";
+
 export function extractClues(cells: Cell[][]): Clues {
   let clues: Clues = { down: [], across: [] };
   cells.forEach((row, rowIndex) => {
@@ -73,40 +75,66 @@ export function getActiveClue(
 }
 
 type ClueListProps = {
-  direction: "across" | "down";
+  direction: ClueDirection;
+  activeClueNumber: number;
+  activeClueDir: ClueDirection;
   clueList: Clue[];
 };
 
-function ClueList({ direction, clueList }: ClueListProps) {
+function ClueList({
+  direction,
+  activeClueNumber,
+  activeClueDir,
+  clueList,
+}: ClueListProps) {
   return (
     <ol className={styles.clueList}>
-      {clueList.map((clue, clueNumber) => (
-        <li className={styles.clueItem}>
-          <span className={styles.clueID}>
-            {clueNumber}
-          </span>
-          <span className={styles.clueContents}>
-            {clue.clue}
-          </span>
+      {clueList.map((clue, clueNumber) => {
+        const isActiveClue = direction === activeClueDir && clueNumber === activeClueNumber;
+        const isOrthogonalClue = clueNumber === activeClueNumber && !isActiveClue;
+        return <li
+          className={`${styles.clueItem} ${isActiveClue ? styles.activeClueItem : undefined}`}
+          key={clueNumber}
+        >
+          <span className={`${styles.clueID} ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}>{clueNumber}</span>
+          <span className={styles.clueContents}>{clue.clue}</span>
         </li>
-      ))}
+      })}
     </ol>
   );
 }
 
 type CluesProps = {
   clues: Clues;
+  activeClueNumber: number;
+  activeClueDir: ClueDirection;
 };
 
-export function ClueBox({ clues }: CluesProps) {
-  const [direction, setDirection] = useState("across");
-
+export function ClueBox({
+  clues,
+  activeClueNumber,
+  activeClueDir,
+}: CluesProps) {
   return (
     <div className={styles.cluesWrapper}>
-      <h2 className={styles.cluesHeader}>Across</h2>
-      <ClueList direction={direction} clueList={clues?.across} />
-      <h2 className={styles.cluesHeader}>Down</h2>
-      <ClueList direction={direction} clueList={clues?.down} />
+      <div className={styles.cluesSection}>
+        <h2 className={styles.cluesHeader}>Across</h2>
+        <ClueList
+          direction="across"
+          activeClueNumber={activeClueNumber}
+          activeClueDir={activeClueDir}
+          clueList={clues?.across}
+        />
+      </div>
+      <div className={styles.cluesSection}>
+        <h2 className={styles.cluesHeader}>Down</h2>
+        <ClueList
+          direction="down"
+          activeClueNumber={activeClueNumber}
+          activeClueDir={activeClueDir}
+          clueList={clues?.down}
+        />
+      </div>
     </div>
   );
 }
