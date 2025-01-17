@@ -23,8 +23,8 @@
   display: grid;
   place-content: center;
 
-  container-name: grid-cell;
-  container-type: size;
+  /*container-name: grid-cell;*/
+  /*container-type: size;*/
 }
 
 .cursorWord {
@@ -46,14 +46,25 @@
 
 .gridCellNumber {
   position: absolute;
-  font-size: 1.25rem;
-  line-height: 1rem;
-  top: 0.3rem;
-  left: 0.3rem;
+  font-size: clamp(.5rem, 2vw, 1.25rem);
+
+  font-size: 3vw;
+  top: 2.2vw;
+  left: .8vw;
+
+  @media (min-width: 600px) {
+    font-size: min(3vw, 1rem);
+    top: 10px;
+    left: 3px;
+  }
 }
 
 .gridCellValue {
-  font-size: 70cqw;
+  font-size: 8vw;
+
+  @media (min-width: 600px) {
+    font-size: min(5vw, 3rem);
+  }
 
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);
