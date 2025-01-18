@@ -44,22 +44,30 @@
   font-size: 1.5rem;
 }
 
-.gridWrapper {}
+.gridWrapper {
+}
 
 .activeClueHeader {
-  padding: 15px;
-
+  user-select: none;
   background-color: var(--active-clue-color);
 
-  user-select: none;
-
   font-size: 1.3rem;
-
+  padding: 15px;
   width: 80vw;
+
+  white-space: normal;
+
+  display: flex;
 
   @media (min-width: 600px) {
     width: min(50vw, 500px);
   }
+}
+
+.activeClueLabel {
+  font-weight: bold;
+  margin-right: 10px;
+  font-size: 1.2rem;
 }
 
 .cluesWrapper {

@@ -4,7 +4,14 @@ import Grid, { Cell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
 import styles from "./Game.module.css";
-import { Clue, Clues, ClueBox, ClueDirection, extractClues, getActiveClue } from "../Clues";
+import {
+  Clue,
+  Clues,
+  ClueBox,
+  ClueDirection,
+  extractClues,
+  getActiveClue,
+} from "../Clues";
 
 export type CursorDirection = "row" | "col";
 
@@ -16,27 +23,25 @@ export interface Cursor {
   direction: CursorDirection;
 }
 
-//interface CrosswordData {
-//  filledPositions: string;
-//  width: number | null;
-//  height: number | null;
-//  clues: {
-//    across: Array<[number, string]>;
-//    down: Array<[number, string]>;
-//  };
-//}
-
 type ActiveClueHeaderProps = {
   clueNumber: number;
+  clueDir: ClueDirection,
   clueText: string;
   skipWord: (direction: MovementDirection) => void;
 };
 
-function ActiveClueBar({ clueNumber, clueText }: ActiveClueHeaderProps) {
+function ActiveClueHeader({ clueNumber, clueDir, clueText }: ActiveClueHeaderProps) {
   return (
     <div
       className={styles.activeClueHeader}
-    >{`${clueNumber}. ${clueText}`}</div>
+    >
+      <div className={styles.activeClueLabel}>
+        {`${clueNumber}${clueDir.charAt(0).toUpperCase()}`}
+      </div>
+      <div>
+        {clueText}
+      </div>
+    </div>
   );
 }
 
@@ -115,20 +120,24 @@ function Game() {
 
   const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
     const activeClue = clues[direction][clueNumber];
-    setCursor({
-      direction: direction === "across" ? "row" : "col",
-      row: activeClue.rowStart,
-      col: activeClue.colStart,
-    })
+    if (activeClue) {
+      setCursor({
+        direction: direction === "across" ? "row" : "col",
+        row: activeClue.rowStart,
+        col: activeClue.colStart,
+      });
+    }
   };
 
-  const updateClue = (clueNumber: number, direction: ClueDirection, clue: string) => {
+  const updateClue = (
+    clueNumber: number,
+    direction: ClueDirection,
+    clue: string,
+  ) => {
     const updatedClues = JSON.parse(JSON.stringify(clues));
     updatedClues[direction][clueNumber].clue = clue;
-    console.log(updatedClues);
-
     setClues(updatedClues);
-  }
+  };
 
   return (
     <div className={styles.outerGameWrapper}>
@@ -151,9 +160,10 @@ function Game() {
                 skipWord={skipWord}
               />
             </div>
-            <ActiveClueBar
+            <ActiveClueHeader
               skipWord={skipWord}
               clueNumber={activeClueNumber}
+              clueDir={activeClueDir}
               clueText={activeClue.clue}
             />
           </div>

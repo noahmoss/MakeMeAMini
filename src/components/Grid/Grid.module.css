@@ -22,9 +22,6 @@
   position: relative;
   display: grid;
   place-content: center;
-
-  /*container-name: grid-cell;*/
-  /*container-type: size;*/
 }
 
 .cursorWord {
@@ -46,11 +43,11 @@
 
 .gridCellNumber {
   position: absolute;
-  font-size: clamp(.5rem, 2vw, 1.25rem);
+  font-size: clamp(0.5rem, 2vw, 1.25rem);
 
   font-size: 3vw;
   top: 2.2vw;
-  left: .8vw;
+  left: 0.8vw;
 
   @media (min-width: 600px) {
     font-size: min(3vw, 1rem);

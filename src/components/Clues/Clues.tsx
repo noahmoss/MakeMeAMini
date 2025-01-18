@@ -3,10 +3,9 @@ import { Cursor } from "../Game";
 import { Cell } from "../Grid";
 import { findWordBoundaries, isStartOfWord } from "../Grid/utils";
 
-import { Textarea } from '@mantine/core';
+import { Textarea } from "@mantine/core";
 
 import styles from "./Clues.module.css";
-
 
 export type Clue = {
   clue: string;
@@ -14,15 +13,19 @@ export type Clue = {
   colStart: number;
 };
 
-export interface Clues {
-  across: Clue[];
-  down: Clue[];
-}
+type ClueList = {
+  [key: string]: Clue;
+};
+
+export type Clues = {
+  across: ClueList;
+  down: ClueList;
+};
 
 export type ClueDirection = "across" | "down";
 
 export function extractClues(cells: Cell[][]): Clues {
-  let clues: Clues = { down: [], across: [] };
+  let clues: Clues = { down: {}, across: {} };
   cells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
       if (cell.number) {
@@ -35,7 +38,7 @@ export function extractClues(cells: Cell[][]): Clues {
           })
         ) {
           clues.across[cell.number] = {
-            clue: "This is a default across clue",
+            clue: "",
             rowStart: rowIndex,
             colStart: colIndex,
           };
@@ -50,7 +53,7 @@ export function extractClues(cells: Cell[][]): Clues {
           })
         ) {
           clues.down[cell.number] = {
-            clue: "This is a default down clue",
+            clue: "",
             rowStart: rowIndex,
             colStart: colIndex,
           };
@@ -81,9 +84,13 @@ type ClueListProps = {
   direction: ClueDirection;
   activeClueNumber: number;
   activeClueDir: ClueDirection;
-  clueList: Clue[];
+  clueList: ClueList;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
-  updateClue: (clueNumber: number, direction: ClueDirection, clue: string) => void;
+  updateClue: (
+    clueNumber: number,
+    direction: ClueDirection,
+    clue: string,
+  ) => void;
 };
 
 function ClueList({
@@ -94,10 +101,13 @@ function ClueList({
   setActiveClue,
   updateClue,
 }: ClueListProps) {
-  console.log({ clueList });
+  const clueNumbers = Object.keys(clueList)
+    .map(Number)
+    .sort((a, b) => a - b);
   return (
     <ol className={styles.clueList}>
-      {clueList.map((clue, clueNumber) => {
+      {clueNumbers.map((clueNumber) => {
+        const clue = clueList[clueNumber];
         const isActiveClue =
           direction === activeClueDir && clueNumber === activeClueNumber;
         return (
@@ -109,8 +119,10 @@ function ClueList({
             <span className={`${styles.clueID}`}>{clueNumber}</span>
             <Textarea
               value={clue.clue}
-              onChange={(e) => updateClue(clueNumber, direction, e.target.value)}
-              variant="unstyled"
+              onChange={(e) =>
+                updateClue(clueNumber, direction, e.target.value)
+              }
+              onFocus={() => setActiveClue(clueNumber, direction)}
               autosize
               minRows={1}
               maxRows={3}
@@ -118,7 +130,9 @@ function ClueList({
                 input: {
                   transition: "unset",
                   height: "min-content",
-                }
+                  marginTop: "4px",
+                  marginBottom: "4px",
+                },
               }}
             />
           </li>
@@ -133,7 +147,11 @@ type CluesProps = {
   activeClueNumber: number;
   activeClueDir: ClueDirection;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
-  updateClue: (clueNumber: number, direction: ClueDirection, clue: string) => void;
+  updateClue: (
+    clueNumber: number,
+    direction: ClueDirection,
+    clue: string,
+  ) => void;
 };
 
 export function ClueBox({

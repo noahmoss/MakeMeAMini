@@ -1,6 +1,6 @@
 import styles from "./Grid.module.css";
 
-import { Cursor, Direction } from "../Game";
+import { Cursor, MovementDirection } from "../Game";
 import { turn, findWordBoundaries } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useRef } from "react";
@@ -20,7 +20,7 @@ type GridProps = {
   setCurrentCellValue: (value: string) => void;
   advanceCursor: () => void;
   reverseCursor: () => void;
-  skipWord: (direction: Direction) => void;
+  skipWord: (direction: MovementDirection) => void;
 };
 
 function Grid({
@@ -111,7 +111,7 @@ function Grid({
         spellCheck="false"
         onKeyDown={handleKeyDown}
         onBlur={() => hiddenInputRef.current?.focus()}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />
