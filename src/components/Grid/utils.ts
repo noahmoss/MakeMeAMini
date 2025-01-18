@@ -88,12 +88,13 @@ export function numberCells(cells: readonly Cell[][]) {
 export function startOfAdjacentWord(
   cells: Cell[][],
   cursor: Cursor,
-  searchDir: Direction,
   clues: Clues,
+  searchDir: Direction,
 ): Cursor {
   const { startCursor } = findWordBoundaries(cells, cursor);
 
   const clueNumber = cells[startCursor.row][startCursor.col].number;
+
   if (!clueNumber) {
     throw new Error("findWordBoundaries did not return a valid word start!");
   }

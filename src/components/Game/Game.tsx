@@ -62,6 +62,7 @@ function initialClues(cells: Cell[][]) {
 function Game() {
   const rows = 6;
   const cols = 6;
+
   const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
@@ -78,7 +79,9 @@ function Game() {
   );
 
   const updateCursorPosition = (row: number, col: number) => {
-    if (!cells[row][col].filled) setCursor({ ...cursor, row: row, col: col });
+    if (!cells[row][col].filled) {
+      setCursor({ ...cursor, row: row, col: col });
+    }
   };
 
   const toggleCursorDirection = () => {
@@ -97,7 +100,8 @@ function Game() {
   };
 
   const skipWord = (direction: MovementDirection) => {
-    setCursor(startOfAdjacentWord(numberedCells, cursor, direction, clues));
+    const newCursor = startOfAdjacentWord(numberedCells, cursor, clues, direction);
+    setCursor(newCursor);
   };
 
   const toggleFilledCell = (row: number, col: number) => {
