@@ -4,7 +4,7 @@ import Grid, { Cell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
 import styles from "./Game.module.css";
-import { ClueBox, ClueDirection, extractClues, getActiveClue } from "../Clues";
+import { Clue, Clues, ClueBox, ClueDirection, extractClues, getActiveClue } from "../Clues";
 
 export type CursorDirection = "row" | "col";
 
@@ -50,6 +50,10 @@ function initialCells(rows: number, cols: number): Cell[][] {
   );
 }
 
+function initialClues(cells: Cell[][]) {
+  return extractClues(cells);
+}
+
 function Game() {
   const rows = 6;
   const cols = 6;
@@ -60,7 +64,7 @@ function Game() {
     direction: "row",
   });
   const numberedCells = numberCells(cells);
-  const clues = extractClues(numberedCells);
+  const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
 
   const [activeClue, activeClueNumber, activeClueDir] = getActiveClue(
     numberedCells,
@@ -116,6 +120,14 @@ function Game() {
       row: activeClue.rowStart,
       col: activeClue.colStart,
     })
+  };
+
+  const updateClue = (clueNumber: number, direction: ClueDirection, clue: string) => {
+    const updatedClues = JSON.parse(JSON.stringify(clues));
+    updatedClues[direction][clueNumber].clue = clue;
+    console.log(updatedClues);
+
+    setClues(updatedClues);
   }
 
   return (
@@ -152,6 +164,7 @@ function Game() {
               activeClueNumber={activeClueNumber}
               activeClueDir={activeClueDir}
               setActiveClue={setActiveClue}
+              updateClue={updateClue}
             />
           </div>
         </div>
