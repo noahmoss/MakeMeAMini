@@ -3,6 +3,8 @@ import { useState } from "react";
 import Grid, { Cell, NumberedCell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
+import { Edit2 } from "react-feather";
+
 import styles from "./Game.module.css";
 import {
   Clues,
@@ -14,6 +16,7 @@ import {
   ClueStarts,
   ClueList,
 } from "../Clues";
+import { TextInput } from "@mantine/core";
 
 export type CursorDirection = "row" | "col";
 
@@ -47,6 +50,25 @@ function ActiveClueHeader({
   );
 }
 
+function CrosswordTitle({ }) {
+  return (
+    <div className={styles.titleContainer}>
+      <TextInput
+        size="lg"
+        placeholder="Untitled Crossword"
+        variant="unstyled"
+        styles={{
+          input: {
+            transition: "unset",
+            fontWeight: "bold",
+            fontSize: "1.8rem"
+          }
+        }}
+      />
+    </div>
+  )
+}
+
 function initialCells(rows: number, cols: number): Cell[][] {
   return Array.from({ length: rows }, () =>
     Array.from({ length: cols }, () => ({
@@ -65,6 +87,7 @@ function Game() {
   const rows = 6;
   const cols = 6;
 
+  const [title, setTitle] = useState<string>("Untitled Crossword");
   const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
@@ -180,9 +203,7 @@ function Game() {
   return (
     <div className={styles.outerGameWrapper}>
       <div className={styles.gameWrapper}>
-        <div>
-          <h1 className={styles.crosswordTitle}>Untitled Crossword</h1>
-        </div>
+        <CrosswordTitle />
         <div className={styles.gridAndClues}>
           <div className={styles.gridAndActiveClue}>
             <div className={styles.gridWrapper}>

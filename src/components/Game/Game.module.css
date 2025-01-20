@@ -40,8 +40,24 @@
   }
 }
 
-.crosswordTitle {
-  font-size: 1.5rem;
+.titleContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-left: 1rem;
+
+  border: 1px solid transparent;
+  border-radius: .5rem;
+  transform: translate(-1px);
+}
+
+.titleContainer:hover {
+  border: 1px solid lightgray;
+}
+
+.titleEditIcon {
+  width: 1rem;
+  transform: translateY(-2px);
 }
 
 .gridWrapper {
@@ -52,7 +68,7 @@
   background-color: var(--active-clue-color);
 
   font-size: 1.3rem;
-  padding: 15px;
+  padding: 16px;
   width: 80vw;
 
   white-space: normal;
