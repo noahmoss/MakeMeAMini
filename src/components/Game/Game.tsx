@@ -1,16 +1,18 @@
 // @format
 import { useState } from "react";
-import Grid, { Cell } from "../Grid";
+import Grid, { Cell, NumberedCell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
 import styles from "./Game.module.css";
 import {
-  Clue,
   Clues,
   ClueBox,
   ClueDirection,
   extractClues,
   getActiveClue,
+  clueStartLocations,
+  ClueStarts,
+  ClueList,
 } from "../Clues";
 
 export type CursorDirection = "row" | "col";
@@ -25,22 +27,22 @@ export interface Cursor {
 
 type ActiveClueHeaderProps = {
   clueNumber: number;
-  clueDir: ClueDirection,
+  clueDir: ClueDirection;
   clueText: string;
   skipWord: (direction: MovementDirection) => void;
 };
 
-function ActiveClueHeader({ clueNumber, clueDir, clueText }: ActiveClueHeaderProps) {
+function ActiveClueHeader({
+  clueNumber,
+  clueDir,
+  clueText,
+}: ActiveClueHeaderProps) {
   return (
-    <div
-      className={styles.activeClueHeader}
-    >
+    <div className={styles.activeClueHeader}>
       <div className={styles.activeClueLabel}>
         {`${clueNumber}${clueDir.charAt(0).toUpperCase()}`}
       </div>
-      <div>
-        {clueText}
-      </div>
+      <div>{clueText}</div>
     </div>
   );
 }
@@ -55,7 +57,7 @@ function initialCells(rows: number, cols: number): Cell[][] {
   );
 }
 
-function initialClues(cells: Cell[][]) {
+function initialClues(cells: NumberedCell[][]) {
   return extractClues(cells);
 }
 
@@ -69,8 +71,10 @@ function Game() {
     col: 0,
     direction: "row",
   });
-  const numberedCells = numberCells(cells);
+  const numberedCells: NumberedCell[][] = numberCells(cells);
   const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
+
+  const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
   const [activeClue, activeClueNumber, activeClueDir] = getActiveClue(
     numberedCells,
@@ -92,15 +96,23 @@ function Game() {
   };
 
   const reverseCursor = () => {
-    setCursor(stepCursor(numberedCells, cursor, "backwards", clues));
+    setCursor(
+      stepCursor(numberedCells, cursor, clues, clueStarts, "backwards"),
+    );
   };
 
   const advanceCursor = () => {
-    setCursor(stepCursor(numberedCells, cursor, "forwards", clues));
+    setCursor(stepCursor(numberedCells, cursor, clues, clueStarts, "forwards"));
   };
 
   const skipWord = (direction: MovementDirection) => {
-    const newCursor = startOfAdjacentWord(numberedCells, cursor, clues, direction);
+    const newCursor = startOfAdjacentWord(
+      numberedCells,
+      cursor,
+      clues,
+      clueStarts,
+      direction,
+    );
     setCursor(newCursor);
   };
 
@@ -114,6 +126,27 @@ function Game() {
     if (newCells[row][col].filled && cursor.row === row && cursor.col === col) {
       advanceCursor();
     }
+
+    // Update clues with new numberings if needed
+    const extractedClues = extractClues(numberCells(newCells));
+    const mergeClues = (
+      newClues: ClueList,
+      existingClues: ClueList,
+    ): ClueList => {
+      return Object.fromEntries(
+        Object.entries(newClues).map(([number, { value }]) => [
+          number,
+          { value: existingClues[number]?.value ?? value }
+        ])
+      );
+    };
+
+    const newClues = {
+      across: mergeClues(extractedClues.across, clues.across),
+      down: mergeClues(extractedClues.down, clues.down),
+    };
+
+    setClues(newClues);
   };
 
   const setCurrentCellValue = (value: string) => {
@@ -124,11 +157,12 @@ function Game() {
 
   const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
     const activeClue = clues[direction][clueNumber];
+    const { row, col } = clueStarts[direction][clueNumber];
     if (activeClue) {
       setCursor({
         direction: direction === "across" ? "row" : "col",
-        row: activeClue.rowStart,
-        col: activeClue.colStart,
+        row: row,
+        col: col,
       });
     }
   };
@@ -139,7 +173,7 @@ function Game() {
     clue: string,
   ) => {
     const updatedClues = JSON.parse(JSON.stringify(clues));
-    updatedClues[direction][clueNumber].clue = clue;
+    updatedClues[direction][clueNumber].value = clue;
     setClues(updatedClues);
   };
 
@@ -168,7 +202,7 @@ function Game() {
               skipWord={skipWord}
               clueNumber={activeClueNumber}
               clueDir={activeClueDir}
-              clueText={activeClue.clue}
+              clueText={activeClue.value}
             />
           </div>
           <div className={styles.cluesWrapper}>

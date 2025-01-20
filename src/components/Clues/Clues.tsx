@@ -1,6 +1,5 @@
-import { useState } from "react";
 import { Cursor } from "../Game";
-import { Cell } from "../Grid";
+import { NumberedCell } from "../Grid";
 import { findWordBoundaries, isStartOfWord } from "../Grid/utils";
 
 import { Textarea } from "@mantine/core";
@@ -8,12 +7,10 @@ import { Textarea } from "@mantine/core";
 import styles from "./Clues.module.css";
 
 export type Clue = {
-  clue: string;
-  rowStart: number;
-  colStart: number;
+  value: string;
 };
 
-type ClueList = {
+export type ClueList = {
   [key: string]: Clue;
 };
 
@@ -22,9 +19,19 @@ export type Clues = {
   down: ClueList;
 };
 
+type ClueStart = {
+  row: number;
+  col: number;
+};
+
+export type ClueStarts = {
+  across: { [key: string]: ClueStart };
+  down: { [key: string]: ClueStart };
+};
+
 export type ClueDirection = "across" | "down";
 
-export function extractClues(cells: Cell[][]): Clues {
+export function extractClues(cells: NumberedCell[][]): Clues {
   let clues: Clues = { down: {}, across: {} };
   cells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
@@ -37,10 +44,41 @@ export function extractClues(cells: Cell[][]): Clues {
             direction: "row",
           })
         ) {
-          clues.across[cell.number] = {
-            clue: "",
-            rowStart: rowIndex,
-            colStart: colIndex,
+          clues.across[cell.number] = { value: "" };
+        }
+
+        // Check for "down" clues
+        if (
+          isStartOfWord(cells, {
+            row: rowIndex,
+            col: colIndex,
+            direction: "col",
+          })
+        ) {
+          clues.down[cell.number] = { value: "" };
+        }
+      }
+    });
+  });
+  return clues;
+}
+
+export function clueStartLocations(cells: NumberedCell[][]): ClueStarts {
+  let clueStarts: ClueStarts = { down: {}, across: {} };
+  cells.forEach((row, rowIndex) => {
+    row.forEach((cell, colIndex) => {
+      if (cell.number) {
+        // Check for "across" clues
+        if (
+          isStartOfWord(cells, {
+            row: rowIndex,
+            col: colIndex,
+            direction: "row",
+          })
+        ) {
+          clueStarts.across[cell.number] = {
+            row: rowIndex,
+            col: colIndex,
           };
         }
 
@@ -52,20 +90,19 @@ export function extractClues(cells: Cell[][]): Clues {
             direction: "col",
           })
         ) {
-          clues.down[cell.number] = {
-            clue: "",
-            rowStart: rowIndex,
-            colStart: colIndex,
+          clueStarts.down[cell.number] = {
+            row: rowIndex,
+            col: colIndex,
           };
         }
       }
     });
   });
-  return clues;
+  return clueStarts;
 }
 
 export function getActiveClue(
-  cells: Cell[][],
+  cells: NumberedCell[][],
   clues: Clues,
   cursor: Cursor,
 ): [Clue, number, "across" | "down"] {
@@ -118,7 +155,7 @@ function ClueList({
           >
             <span className={`${styles.clueID}`}>{clueNumber}</span>
             <Textarea
-              value={clue.clue}
+              value={clue.value}
               onChange={(e) =>
                 updateClue(clueNumber, direction, e.target.value)
               }

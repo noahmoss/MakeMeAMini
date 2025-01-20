@@ -1,6 +1,6 @@
-import { Cell } from "./Grid";
-import { Cursor, CursorDirection, Direction } from "../Game";
-import { Clues } from "../Clues";
+import { Cell, NumberedCell } from "./Grid";
+import { Cursor, CursorDirection, MovementDirection } from "../Game";
+import { ClueDirection, Clues, ClueStarts } from "../Clues";
 
 function rowCount(cells: Cell[][]) {
   return cells.length;
@@ -75,7 +75,7 @@ export const isStartOfWord = (
   }
 };
 
-export function numberCells(cells: readonly Cell[][]) {
+export function numberCells(cells: readonly Cell[][]): NumberedCell[][] {
   let num = 1;
   return cells.map((rowArray, rowIndex) =>
     rowArray.map((cell, colIndex) => ({
@@ -86,10 +86,11 @@ export function numberCells(cells: readonly Cell[][]) {
 }
 
 export function startOfAdjacentWord(
-  cells: Cell[][],
+  cells: NumberedCell[][],
   cursor: Cursor,
   clues: Clues,
-  searchDir: Direction,
+  clueStarts: ClueStarts,
+  searchDir: MovementDirection,
 ): Cursor {
   const { startCursor } = findWordBoundaries(cells, cursor);
 
@@ -116,14 +117,15 @@ export function startOfAdjacentWord(
   const currentIndex = currentClueNumbers.indexOf(clueNumber);
 
   let nextClueNumber = clueNumber;
-  let nextClueDir = cursor.direction;
+  let nextClueDir: ClueDirection =
+    cursor.direction === "row" ? "across" : "down";
   if (searchDir === "forwards") {
     // Move forward in the current list
     if (currentIndex < currentClueNumbers.length - 1) {
       nextClueNumber = currentClueNumbers[currentIndex + 1];
     } else {
       // Wrap to the other direction and pick the first clue
-      nextClueDir = nextClueDir === "row" ? "col" : "row";
+      nextClueDir = nextClueDir === "across" ? "down" : "across";
       nextClueNumber = otherClueNumbers[0];
     }
   } else if (searchDir === "backwards") {
@@ -132,31 +134,25 @@ export function startOfAdjacentWord(
       nextClueNumber = currentClueNumbers[currentIndex - 1];
     } else {
       // Wrap to the other direction and pick the last clue
-      nextClueDir = nextClueDir === "row" ? "col" : "row";
+      nextClueDir = nextClueDir === "across" ? "down" : "across";
       nextClueNumber = otherClueNumbers[otherClueNumbers.length - 1];
     }
   }
 
-  // Find the next clue in the corresponding direction
-  const nextClue =
-    clues[nextClueDir === "row" ? "across" : "down"][nextClueNumber];
-
-  if (!nextClue) {
-    throw new Error("Could not find the next clue!");
-  }
+  const nextClueStart = clueStarts[nextClueDir][nextClueNumber];
 
   return {
-    row: nextClue.rowStart,
-    col: nextClue.colStart,
-    direction: nextClueDir,
+    ...nextClueStart,
+    direction: nextClueDir === "across" ? "row" : "col",
   };
 }
 
 export function stepCursor(
-  cells: Cell[][],
+  cells: NumberedCell[][],
   cursor: Cursor,
-  stepDirection: Direction,
   clues: Clues,
+  clueStarts: ClueStarts,
+  stepDirection: MovementDirection,
 ): Cursor {
   const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
   const orthogonalDir = turn(cursor.direction);
@@ -167,7 +163,13 @@ export function stepCursor(
       steppedCursor[orthogonalDir] += 1;
       return steppedCursor;
     } else {
-      return startOfAdjacentWord(cells, cursor, stepDirection, clues);
+      return startOfAdjacentWord(
+        cells,
+        cursor,
+        clues,
+        clueStarts,
+        stepDirection,
+      );
     }
   } else if (stepDirection === "backwards") {
     if (cursor[orthogonalDir] > startCursor[orthogonalDir]) {
@@ -178,8 +180,9 @@ export function stepCursor(
       const prevWordStart = startOfAdjacentWord(
         cells,
         cursor,
-        stepDirection,
         clues,
+        clueStarts,
+        stepDirection,
       );
       const { endCursor } = findWordBoundaries(cells, prevWordStart);
       return endCursor;

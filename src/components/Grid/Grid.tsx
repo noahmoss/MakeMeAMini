@@ -8,11 +8,14 @@ import { useRef } from "react";
 export interface Cell {
   filled: boolean;
   value: string;
+}
+
+export interface NumberedCell extends Cell {
   number: number | null;
 }
 
 type GridProps = {
-  cells: Cell[][];
+  cells: NumberedCell[][];
   cursor: Cursor;
   updateCursorPosition: (row: number, col: number) => void;
   toggleCursorDirection: () => void;
@@ -125,8 +128,8 @@ function Grid({
           } as React.CSSProperties
         }
       >
-        {cells.map((row: Cell[], rowIndex: number) =>
-          row.map((cell: Cell, colIndex: number) => {
+        {cells.map((row: NumberedCell[], rowIndex: number) =>
+          row.map((cell: NumberedCell, colIndex: number) => {
             if (cell.filled) {
               return (
                 <div
