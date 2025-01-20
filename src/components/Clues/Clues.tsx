@@ -167,8 +167,6 @@ function ClueList({
                 input: {
                   transition: "unset",
                   height: "min-content",
-                  marginTop: "4px",
-                  marginBottom: "4px",
                 },
               }}
             />
