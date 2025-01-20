@@ -19,7 +19,6 @@
     padding-left: 30px;
     padding-right: 30px;
 
-    /*flex-direction: column;*/
     justify-content: flex-end;
   }
 }
@@ -74,6 +73,7 @@
   white-space: normal;
 
   display: flex;
+  align-items: baseline;
 
   @media (min-width: 600px) {
     width: min(50vw, 500px);
@@ -83,7 +83,6 @@
 .activeClueLabel {
   font-weight: bold;
   margin-right: 10px;
-  font-size: 1.2rem;
 }
 
 .cluesWrapper {
