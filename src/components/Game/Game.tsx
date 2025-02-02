@@ -3,7 +3,7 @@ import { useState } from "react";
 import Grid, { Cell, NumberedCell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
-import { Settings, Link } from "react-feather";
+import { Settings, Link, HelpCircle } from "react-feather";
 
 import styles from "./Game.module.css";
 import { TextInput } from "@mantine/core";
@@ -86,6 +86,15 @@ function Game() {
     numberedCells,
     clues,
     cursor,
+  );
+
+  const [_, orthogonalClueNumber, orthogonalClueDir] = getActiveClue(
+    numberedCells,
+    clues,
+    {
+      ...cursor,
+      direction: cursor.direction === "row" ? "col" : "row"
+    }
   );
 
   const updateCursorPosition = (row: number, col: number) => {
@@ -189,8 +198,9 @@ function Game() {
         <div className={styles.siteHeader} >
           <Logo />
           <div className={styles.iconGroup}>
-            <Link />
             <Settings />
+            <Link />
+            <HelpCircle />
           </div>
         </div>
         <CrosswordTitle />
@@ -222,6 +232,8 @@ function Game() {
               clues={clues}
               activeClueNumber={activeClueNumber}
               activeClueDir={activeClueDir}
+              orthogonalClueNumber={orthogonalClueNumber}
+              orthogonalClueDir={orthogonalClueDir}
               setActiveClue={setActiveClue}
               updateClue={updateClue}
             />

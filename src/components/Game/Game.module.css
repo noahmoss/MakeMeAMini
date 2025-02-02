@@ -16,7 +16,7 @@
 
 .iconGroup {
   display: flex;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
 }
 

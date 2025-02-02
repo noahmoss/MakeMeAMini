@@ -121,6 +121,8 @@ type ClueListProps = {
   direction: ClueDirection;
   activeClueNumber: number;
   activeClueDir: ClueDirection;
+  orthogonalClueNumber: number;
+  orthogonalClueDir: ClueDirection;
   clueList: ClueList;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
   updateClue: (
@@ -134,6 +136,8 @@ function ClueList({
   direction,
   activeClueNumber,
   activeClueDir,
+  orthogonalClueNumber,
+  orthogonalClueDir,
   clueList,
   setActiveClue,
   updateClue,
@@ -147,13 +151,18 @@ function ClueList({
         const clue = clueList[clueNumber];
         const isActiveClue =
           direction === activeClueDir && clueNumber === activeClueNumber;
+        const isOrthogonalClue =
+          direction === orthogonalClueDir && clueNumber === orthogonalClueNumber;
+
         return (
           <li
-            className={`${styles.clueItem} ${isActiveClue ? styles.activeClueItem : undefined}`}
+            className={`${styles.clueItem} 
+                        ${isActiveClue ? styles.activeClueItem : undefined}`}
             key={clueNumber}
             onClick={() => setActiveClue(clueNumber, direction)}
           >
-            <span className={`${styles.clueID}`}>{clueNumber}</span>
+            <span className={`${styles.clueID}
+                              ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}>{clueNumber}</span>
             <Textarea
               value={clue.value}
               onChange={(e) =>
@@ -168,6 +177,10 @@ function ClueList({
                   transition: "unset",
                   height: "min-content",
                 },
+                wrapper: {
+                  paddingTop: "4px",
+                  paddingBottom: "4px",
+                }
               }}
             />
           </li>
@@ -181,6 +194,8 @@ type CluesProps = {
   clues: Clues;
   activeClueNumber: number;
   activeClueDir: ClueDirection;
+  orthogonalClueNumber: number;
+  orthogonalClueDir: ClueDirection;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
   updateClue: (
     clueNumber: number,
@@ -193,6 +208,8 @@ export function ClueBox({
   clues,
   activeClueNumber,
   activeClueDir,
+  orthogonalClueNumber,
+  orthogonalClueDir,
   setActiveClue,
   updateClue,
 }: CluesProps) {
@@ -204,6 +221,8 @@ export function ClueBox({
           direction="across"
           activeClueNumber={activeClueNumber}
           activeClueDir={activeClueDir}
+          orthogonalClueNumber={orthogonalClueNumber}
+          orthogonalClueDir={orthogonalClueDir}
           clueList={clues?.across}
           setActiveClue={setActiveClue}
           updateClue={updateClue}
@@ -215,6 +234,8 @@ export function ClueBox({
           direction="down"
           activeClueNumber={activeClueNumber}
           activeClueDir={activeClueDir}
+          orthogonalClueNumber={orthogonalClueNumber}
+          orthogonalClueDir={orthogonalClueDir}
           clueList={clues?.down}
           setActiveClue={setActiveClue}
           updateClue={updateClue}
