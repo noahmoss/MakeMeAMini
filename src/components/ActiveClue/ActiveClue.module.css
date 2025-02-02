@@ -1,0 +1,49 @@
+.activeClue {
+  user-select: none;
+  background-color: var(--active-clue-color);
+
+  font-size: 1.1rem;
+  width: 85vw;
+  line-height: 1.5rem;
+  min-height: 4.5rem;
+
+  white-space: normal;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  @media (min-width: 600px) {
+    width: min(50vw, 500px);
+  }
+}
+
+.activeClueContent {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+
+  @media (min-width: 600px) {
+    gap: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
+.activeClueLabel {
+  font-weight: bold;
+}
+
+.clueSkipButton {
+  all: unset;
+  height: 100%;
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @media (min-width: 600px) {
+    display: none;
+  }
+}

@@ -1,17 +1,17 @@
 .logoWrapper {
   background-color: black;
-  padding: 1px;
+  padding: 2px;
 }
 
 .logo {
   user-select: none;
   display: grid;
-  gap: 1px;
+  gap: 2px;
   grid-template-columns: repeat(7, 1fr);
 }
 
 .letterSquare {
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: bold;
   background-color: white;
   aspect-ratio: 1 / 1;
@@ -23,7 +23,7 @@
 
 .letter {
   /* Shift text down a pixel to visually center letters */
-  transform: translate(0, 1px);
+  transform: translate(0, 2px);
 }
 
 .blackSquare {

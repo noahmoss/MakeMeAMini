@@ -3,9 +3,10 @@ import { useState } from "react";
 import Grid, { Cell, NumberedCell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
-import { ChevronLeft, ChevronRight, Settings, Link } from "react-feather";
+import { Settings, Link } from "react-feather";
 
 import styles from "./Game.module.css";
+import { TextInput } from "@mantine/core";
 import {
   Clues,
   ClueBox,
@@ -16,8 +17,8 @@ import {
   ClueStarts,
   ClueList,
 } from "../Clues";
-import { TextInput } from "@mantine/core";
 import Logo from "../Logo";
+import ActiveClue from "../ActiveClue";
 
 export type CursorDirection = "row" | "col";
 
@@ -27,43 +28,6 @@ export interface Cursor {
   row: number;
   col: number;
   direction: CursorDirection;
-}
-
-type ActiveClueHeaderProps = {
-  clueNumber: number;
-  clueDir: ClueDirection;
-  clueText: string;
-  skipWord: (direction: MovementDirection) => void;
-};
-
-function ActiveClueHeader({
-  clueNumber,
-  clueDir,
-  clueText,
-  skipWord,
-}: ActiveClueHeaderProps) {
-  return (
-    <div className={styles.activeClueHeader}>
-      <button
-        className={styles.clueSkipButton}
-        onClick={() => skipWord("backwards")}
-      >
-        <ChevronLeft className={styles.clueSkipChevron} />
-      </button>
-      <div className={styles.activeClueContent}>
-        <div className={styles.activeClueLabel}>
-          {`${clueNumber}${clueDir.charAt(0).toUpperCase()}`}
-        </div>
-        <div>{clueText}</div>
-      </div>
-      <button
-        className={styles.clueSkipButton}
-        onClick={() => skipWord("forwards")}
-      >
-        <ChevronRight className={styles.clueSkipChevron} />
-      </button>
-    </div>
-  );
 }
 
 function CrosswordTitle({ }) {
@@ -245,7 +209,7 @@ function Game() {
                 skipWord={skipWord}
               />
             </div>
-            <ActiveClueHeader
+            <ActiveClue
               skipWord={skipWord}
               clueNumber={activeClueNumber}
               clueDir={activeClueDir}
