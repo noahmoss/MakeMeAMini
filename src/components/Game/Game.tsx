@@ -3,7 +3,7 @@ import { useState } from "react";
 import Grid, { Cell, NumberedCell } from "../Grid";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
-import { ChevronLeft, ChevronRight } from "react-feather";
+import { ChevronLeft, ChevronRight, Settings, Link } from "react-feather";
 
 import styles from "./Game.module.css";
 import {
@@ -221,6 +221,33 @@ function Game() {
   return (
     <div className={styles.outerGameWrapper}>
       <div className={styles.gameWrapper}>
+        <div className={styles.siteHeader} >
+          <div className={styles.logoWrapper}>
+            <div className={styles.logo}>
+              <span className={styles.titleWhiteSquare} > M </span>
+              <span className={styles.titleWhiteSquare} > A </span>
+              <span className={styles.titleWhiteSquare} > K </span>
+              <span className={styles.titleWhiteSquare} > E </span>
+              <span className={styles.titleBlackSquare} />
+
+              <span className={styles.titleWhiteSquare} > M </span>
+              <span className={styles.titleWhiteSquare} > E </span>
+
+              <span className={styles.titleWhiteSquare} > A </span>
+              <span className={styles.titleBlackSquare} />
+
+              <span className={styles.titleWhiteSquare} > M </span>
+              <span className={styles.titleWhiteSquare} > I </span>
+              <span className={styles.titleWhiteSquare} > N </span>
+              <span className={styles.titleWhiteSquare} > I </span>
+              <span className={styles.titleBlackSquare} />
+            </div>
+          </div>
+          <div className={styles.iconGroup}>
+            <Link />
+            <Settings />
+          </div>
+        </div>
         <CrosswordTitle />
         <div className={styles.gridAndClues}>
           <div className={styles.gridAndActiveClue}>
