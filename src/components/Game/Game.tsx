@@ -17,6 +17,7 @@ import {
   ClueList,
 } from "../Clues";
 import { TextInput } from "@mantine/core";
+import Logo from "../Logo";
 
 export type CursorDirection = "row" | "col";
 
@@ -222,27 +223,7 @@ function Game() {
     <div className={styles.outerGameWrapper}>
       <div className={styles.gameWrapper}>
         <div className={styles.siteHeader} >
-          <div className={styles.logoWrapper}>
-            <div className={styles.logo}>
-              <span className={styles.titleWhiteSquare} > M </span>
-              <span className={styles.titleWhiteSquare} > A </span>
-              <span className={styles.titleWhiteSquare} > K </span>
-              <span className={styles.titleWhiteSquare} > E </span>
-              <span className={styles.titleBlackSquare} />
-
-              <span className={styles.titleWhiteSquare} > M </span>
-              <span className={styles.titleWhiteSquare} > E </span>
-
-              <span className={styles.titleWhiteSquare} > A </span>
-              <span className={styles.titleBlackSquare} />
-
-              <span className={styles.titleWhiteSquare} > M </span>
-              <span className={styles.titleWhiteSquare} > I </span>
-              <span className={styles.titleWhiteSquare} > N </span>
-              <span className={styles.titleWhiteSquare} > I </span>
-              <span className={styles.titleBlackSquare} />
-            </div>
-          </div>
+          <Logo />
           <div className={styles.iconGroup}>
             <Link />
             <Settings />
