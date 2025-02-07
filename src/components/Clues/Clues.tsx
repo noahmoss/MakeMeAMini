@@ -150,9 +150,12 @@ function ClueList({
   // Scroll active & orthogonal clues into view whenever active clue changes
   const clueRefs = useRef(new Map<number, HTMLLIElement | null>());
   useEffect(() => {
-    const clueNumberToScroll = direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
-    clueRefs.current?.get(clueNumberToScroll)?.scrollIntoView({ behavior: 'smooth' });
-  })
+    const clueNumberToScroll =
+      direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
+    clueRefs.current
+      ?.get(clueNumberToScroll)
+      ?.scrollIntoView({ behavior: "smooth" });
+  });
 
   return (
     <ol className={styles.clueList}>
@@ -161,7 +164,8 @@ function ClueList({
         const isActiveClue =
           direction === activeClueDir && clueNumber === activeClueNumber;
         const isOrthogonalClue =
-          direction === orthogonalClueDir && clueNumber === orthogonalClueNumber;
+          direction === orthogonalClueDir &&
+          clueNumber === orthogonalClueNumber;
 
         return (
           <li
@@ -177,8 +181,12 @@ function ClueList({
             }}
             onClick={() => setActiveClue(clueNumber, direction)}
           >
-            <span className={`${styles.clueID}
-                              ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}>{clueNumber}</span>
+            <span
+              className={`${styles.clueID}
+                              ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}
+            >
+              {clueNumber}
+            </span>
             <Textarea
               value={clue.value}
               onChange={(e) =>
@@ -196,7 +204,7 @@ function ClueList({
                 wrapper: {
                   paddingTop: "4px",
                   paddingBottom: "4px",
-                }
+                },
               }}
             />
           </li>

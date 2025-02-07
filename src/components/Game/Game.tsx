@@ -31,13 +31,13 @@ export interface Cursor {
 }
 
 function initialCells(rows: number, cols: number): Cell[][] {
- return Array.from({ length: rows }, () =>
-  Array.from({ length: cols }, () => ({
-    filled: false,
-    value: "",
-    number: null,
-  })),
-);
+  return Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => ({
+      filled: false,
+      value: "",
+      number: null,
+    })),
+  );
 }
 
 function initialClues(cells: NumberedCell[][]) {
@@ -70,8 +70,8 @@ function Game() {
     clues,
     {
       ...cursor,
-      direction: cursor.direction === "row" ? "col" : "row"
-    }
+      direction: cursor.direction === "row" ? "col" : "row",
+    },
   );
 
   const updateCursorPosition = (row: number, col: number) => {
@@ -128,8 +128,8 @@ function Game() {
       return Object.fromEntries(
         Object.entries(newClues).map(([number, { value }]) => [
           number,
-          { value: existingClues[number]?.value ?? value }
-        ])
+          { value: existingClues[number]?.value ?? value },
+        ]),
       );
     };
 
@@ -172,7 +172,7 @@ function Game() {
   return (
     <div className={styles.outerGameWrapper}>
       <div className={styles.gameWrapper}>
-        <div className={styles.siteHeader} >
+        <div className={styles.siteHeader}>
           <Logo />
           <div className={styles.iconGroup}>
             <Settings />

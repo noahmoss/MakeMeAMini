@@ -29,7 +29,7 @@
 
 .cluesHeader {
   font-size: 1.2em;
-  
+
   @media (min-width: 1000px) {
     margin-bottom: 10px;
   }
