@@ -30,36 +30,14 @@ export interface Cursor {
   direction: CursorDirection;
 }
 
-function CrosswordTitle({ }) {
-  return (
-    <div className={styles.titleContainer}>
-      <TextInput
-        size="lg"
-        placeholder="Untitled Crossword"
-        variant="unstyled"
-        styles={{
-          input: {
-            transition: "unset",
-            fontWeight: 500,
-            fontSize: "1.8rem",
-            width: "100%",
-          },
-          wrapper: {
-          }
-        }}
-      />
-    </div>
-  )
-}
-
 function initialCells(rows: number, cols: number): Cell[][] {
-  return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({
-      filled: false,
-      value: "",
-      number: null,
-    })),
-  );
+ return Array.from({ length: rows }, () =>
+  Array.from({ length: cols }, () => ({
+    filled: false,
+    value: "",
+    number: null,
+  })),
+);
 }
 
 function initialClues(cells: NumberedCell[][]) {
@@ -70,7 +48,6 @@ function Game() {
   const rows = 6;
   const cols = 6;
 
-  const [title, setTitle] = useState<string>("Untitled Crossword");
   const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
@@ -203,7 +180,6 @@ function Game() {
             <HelpCircle />
           </div>
         </div>
-        <CrosswordTitle />
         <div className={styles.gridAndClues}>
           <div className={styles.gridAndActiveClue}>
             <div className={styles.gridWrapper}>

@@ -5,6 +5,7 @@ import { findWordBoundaries, isStartOfWord } from "../Grid/utils";
 import { Textarea } from "@mantine/core";
 
 import styles from "./Clues.module.css";
+import { useEffect, useRef } from "react";
 
 export type Clue = {
   value: string;
@@ -145,6 +146,14 @@ function ClueList({
   const clueNumbers = Object.keys(clueList)
     .map(Number)
     .sort((a, b) => a - b);
+
+  // Scroll active & orthogonal clues into view whenever active clue changes
+  const clueRefs = useRef(new Map<number, HTMLLIElement | null>());
+  useEffect(() => {
+    const clueNumberToScroll = direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
+    clueRefs.current?.get(clueNumberToScroll)?.scrollIntoView({ behavior: 'smooth' });
+  })
+
   return (
     <ol className={styles.clueList}>
       {clueNumbers.map((clueNumber) => {
@@ -159,6 +168,13 @@ function ClueList({
             className={`${styles.clueItem} 
                         ${isActiveClue ? styles.activeClueItem : undefined}`}
             key={clueNumber}
+            ref={(el) => {
+              if (el) {
+                clueRefs.current.set(clueNumber, el);
+              } else {
+                clueRefs.current.delete(clueNumber);
+              }
+            }}
             onClick={() => setActiveClue(clueNumber, direction)}
           >
             <span className={`${styles.clueID}
