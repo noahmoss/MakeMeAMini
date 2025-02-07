@@ -1,7 +1,7 @@
-.outerGameWrapper {
-  display: grid;
-  justify-content: center;
-}
+/*.outerGameWrapper {*/
+/*  display: grid;*/
+/*  justify-content: center;*/
+/*}*/
 
 .siteHeader {
   width: 100%;
@@ -17,19 +17,23 @@
 .iconGroup {
   display: flex;
   gap: 16px;
+  justify-content: flex-end;
   align-items: center;
 }
 
 .gameWrapper {
   font-family: Helvetica, sans-serif;
 
-  width: 100%;
-
   align-self: center;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: flex-start;
-  gap: 8px;
+
+  max-width: 1024px;
+
+  padding-left: 16px;
+  padding-right: 16px;
 
   @media (min-width: 600px) {
     padding-left: 30px;
@@ -40,8 +44,14 @@
 }
 
 .gridAndClues {
-  display: flex;
-  flex-direction: row;
+  width: 100%;
+
+  @media (min-width: 600px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
 }
 
 .gridAndActiveClue {
@@ -52,6 +62,9 @@
   @media (min-width: 600px) {
     flex-direction: column-reverse;
     justify-content: flex-end;
+
+    width: 60%;
+    max-width: 450px;
   }
 }
 
@@ -60,9 +73,6 @@
 
   @media (min-width: 600px) {
     display: block;
-
-    margin-left: 20px;
-    margin-right: 20px;
   }
 
   @media (min-width: 1000px) {

@@ -3,7 +3,6 @@
   background-color: var(--active-clue-color);
 
   font-size: 1.1rem;
-  width: 85vw;
   line-height: 1.5rem;
   min-height: 4.5rem;
 
@@ -13,10 +12,6 @@
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-
-  @media (min-width: 600px) {
-    width: min(50vw, 500px);
-  }
 }
 
 .activeClueContent {

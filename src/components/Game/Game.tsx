@@ -6,7 +6,7 @@ import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 import { Settings, Link, HelpCircle } from "react-feather";
 
 import styles from "./Game.module.css";
-import { TextInput } from "@mantine/core";
+
 import {
   Clues,
   ClueBox,
@@ -170,50 +170,48 @@ function Game() {
   };
 
   return (
-    <div className={styles.outerGameWrapper}>
-      <div className={styles.gameWrapper}>
-        <div className={styles.siteHeader}>
-          <Logo />
-          <div className={styles.iconGroup}>
-            <Settings />
-            <Link />
-            <HelpCircle />
-          </div>
+    <div className={styles.gameWrapper}>
+      <div className={styles.siteHeader}>
+        <Logo />
+        <div className={styles.iconGroup}>
+          <Settings />
+          <Link />
+          <HelpCircle />
         </div>
-        <div className={styles.gridAndClues}>
-          <div className={styles.gridAndActiveClue}>
-            <div className={styles.gridWrapper}>
-              <Grid
-                cells={numberedCells}
-                cursor={cursor}
-                updateCursorPosition={updateCursorPosition}
-                toggleCursorDirection={toggleCursorDirection}
-                toggleFilledCell={toggleFilledCell}
-                setCurrentCellValue={setCurrentCellValue}
-                advanceCursor={advanceCursor}
-                reverseCursor={reverseCursor}
-                skipWord={skipWord}
-              />
-            </div>
-            <ActiveClue
+      </div>
+      <div className={styles.gridAndClues}>
+        <div className={styles.gridAndActiveClue}>
+          <div className={styles.gridWrapper}>
+            <Grid
+              cells={numberedCells}
+              cursor={cursor}
+              updateCursorPosition={updateCursorPosition}
+              toggleCursorDirection={toggleCursorDirection}
+              toggleFilledCell={toggleFilledCell}
+              setCurrentCellValue={setCurrentCellValue}
+              advanceCursor={advanceCursor}
+              reverseCursor={reverseCursor}
               skipWord={skipWord}
-              clueNumber={activeClueNumber}
-              clueDir={activeClueDir}
-              clueText={activeClue.value}
             />
           </div>
-          <div className={styles.cluesWrapper}>
-            <div className={styles.clueBoxSpacer}>{"spacer"}</div>
-            <ClueBox
-              clues={clues}
-              activeClueNumber={activeClueNumber}
-              activeClueDir={activeClueDir}
-              orthogonalClueNumber={orthogonalClueNumber}
-              orthogonalClueDir={orthogonalClueDir}
-              setActiveClue={setActiveClue}
-              updateClue={updateClue}
-            />
-          </div>
+          <ActiveClue
+            skipWord={skipWord}
+            clueNumber={activeClueNumber}
+            clueDir={activeClueDir}
+            clueText={activeClue.value}
+          />
+        </div>
+        <div className={styles.cluesWrapper}>
+          <div className={styles.clueBoxSpacer}>{"spacer"}</div>
+          <ClueBox
+            clues={clues}
+            activeClueNumber={activeClueNumber}
+            activeClueDir={activeClueDir}
+            orthogonalClueNumber={orthogonalClueNumber}
+            orthogonalClueDir={orthogonalClueDir}
+            setActiveClue={setActiveClue}
+            updateClue={updateClue}
+          />
         </div>
       </div>
     </div>
