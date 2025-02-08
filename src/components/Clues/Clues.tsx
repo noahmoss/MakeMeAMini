@@ -154,7 +154,10 @@ function ClueList({
       direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
     clueRefs.current
       ?.get(clueNumberToScroll)
-      ?.scrollIntoView({ behavior: "smooth" });
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
   });
 
   return (
@@ -197,6 +200,9 @@ function ClueList({
               minRows={1}
               maxRows={3}
               styles={{
+                root: {
+                  width: "100%",
+                },
                 input: {
                   transition: "unset",
                   height: "min-content",

@@ -1,9 +1,7 @@
 .cluesWrapper {
   display: flex;
   flex-direction: column;
-  flex: 1;
-  padding-left: 10px;
-  gap: 20px;
+  gap: 16px;
 
   @media (min-width: 1000px) {
     flex-direction: row;
@@ -13,40 +11,37 @@
 .clueList {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 8px;
   overflow-y: auto;
+
+  border-radius: 4px;
+  background-color: hsl(25deg, 4%, 97%);
+
+  overflow: auto;
 
   @media (min-width: 600px) {
     max-height: 30vh;
-    overflow: auto;
   }
 
   @media (min-width: 1000px) {
-    max-height: unset;
-    overflow: unset;
+    max-height: 70%;
   }
 }
 
 .cluesHeader {
   font-size: 1.2em;
-
-  @media (min-width: 1000px) {
-    margin-bottom: 10px;
-  }
+  margin-bottom: 8px;
 }
 
 .clueItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  max-width: 300px;
-
-  /*padding: 4px;*/
   padding-right: 10px;
 
   @media (min-width: 1000px) {
     margin-bottom: 4px;
+    max-width: 300px;
   }
 
   border-radius: 4px;

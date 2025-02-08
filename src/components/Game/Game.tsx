@@ -45,8 +45,8 @@ function initialClues(cells: NumberedCell[][]) {
 }
 
 function Game() {
-  const rows = 6;
-  const cols = 6;
+  const rows = 7;
+  const cols = 7;
 
   const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
   const [cursor, setCursor] = useState<Cursor>({
