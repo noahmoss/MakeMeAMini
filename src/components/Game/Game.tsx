@@ -1,9 +1,8 @@
 // @format
 import { useState } from "react";
 import Grid, { Cell, NumberedCell } from "../Grid";
+import Header from "../Header";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
-
-import { Settings, Link, HelpCircle } from "react-feather";
 
 import styles from "./Game.module.css";
 
@@ -17,7 +16,6 @@ import {
   ClueStarts,
   ClueList,
 } from "../Clues";
-import Logo from "../Logo";
 import ActiveClue from "../ActiveClue";
 
 export type CursorDirection = "row" | "col";
@@ -30,9 +28,9 @@ export interface Cursor {
   direction: CursorDirection;
 }
 
-function initialCells(rows: number, cols: number): Cell[][] {
+function initialCells(rows: number): Cell[][] {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => ({
+    Array.from({ length: rows }, () => ({
       filled: false,
       value: "",
       number: null,
@@ -45,15 +43,16 @@ function initialClues(cells: NumberedCell[][]) {
 }
 
 function Game() {
-  const rows = 7;
-  const cols = 7;
+  const [rowCount, setRowCount] = useState<number>(7);
 
-  const [cells, setCells] = useState<Cell[][]>(initialCells(rows, cols));
+  const [cells, setCells] = useState<Cell[][]>(initialCells(rowCount));
+
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
     col: 0,
     direction: "row",
   });
+
   const numberedCells: NumberedCell[][] = numberCells(cells);
   const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
 
@@ -169,16 +168,14 @@ function Game() {
     setClues(updatedClues);
   };
 
+  const settingsProps = {
+    rowCount: rowCount,
+    setRowCount: setRowCount,
+  }
+
   return (
     <div className={styles.gameWrapper}>
-      <div className={styles.siteHeader}>
-        <Logo />
-        <div className={styles.iconGroup}>
-          <Settings />
-          <Link />
-          <HelpCircle />
-        </div>
-      </div>
+      <Header settingsProps={settingsProps} />
       <div className={styles.gridAndClues}>
         <div className={styles.gridAndActiveClue}>
           <div className={styles.gridWrapper}>

@@ -11,20 +11,18 @@
 .clueList {
   list-style-type: none;
   margin: 0;
-  padding: 8px;
+  padding: 0;
   overflow-y: auto;
 
+  border: 1px solid lightgrey;
   border-radius: 4px;
-  background-color: hsl(25deg, 4%, 97%);
-
-  overflow: auto;
 
   @media (min-width: 600px) {
     max-height: 30vh;
   }
 
   @media (min-width: 1000px) {
-    max-height: 70%;
+    max-height: 52vh;
   }
 }
 
@@ -33,18 +31,21 @@
   margin-bottom: 8px;
 }
 
+.clueItemWrapper {
+  padding: 8px;
+  padding-top: 8px;
+}
+
 .clueItem {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 10px;
+  padding-right: 16px;
+  border-radius: 4px;
 
   @media (min-width: 1000px) {
-    margin-bottom: 4px;
     max-width: 300px;
   }
-
-  border-radius: 4px;
 }
 
 .activeClueItem {
@@ -52,13 +53,9 @@
 }
 
 .clueID {
-  padding: 12px;
-  padding-right: 15px;
-  margin-right: 12px;
   font-weight: bold;
-  width: 2rem;
-  align-self: flex-start;
-  justify-self: flex-end;
+  margin-right: 16px;
+  padding: 16px;
   border-radius: 4px;
 }
 

@@ -149,6 +149,7 @@ function ClueList({
 
   // Scroll active & orthogonal clues into view whenever active clue changes
   const clueRefs = useRef(new Map<number, HTMLLIElement | null>());
+
   useEffect(() => {
     const clueNumberToScroll =
       direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
@@ -172,9 +173,7 @@ function ClueList({
 
         return (
           <li
-            className={`${styles.clueItem} 
-                        ${isActiveClue ? styles.activeClueItem : undefined}`}
-            key={clueNumber}
+            className={styles.clueItemWrapper}
             ref={(el) => {
               if (el) {
                 clueRefs.current.set(clueNumber, el);
@@ -182,37 +181,43 @@ function ClueList({
                 clueRefs.current.delete(clueNumber);
               }
             }}
-            onClick={() => setActiveClue(clueNumber, direction)}
           >
-            <span
-              className={`${styles.clueID}
-                              ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}
+            <div
+              className={`${styles.clueItem} 
+                        ${isActiveClue ? styles.activeClueItem : undefined}`}
+              key={clueNumber}
+              onClick={() => setActiveClue(clueNumber, direction)}
             >
-              {clueNumber}
-            </span>
-            <Textarea
-              value={clue.value}
-              onChange={(e) =>
-                updateClue(clueNumber, direction, e.target.value)
-              }
-              onFocus={() => setActiveClue(clueNumber, direction)}
-              autosize
-              minRows={1}
-              maxRows={3}
-              styles={{
-                root: {
-                  width: "100%",
-                },
-                input: {
-                  transition: "unset",
-                  height: "min-content",
-                },
-                wrapper: {
-                  paddingTop: "4px",
-                  paddingBottom: "4px",
-                },
-              }}
-            />
+              <span
+                className={`${styles.clueID}
+                              ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}
+              >
+                {clueNumber}
+              </span>
+              <Textarea
+                value={clue.value}
+                onChange={(e) =>
+                  updateClue(clueNumber, direction, e.target.value)
+                }
+                onFocus={() => setActiveClue(clueNumber, direction)}
+                autosize
+                minRows={1}
+                maxRows={3}
+                styles={{
+                  root: {
+                    width: "100%",
+                  },
+                  input: {
+                    transition: "unset",
+                    height: "min-content",
+                  },
+                  wrapper: {
+                    paddingTop: "4px",
+                    paddingBottom: "4px",
+                  },
+                }}
+              />
+            </div>
           </li>
         );
       })}
