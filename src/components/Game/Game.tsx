@@ -4,10 +4,6 @@ import Grid, { Cell, NumberedCell } from "../Grid";
 import Header from "../Header";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
 
-declare module "../../../public/js/solve" {
-  export function solve_puzzle(input: string): string;
-}
-
 import styles from "./Game.module.css";
 
 import {

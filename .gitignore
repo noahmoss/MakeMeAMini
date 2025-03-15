@@ -22,8 +22,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-.clj-kondo
-.lsp
-.nrepl-port
-.shadow-cljs
