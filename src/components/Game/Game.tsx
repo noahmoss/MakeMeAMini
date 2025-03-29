@@ -43,9 +43,10 @@ function initialClues(cells: NumberedCell[][]) {
 }
 
 function Game() {
-  const [rowCount, setRowCount] = useState<number>(7);
+  const defaultRowCount = 5;
+  const [cells, setCells] = useState<Cell[][]>(initialCells(defaultRowCount));
 
-  const [cells, setCells] = useState<Cell[][]>(initialCells(rowCount));
+  const rowCount = cells.length;
 
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
@@ -72,6 +73,10 @@ function Game() {
       direction: cursor.direction === "row" ? "col" : "row",
     },
   );
+
+  const setRowCount = (rowCount: number) => {
+    setCells(initialCells(rowCount));
+  }
 
   const updateCursorPosition = (row: number, col: number) => {
     if (!cells[row][col].filled) {

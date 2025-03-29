@@ -16,13 +16,13 @@ function Header({ settingsProps }: { settingsProps: SettingsProps }) {
       <div className={styles.siteHeader}>
         <Logo />
         <div className={styles.iconGroup}>
-          <Button variant="subtle" color="dark" onClick={open}>
+          <Button variant="subtle" color="black" onClick={open}>
             <Settings />
           </Button>
-          <Button variant="subtle" color="dark">
+          <Button variant="subtle" color="black">
             <Link />
           </Button>
-          <Button variant="subtle" color="dark">
+          <Button variant="subtle" color="black">
             <HelpCircle />
           </Button>
         </div>

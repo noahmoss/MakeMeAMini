@@ -173,6 +173,7 @@ function ClueList({
 
         return (
           <li
+            key={clueNumber}
             className={styles.clueItemWrapper}
             ref={(el) => {
               if (el) {
