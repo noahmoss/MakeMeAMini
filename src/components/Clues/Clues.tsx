@@ -153,12 +153,10 @@ function ClueList({
   useEffect(() => {
     const clueNumberToScroll =
       direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
-    clueRefs.current
-      ?.get(clueNumberToScroll)
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "nearest",
-      });
+    clueRefs.current?.get(clueNumberToScroll)?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   });
 
   return (

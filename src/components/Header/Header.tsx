@@ -12,7 +12,11 @@ function Header({ settingsProps }: { settingsProps: SettingsProps }) {
 
   return (
     <>
-      <SettingsModal isOpen={settingsOpen} onClose={close} settingsProps={settingsProps} />
+      <SettingsModal
+        isOpen={settingsOpen}
+        onClose={close}
+        settingsProps={settingsProps}
+      />
       <div className={styles.siteHeader}>
         <Logo />
         <div className={styles.iconGroup}>

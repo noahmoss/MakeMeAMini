@@ -76,7 +76,7 @@ function Game() {
 
   const setRowCount = (rowCount: number) => {
     setCells(initialCells(rowCount));
-  }
+  };
 
   const updateCursorPosition = (row: number, col: number) => {
     if (!cells[row][col].filled) {
@@ -176,7 +176,7 @@ function Game() {
   const settingsProps = {
     rowCount: rowCount,
     setRowCount: setRowCount,
-  }
+  };
 
   return (
     <div className={styles.gameWrapper}>
