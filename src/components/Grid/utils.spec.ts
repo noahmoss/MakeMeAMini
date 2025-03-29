@@ -1,5 +1,5 @@
 import { expect, test } from "vitest";
-import { findWordBoundaries } from "./utils";
+import { findWordBoundaries, isStartOfAnyWord } from "./utils";
 import { Cell } from "./Grid";
 
 const transformGrid = (cells: string[][]): Cell[][] => {
@@ -48,3 +48,22 @@ test("findWordBoundaries works when the cursor is in the middle of a word", () =
     endCursor: { row: 3, col: 0, direction: "col" },
   });
 });
+
+test("isStartOfAnyWord correctly detects word starts", () => {
+  // Valid word starts
+  expect(isStartOfAnyWord(testGrid, 0, 1)).toBeTruthy()
+  expect(isStartOfAnyWord(testGrid, 0, 2)).toBeTruthy()
+  expect(isStartOfAnyWord(testGrid, 0, 3)).toBeTruthy()
+  expect(isStartOfAnyWord(testGrid, 1, 0)).toBeTruthy()
+  expect(isStartOfAnyWord(testGrid, 2, 0)).toBeTruthy()
+  expect(isStartOfAnyWord(testGrid, 3, 0)).toBeTruthy()
+  expect(isStartOfAnyWord(testGrid, 3, 2)).toBeTruthy()
+
+  // Filled squares
+  expect(isStartOfAnyWord(testGrid, 0, 0)).toBeFalsy()
+  expect(isStartOfAnyWord(testGrid, 2, 2)).toBeFalsy()
+
+  // Middles of words
+  expect(isStartOfAnyWord(testGrid, 2, 1)).toBeFalsy()
+  expect(isStartOfAnyWord(testGrid, 3, 3)).toBeFalsy()
+})
