@@ -1,6 +1,6 @@
 import { Cursor } from "../Game";
 import { NumberedCell } from "../Grid";
-import { findWordBoundaries, isStartOfWord } from "../Grid/utils";
+import { allFilled, findWordBoundaries, isStartOfWord } from "../Grid/utils";
 
 import { Textarea } from "@mantine/core";
 
@@ -10,6 +10,11 @@ import { useEffect, useRef } from "react";
 export type Clue = {
   value: string;
 };
+
+export type EnrichedClue = Clue & {
+  number: number;
+  direction: ClueDirection;
+}
 
 export type ClueList = {
   [key: string]: Clue;
@@ -106,7 +111,11 @@ export function getActiveClue(
   cells: NumberedCell[][],
   clues: Clues,
   cursor: Cursor,
-): [Clue, number, "across" | "down"] {
+): EnrichedClue | undefined {
+  if (allFilled(cells)) {
+    return undefined;
+  }
+
   const { startCursor } = findWordBoundaries(cells, cursor);
 
   const clueNumber = cells[startCursor.row][startCursor.col]?.number;
@@ -115,15 +124,13 @@ export function getActiveClue(
   }
   const clueDir = cursor.direction === "row" ? "across" : "down";
 
-  return [clues[clueDir][clueNumber], clueNumber, clueDir];
+  return { ...clues[clueDir][clueNumber], number: clueNumber, direction: clueDir };
 }
 
 type ClueListProps = {
   direction: ClueDirection;
-  activeClueNumber: number;
-  activeClueDir: ClueDirection;
-  orthogonalClueNumber: number;
-  orthogonalClueDir: ClueDirection;
+  activeClue?: EnrichedClue;
+  orthogonalClue?: EnrichedClue;
   clueList: ClueList;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
   updateClue: (
@@ -135,10 +142,8 @@ type ClueListProps = {
 
 function ClueList({
   direction,
-  activeClueNumber,
-  activeClueDir,
-  orthogonalClueNumber,
-  orthogonalClueDir,
+  activeClue,
+  orthogonalClue,
   clueList,
   setActiveClue,
   updateClue,
@@ -151,8 +156,9 @@ function ClueList({
   const clueRefs = useRef(new Map<number, HTMLLIElement | null>());
 
   useEffect(() => {
+    if (!activeClue || !orthogonalClue) return;
     const clueNumberToScroll =
-      direction === activeClueDir ? activeClueNumber : orthogonalClueNumber;
+      direction === activeClue?.direction ? activeClue.number : orthogonalClue.number;
     clueRefs.current?.get(clueNumberToScroll)?.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
@@ -164,10 +170,10 @@ function ClueList({
       {clueNumbers.map((clueNumber) => {
         const clue = clueList[clueNumber];
         const isActiveClue =
-          direction === activeClueDir && clueNumber === activeClueNumber;
+          direction === activeClue?.direction && clueNumber === activeClue?.number;
         const isOrthogonalClue =
-          direction === orthogonalClueDir &&
-          clueNumber === orthogonalClueNumber;
+          direction === orthogonalClue?.direction &&
+          clueNumber === orthogonalClue?.number;
 
         return (
           <li
@@ -226,10 +232,8 @@ function ClueList({
 
 type CluesProps = {
   clues: Clues;
-  activeClueNumber: number;
-  activeClueDir: ClueDirection;
-  orthogonalClueNumber: number;
-  orthogonalClueDir: ClueDirection;
+  activeClue?: EnrichedClue;
+  orthogonalClue?: EnrichedClue;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
   updateClue: (
     clueNumber: number,
@@ -240,10 +244,8 @@ type CluesProps = {
 
 export function ClueBox({
   clues,
-  activeClueNumber,
-  activeClueDir,
-  orthogonalClueNumber,
-  orthogonalClueDir,
+  activeClue,
+  orthogonalClue,
   setActiveClue,
   updateClue,
 }: CluesProps) {
@@ -253,10 +255,8 @@ export function ClueBox({
         <h2 className={styles.cluesHeader}>Across</h2>
         <ClueList
           direction="across"
-          activeClueNumber={activeClueNumber}
-          activeClueDir={activeClueDir}
-          orthogonalClueNumber={orthogonalClueNumber}
-          orthogonalClueDir={orthogonalClueDir}
+          activeClue={activeClue}
+          orthogonalClue={orthogonalClue}
           clueList={clues?.across}
           setActiveClue={setActiveClue}
           updateClue={updateClue}
@@ -266,10 +266,8 @@ export function ClueBox({
         <h2 className={styles.cluesHeader}>Down</h2>
         <ClueList
           direction="down"
-          activeClueNumber={activeClueNumber}
-          activeClueDir={activeClueDir}
-          orthogonalClueNumber={orthogonalClueNumber}
-          orthogonalClueDir={orthogonalClueDir}
+          activeClue={activeClue}
+          orthogonalClue={orthogonalClue}
           clueList={clues?.down}
           setActiveClue={setActiveClue}
           updateClue={updateClue}

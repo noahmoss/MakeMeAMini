@@ -135,3 +135,7 @@ test("numberCells", () => {
     [22, null, null, null, null, 23, null],
   ])
 })
+
+test("startOfAdjacentWord", () => {
+
+})

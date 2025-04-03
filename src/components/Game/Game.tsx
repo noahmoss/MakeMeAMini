@@ -59,21 +59,6 @@ function Game() {
 
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
-  const [activeClue, activeClueNumber, activeClueDir] = getActiveClue(
-    numberedCells,
-    clues,
-    cursor,
-  );
-
-  const [_, orthogonalClueNumber, orthogonalClueDir] = getActiveClue(
-    numberedCells,
-    clues,
-    {
-      ...cursor,
-      direction: cursor.direction === "row" ? "col" : "row",
-    },
-  );
-
   const setRowCount = (rowCount: number) => {
     setCells(initialCells(rowCount));
   };
@@ -93,12 +78,12 @@ function Game() {
 
   const reverseCursor = () => {
     setCursor(
-      stepCursor(numberedCells, cursor, clues, clueStarts, "backwards"),
+      stepCursor(numberedCells, cursor, clues, "backwards"),
     );
   };
 
   const advanceCursor = () => {
-    setCursor(stepCursor(numberedCells, cursor, clues, clueStarts, "forwards"));
+    setCursor(stepCursor(numberedCells, cursor, clues, "forwards"));
   };
 
   const skipWord = (direction: MovementDirection) => {
@@ -178,6 +163,21 @@ function Game() {
     setRowCount: setRowCount,
   };
 
+  const activeClue = getActiveClue(
+    numberedCells,
+    clues,
+    cursor,
+  );
+
+  const orthogonalClue = getActiveClue(
+    numberedCells,
+    clues,
+    {
+      ...cursor,
+      direction: cursor.direction === "row" ? "col" : "row",
+    },
+  );
+
   return (
     <div className={styles.gameWrapper}>
       <Header settingsProps={settingsProps} />
@@ -198,19 +198,15 @@ function Game() {
           </div>
           <ActiveClue
             skipWord={skipWord}
-            clueNumber={activeClueNumber}
-            clueDir={activeClueDir}
-            clueText={activeClue.value}
+            clue={activeClue}
           />
         </div>
         <div className={styles.cluesWrapper}>
           <div className={styles.clueBoxSpacer}>{"spacer"}</div>
           <ClueBox
             clues={clues}
-            activeClueNumber={activeClueNumber}
-            activeClueDir={activeClueDir}
-            orthogonalClueNumber={orthogonalClueNumber}
-            orthogonalClueDir={orthogonalClueDir}
+            activeClue={activeClue}
+            orthogonalClue={orthogonalClue}
             setActiveClue={setActiveClue}
             updateClue={updateClue}
           />

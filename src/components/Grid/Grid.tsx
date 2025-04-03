@@ -16,7 +16,7 @@ export interface NumberedCell extends Cell {
 
 type GridProps = {
   cells: NumberedCell[][];
-  cursor: Cursor;
+  cursor?: Cursor;
   updateCursorPosition: (row: number, col: number) => void;
   toggleCursorDirection: () => void;
   toggleFilledCell: (row: number, col: number) => void;
@@ -64,6 +64,10 @@ function Grid({
 
   const handleCellClick = (row: number, col: number) => {
     // Always refocus the hidden input
+    if (!cursor) {
+      return;
+    }
+
     hiddenInputRef.current?.focus();
 
     if (shiftDown) {
@@ -79,7 +83,6 @@ function Grid({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    //e.preventDefault();
     hiddenInputRef.current?.focus();
 
     const upperKey = e.key.toUpperCase();
@@ -113,7 +116,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
@@ -144,8 +147,8 @@ function Grid({
               );
             }
 
-            const currentCell = isCurrentCell(rowIndex, colIndex, cursor);
-            const currentWord = isCurrentWord(rowIndex, colIndex, cursor);
+            const currentCell = cursor && isCurrentCell(rowIndex, colIndex, cursor);
+            const currentWord = cursor && isCurrentWord(rowIndex, colIndex, cursor);
 
             return (
               <div

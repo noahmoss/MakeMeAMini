@@ -1,6 +1,6 @@
 import { Cell, NumberedCell } from "./Grid";
 import { Cursor, CursorDirection, MovementDirection } from "../Game";
-import { ClueDirection, Clues, ClueStarts } from "../Clues";
+import { ClueDirection, Clues, clueStartLocations, ClueStarts } from "../Clues";
 
 function rowCount(cells: Cell[][]) {
   return cells.length;
@@ -12,6 +12,10 @@ function colCount(cells: Cell[][]) {
 
 export function turn(direction: CursorDirection): CursorDirection {
   return direction === "row" ? "col" : "row";
+}
+
+export function allFilled(cells: Cell[][]): boolean {
+  return cells.every(row => (row.every(cell => !!cell.filled)))
 }
 
 // Returns two cursors for the beginning and end cells of the current word
@@ -92,6 +96,10 @@ export function startOfAdjacentWord(
   clueStarts: ClueStarts,
   searchDir: MovementDirection,
 ): Cursor {
+  if (allFilled(cells)) {
+    return cursor;
+  }
+
   const { startCursor } = findWordBoundaries(cells, cursor);
 
   const clueNumber = cells[startCursor.row][startCursor.col].number;
@@ -147,15 +155,21 @@ export function startOfAdjacentWord(
   };
 }
 
+// Steps a cursor forward or backward 
 export function stepCursor(
   cells: NumberedCell[][],
   cursor: Cursor,
   clues: Clues,
-  clueStarts: ClueStarts,
   stepDirection: MovementDirection,
 ): Cursor {
+  if (allFilled(cells)) {
+    return cursor;
+  }
+
   const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
   const orthogonalDir = turn(cursor.direction);
+
+  const clueStarts = clueStartLocations(cells);
 
   if (stepDirection === "forwards") {
     if (cursor[orthogonalDir] < endCursor[orthogonalDir]) {

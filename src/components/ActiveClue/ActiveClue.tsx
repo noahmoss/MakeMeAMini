@@ -1,20 +1,16 @@
 import { ChevronLeft, ChevronRight } from "react-feather";
-import { ClueDirection } from "../Clues";
+import { EnrichedClue } from "../Clues";
 import { MovementDirection } from "../Game";
 
 import styles from "./ActiveClue.module.css";
 
 type ActiveClueProps = {
-  clueNumber: number;
-  clueDir: ClueDirection;
-  clueText: string;
+  clue?: EnrichedClue;
   skipWord: (direction: MovementDirection) => void;
 };
 
 function ActiveClue({
-  clueNumber,
-  clueDir,
-  clueText,
+  clue,
   skipWord,
 }: ActiveClueProps) {
   return (
@@ -27,9 +23,10 @@ function ActiveClue({
       </button>
       <div className={styles.activeClueContent}>
         <div className={styles.activeClueLabel}>
-          {`${clueNumber}${clueDir.charAt(0).toUpperCase()}`}
+          {clue &&
+            `${clue.number}${clue.direction.charAt(0).toUpperCase()}`}
         </div>
-        <div>{clueText}</div>
+        <div>{clue?.value}</div>
       </div>
       <button
         className={styles.clueSkipButton}
