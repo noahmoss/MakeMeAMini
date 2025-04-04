@@ -127,17 +127,20 @@ export function getActiveClue(
   return { ...clues[clueDir][clueNumber], number: clueNumber, direction: clueDir };
 }
 
-type ClueListProps = {
-  direction: ClueDirection;
+type ClueListBaseProps = {
   activeClue?: EnrichedClue;
   orthogonalClue?: EnrichedClue;
-  clueList: ClueList;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
   updateClue: (
     clueNumber: number,
     direction: ClueDirection,
     clue: string,
   ) => void;
+}
+
+type ClueListProps = ClueListBaseProps & {
+  direction: ClueDirection;
+  clueList: ClueList;
 };
 
 function ClueList({
@@ -230,24 +233,13 @@ function ClueList({
   );
 }
 
-type CluesProps = {
+type CluesProps = ClueListBaseProps & {
   clues: Clues;
-  activeClue?: EnrichedClue;
-  orthogonalClue?: EnrichedClue;
-  setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
-  updateClue: (
-    clueNumber: number,
-    direction: ClueDirection,
-    clue: string,
-  ) => void;
 };
 
 export function ClueBox({
   clues,
-  activeClue,
-  orthogonalClue,
-  setActiveClue,
-  updateClue,
+  ...rest
 }: CluesProps) {
   return (
     <div className={styles.cluesWrapper}>
@@ -255,22 +247,16 @@ export function ClueBox({
         <h2 className={styles.cluesHeader}>Across</h2>
         <ClueList
           direction="across"
-          activeClue={activeClue}
-          orthogonalClue={orthogonalClue}
           clueList={clues?.across}
-          setActiveClue={setActiveClue}
-          updateClue={updateClue}
+          {...rest}
         />
       </div>
       <div className={styles.cluesSection}>
         <h2 className={styles.cluesHeader}>Down</h2>
         <ClueList
           direction="down"
-          activeClue={activeClue}
-          orthogonalClue={orthogonalClue}
           clueList={clues?.down}
-          setActiveClue={setActiveClue}
-          updateClue={updateClue}
+          {...rest}
         />
       </div>
     </div>
