@@ -1,5 +1,5 @@
 // @format
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Grid, { Cell, NumberedCell } from "../Grid";
 import Header from "../Header";
 import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
@@ -178,11 +178,31 @@ function Game() {
     },
   );
 
+  // CSS alone can't make the clues container match the height of the grid
+  // because the grid's height is derived from its width via aspect-ratio. This
+  // ResizeObserver ensures the clues container always matches the grid's
+  // height.
+  const gridWrapperRef = useRef<HTMLDivElement>(null);
+  const cluesWrapperRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    // Only sync height on desktop screen widths
+    const gridWrapperEl = gridWrapperRef?.current;
+    const cluesWrapperEl = cluesWrapperRef?.current;
+    if (!gridWrapperEl || !cluesWrapperEl) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      cluesWrapperEl.style.height = `${entry.contentRect.height}px`
+    })
+    observer.observe(gridWrapperEl);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className={styles.gameWrapper}>
       <Header settingsProps={settingsProps} />
       <div className={styles.gridAndClues2}>
-        <div className={styles.gridWrapper2}>
+        <div className={styles.gridWrapper2}
+          ref={gridWrapperRef}>
           <Grid
             cells={numberedCells}
             cursor={cursor}
@@ -195,13 +215,14 @@ function Game() {
             skipWord={skipWord}
           />
         </div>
-        <div className={styles.activeClueWrapper}>
+        <div className={styles.activeClueWrapper} >
           <ActiveClue
             skipWord={skipWord}
             clue={activeClue}
           />
         </div>
-        <div className={styles.cluesWrapper2}>
+        <div className={styles.cluesWrapper2}
+          ref={cluesWrapperRef}>
           <ClueBox
             clues={clues}
             activeClue={activeClue}
@@ -213,43 +234,6 @@ function Game() {
       </div>
     </div >
   );
-
-  // return (
-  //   <div className={styles.gameWrapper}>
-  //     <Header settingsProps={settingsProps} />
-  //     <div className={styles.gridAndClues}>
-  //       <div className={styles.gridAndActiveClue}>
-  //         <div className={styles.gridWrapper}>
-  //           <Grid
-  //             cells={numberedCells}
-  //             cursor={cursor}
-  //             updateCursorPosition={updateCursorPosition}
-  //             toggleCursorDirection={toggleCursorDirection}
-  //             toggleFilledCell={toggleFilledCell}
-  //             setCurrentCellValue={setCurrentCellValue}
-  //             advanceCursor={advanceCursor}
-  //             reverseCursor={reverseCursor}
-  //             skipWord={skipWord}
-  //           />
-  //         </div>
-  //         <ActiveClue
-  //           skipWord={skipWord}
-  //           clue={activeClue}
-  //         />
-  //       </div>
-  //       <div className={styles.cluesWrapper}>
-  //         <div className={styles.clueBoxSpacer}>{"spacer"}</div>
-  //         <ClueBox
-  //           clues={clues}
-  //           activeClue={activeClue}
-  //           orthogonalClue={orthogonalClue}
-  //           setActiveClue={setActiveClue}
-  //           updateClue={updateClue}
-  //         />
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 }
 
 export default Game;
