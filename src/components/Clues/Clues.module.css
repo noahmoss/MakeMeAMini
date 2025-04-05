@@ -5,6 +5,7 @@
 
   @media (min-width: 1000px) {
     flex-direction: row;
+    height: 100%;
   }
 }
 
@@ -17,12 +18,14 @@
   border: 1px solid lightgrey;
   border-radius: 4px;
 
+  height: 100%;
+
   @media (min-width: 600px) {
-    max-height: 30vh;
+    /*max-height: 30vh;*/
   }
 
   @media (min-width: 1000px) {
-    max-height: 52vh;
+    /*max-height: 52vh;*/
   }
 }
 

@@ -181,28 +181,27 @@ function Game() {
   return (
     <div className={styles.gameWrapper}>
       <Header settingsProps={settingsProps} />
-      <div className={styles.gridAndClues}>
-        <div className={styles.gridAndActiveClue}>
-          <div className={styles.gridWrapper}>
-            <Grid
-              cells={numberedCells}
-              cursor={cursor}
-              updateCursorPosition={updateCursorPosition}
-              toggleCursorDirection={toggleCursorDirection}
-              toggleFilledCell={toggleFilledCell}
-              setCurrentCellValue={setCurrentCellValue}
-              advanceCursor={advanceCursor}
-              reverseCursor={reverseCursor}
-              skipWord={skipWord}
-            />
-          </div>
+      <div className={styles.gridAndClues2}>
+        <div className={styles.gridWrapper2}>
+          <Grid
+            cells={numberedCells}
+            cursor={cursor}
+            updateCursorPosition={updateCursorPosition}
+            toggleCursorDirection={toggleCursorDirection}
+            toggleFilledCell={toggleFilledCell}
+            setCurrentCellValue={setCurrentCellValue}
+            advanceCursor={advanceCursor}
+            reverseCursor={reverseCursor}
+            skipWord={skipWord}
+          />
+        </div>
+        <div className={styles.activeClueWrapper}>
           <ActiveClue
             skipWord={skipWord}
             clue={activeClue}
           />
         </div>
-        <div className={styles.cluesWrapper}>
-          <div className={styles.clueBoxSpacer}>{"spacer"}</div>
+        <div className={styles.cluesWrapper2}>
           <ClueBox
             clues={clues}
             activeClue={activeClue}
@@ -212,8 +211,45 @@ function Game() {
           />
         </div>
       </div>
-    </div>
+    </div >
   );
+
+  // return (
+  //   <div className={styles.gameWrapper}>
+  //     <Header settingsProps={settingsProps} />
+  //     <div className={styles.gridAndClues}>
+  //       <div className={styles.gridAndActiveClue}>
+  //         <div className={styles.gridWrapper}>
+  //           <Grid
+  //             cells={numberedCells}
+  //             cursor={cursor}
+  //             updateCursorPosition={updateCursorPosition}
+  //             toggleCursorDirection={toggleCursorDirection}
+  //             toggleFilledCell={toggleFilledCell}
+  //             setCurrentCellValue={setCurrentCellValue}
+  //             advanceCursor={advanceCursor}
+  //             reverseCursor={reverseCursor}
+  //             skipWord={skipWord}
+  //           />
+  //         </div>
+  //         <ActiveClue
+  //           skipWord={skipWord}
+  //           clue={activeClue}
+  //         />
+  //       </div>
+  //       <div className={styles.cluesWrapper}>
+  //         <div className={styles.clueBoxSpacer}>{"spacer"}</div>
+  //         <ClueBox
+  //           clues={clues}
+  //           activeClue={activeClue}
+  //           orthogonalClue={orthogonalClue}
+  //           setActiveClue={setActiveClue}
+  //           updateClue={updateClue}
+  //         />
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 }
 
 export default Game;
