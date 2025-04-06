@@ -250,12 +250,10 @@ export function ClueBox({
     }
   }, [activeClue])
 
-  console.log({ activeClue });
-
   return (
     <>
       <div className={styles.smallScreenClues}>
-        <Tabs value={activeTab} onChange={setActiveTab} >
+        <Tabs value={activeTab} onChange={setActiveTab} color="var(--active-tab-header-color)">
           <Tabs.List grow>
             <Tabs.Tab value="across">
               <h2 className={styles.cluesHeader}>Across</h2>
@@ -289,7 +287,9 @@ export function ClueBox({
 
       <div className={styles.largeScreenClues}>
         <div className={styles.cluesSection}>
-          <h2 className={styles.cluesHeader}>Across</h2>
+          <h2 className={styles.largeScreenCluesHeader}
+            style={{ borderBottomColor: activeClue?.direction === "across" ? "var(--active-tab-header-color)" : "var(--inactive-tab-header-color)" }}
+          >Across</h2>
           <ClueList
             direction="across"
             clueList={clues?.across}
@@ -298,7 +298,9 @@ export function ClueBox({
           />
         </div>
         <div className={styles.cluesSection}>
-          <h2 className={styles.cluesHeader}>Down</h2>
+          <h2 className={styles.largeScreenCluesHeader}
+            style={{ borderBottomColor: activeClue?.direction === "down" ? "var(--active-tab-header-color)" : "var(--inactive-tab-header-color)" }}
+          >Down</h2>
           <ClueList
             direction="down"
             clueList={clues?.down}
