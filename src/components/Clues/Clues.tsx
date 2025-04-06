@@ -257,7 +257,7 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
 
   return (
     <>
-      <div className={styles.smallScreenClues}>
+      <div className={`${styles.cluesContainer} ${styles.smallScreenClues}`}>
         <Tabs
           value={activeTab}
           onChange={setActiveTab}
@@ -294,7 +294,7 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
         </Tabs>
       </div>
 
-      <div className={styles.largeScreenClues}>
+      <div className={`${styles.cluesContainer} ${styles.largeScreenClues}`}>
         <div className={styles.cluesSection}>
           <h2
             className={styles.largeScreenCluesHeader}

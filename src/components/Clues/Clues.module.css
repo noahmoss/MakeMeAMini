@@ -1,10 +1,13 @@
+.cluesContainer {
+  margin-top: -37px;
+
+  --active-tab-header-color: hsl(192.5deg, 100%, 40%);
+  --inactive-tab-header-color: #dee2e6;
+}
+
 .smallScreenClues {
   display: block;
   height: 100%;
-
-  --active-tab-header-color: hsl(192.5deg, 100%, 40%);
-
-  margin-top: -36px;
 
   @media (min-width: 1000px) {
     display: none;
@@ -12,12 +15,7 @@
 }
 
 .largeScreenClues {
-  --active-tab-header-color: hsl(192.5deg, 100%, 40%);
-  --inactive-tab-header-color: #dee2e6;
-
   display: none;
-
-  margin-top: -36px;
 
   @media (min-width: 1000px) {
     display: flex;
@@ -64,14 +62,6 @@
   overflow-y: auto;
 
   height: 100%;
-
-  @media (min-width: 600px) {
-    /*max-height: 30vh;*/
-  }
-
-  @media (min-width: 1000px) {
-    /*max-height: 52vh;*/
-  }
 }
 
 .clueItemWrapper {
