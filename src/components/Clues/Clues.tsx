@@ -2,10 +2,10 @@ import { Cursor } from "../Game";
 import { NumberedCell } from "../Grid";
 import { allFilled, findWordBoundaries, isStartOfWord } from "../Grid/utils";
 
-import { Textarea } from "@mantine/core";
+import { Tabs, Textarea } from "@mantine/core";
 
 import styles from "./Clues.module.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export type Clue = {
   value: string;
@@ -192,13 +192,13 @@ function ClueList({
           >
             <div
               className={`${styles.clueItem} 
-                        ${isActiveClue ? styles.activeClueItem : undefined}`}
+                          ${isActiveClue ? styles.activeClueItem : undefined}`}
               key={clueNumber}
               onClick={() => setActiveClue(clueNumber, direction)}
             >
               <span
                 className={`${styles.clueID}
-                              ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}
+                            ${isOrthogonalClue ? styles.orthogonalClueID : undefined}`}
               >
                 {clueNumber}
               </span>
@@ -239,26 +239,74 @@ type CluesProps = ClueListBaseProps & {
 
 export function ClueBox({
   clues,
+  activeClue,
   ...rest
 }: CluesProps) {
+  const [activeTab, setActiveTab] = useState<string | null>(activeClue?.direction || "across");
+
+  useEffect(() => {
+    if (activeClue?.direction && activeClue.direction !== activeTab) {
+      setActiveTab(activeClue.direction)
+    }
+  }, [activeClue])
+
+  console.log({ activeClue });
+
   return (
-    <div className={styles.cluesWrapper}>
-      <div className={styles.cluesSection}>
-        <h2 className={styles.cluesHeader}>Across</h2>
-        <ClueList
-          direction="across"
-          clueList={clues?.across}
-          {...rest}
-        />
+    <>
+      <div className={styles.smallScreenClues}>
+        <Tabs value={activeTab} onChange={setActiveTab} >
+          <Tabs.List grow>
+            <Tabs.Tab value="across">
+              <h2 className={styles.cluesHeader}>Across</h2>
+            </Tabs.Tab>
+            <Tabs.Tab value="down">
+              <h2 className={styles.cluesHeader}>Down</h2>
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <div className={styles.cluesSection}>
+            <Tabs.Panel value="across">
+              <ClueList
+                direction="across"
+                clueList={clues?.across}
+                activeClue={activeClue}
+                {...rest}
+              />
+            </Tabs.Panel>
+
+            <Tabs.Panel value="down">
+              <ClueList
+                direction="down"
+                clueList={clues?.down}
+                activeClue={activeClue}
+                {...rest}
+              />
+            </Tabs.Panel>
+          </div>
+        </Tabs>
       </div>
-      <div className={styles.cluesSection}>
-        <h2 className={styles.cluesHeader}>Down</h2>
-        <ClueList
-          direction="down"
-          clueList={clues?.down}
-          {...rest}
-        />
+
+      <div className={styles.largeScreenClues}>
+        <div className={styles.cluesSection}>
+          <h2 className={styles.cluesHeader}>Across</h2>
+          <ClueList
+            direction="across"
+            clueList={clues?.across}
+            activeClue={activeClue}
+            {...rest}
+          />
+        </div>
+        <div className={styles.cluesSection}>
+          <h2 className={styles.cluesHeader}>Down</h2>
+          <ClueList
+            direction="down"
+            clueList={clues?.down}
+            activeClue={activeClue}
+            {...rest}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 }
