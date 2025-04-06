@@ -45,7 +45,6 @@
     display: block;
     grid-area: clues;
   }
-
 }
 
 /* --- */
@@ -99,7 +98,8 @@
     max-width: 448px;
   }
 
-  @media (min-width: 600px) {}
+  @media (min-width: 600px) {
+  }
 }
 
 .cluesWrapper {

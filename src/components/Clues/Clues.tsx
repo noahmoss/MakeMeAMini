@@ -14,7 +14,7 @@ export type Clue = {
 export type EnrichedClue = Clue & {
   number: number;
   direction: ClueDirection;
-}
+};
 
 export type ClueList = {
   [key: string]: Clue;
@@ -124,7 +124,11 @@ export function getActiveClue(
   }
   const clueDir = cursor.direction === "row" ? "across" : "down";
 
-  return { ...clues[clueDir][clueNumber], number: clueNumber, direction: clueDir };
+  return {
+    ...clues[clueDir][clueNumber],
+    number: clueNumber,
+    direction: clueDir,
+  };
 }
 
 type ClueListBaseProps = {
@@ -136,7 +140,7 @@ type ClueListBaseProps = {
     direction: ClueDirection,
     clue: string,
   ) => void;
-}
+};
 
 type ClueListProps = ClueListBaseProps & {
   direction: ClueDirection;
@@ -161,7 +165,9 @@ function ClueList({
   useEffect(() => {
     if (!activeClue || !orthogonalClue) return;
     const clueNumberToScroll =
-      direction === activeClue?.direction ? activeClue.number : orthogonalClue.number;
+      direction === activeClue?.direction
+        ? activeClue.number
+        : orthogonalClue.number;
     clueRefs.current?.get(clueNumberToScroll)?.scrollIntoView({
       behavior: "smooth",
       block: "nearest",
@@ -173,7 +179,8 @@ function ClueList({
       {clueNumbers.map((clueNumber) => {
         const clue = clueList[clueNumber];
         const isActiveClue =
-          direction === activeClue?.direction && clueNumber === activeClue?.number;
+          direction === activeClue?.direction &&
+          clueNumber === activeClue?.number;
         const isOrthogonalClue =
           direction === orthogonalClue?.direction &&
           clueNumber === orthogonalClue?.number;
@@ -237,23 +244,25 @@ type CluesProps = ClueListBaseProps & {
   clues: Clues;
 };
 
-export function ClueBox({
-  clues,
-  activeClue,
-  ...rest
-}: CluesProps) {
-  const [activeTab, setActiveTab] = useState<string | null>(activeClue?.direction || "across");
+export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
+  const [activeTab, setActiveTab] = useState<string | null>(
+    activeClue?.direction || "across",
+  );
 
   useEffect(() => {
     if (activeClue?.direction && activeClue.direction !== activeTab) {
-      setActiveTab(activeClue.direction)
+      setActiveTab(activeClue.direction);
     }
-  }, [activeClue])
+  }, [activeClue]);
 
   return (
     <>
       <div className={styles.smallScreenClues}>
-        <Tabs value={activeTab} onChange={setActiveTab} color="var(--active-tab-header-color)">
+        <Tabs
+          value={activeTab}
+          onChange={setActiveTab}
+          color="var(--active-tab-header-color)"
+        >
           <Tabs.List grow>
             <Tabs.Tab value="across">
               <h2 className={styles.cluesHeader}>Across</h2>
@@ -287,9 +296,17 @@ export function ClueBox({
 
       <div className={styles.largeScreenClues}>
         <div className={styles.cluesSection}>
-          <h2 className={styles.largeScreenCluesHeader}
-            style={{ borderBottomColor: activeClue?.direction === "across" ? "var(--active-tab-header-color)" : "var(--inactive-tab-header-color)" }}
-          >Across</h2>
+          <h2
+            className={styles.largeScreenCluesHeader}
+            style={{
+              borderBottomColor:
+                activeClue?.direction === "across"
+                  ? "var(--active-tab-header-color)"
+                  : "var(--inactive-tab-header-color)",
+            }}
+          >
+            Across
+          </h2>
           <ClueList
             direction="across"
             clueList={clues?.across}
@@ -298,9 +315,17 @@ export function ClueBox({
           />
         </div>
         <div className={styles.cluesSection}>
-          <h2 className={styles.largeScreenCluesHeader}
-            style={{ borderBottomColor: activeClue?.direction === "down" ? "var(--active-tab-header-color)" : "var(--inactive-tab-header-color)" }}
-          >Down</h2>
+          <h2
+            className={styles.largeScreenCluesHeader}
+            style={{
+              borderBottomColor:
+                activeClue?.direction === "down"
+                  ? "var(--active-tab-header-color)"
+                  : "var(--inactive-tab-header-color)",
+            }}
+          >
+            Down
+          </h2>
           <ClueList
             direction="down"
             clueList={clues?.down}

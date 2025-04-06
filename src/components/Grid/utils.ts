@@ -15,7 +15,7 @@ export function turn(direction: CursorDirection): CursorDirection {
 }
 
 export function allFilled(cells: Cell[][]): boolean {
-  return cells.every(row => (row.every(cell => !!cell.filled)))
+  return cells.every((row) => row.every((cell) => !!cell.filled));
 }
 
 // Returns two cursors for the beginning and end cells of the current word
@@ -155,7 +155,7 @@ export function startOfAdjacentWord(
   };
 }
 
-// Steps a cursor forward or backward 
+// Steps a cursor forward or backward
 export function stepCursor(
   cells: NumberedCell[][],
   cursor: Cursor,

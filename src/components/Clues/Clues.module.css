@@ -54,7 +54,6 @@
 
   @media (min-width: 1000px) {
     max-height: 100%;
-
   }
 }
 
@@ -63,7 +62,6 @@
   margin: 0;
   padding: 0;
   overflow-y: auto;
-
 
   height: 100%;
 

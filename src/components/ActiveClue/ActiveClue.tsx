@@ -9,10 +9,7 @@ type ActiveClueProps = {
   skipWord: (direction: MovementDirection) => void;
 };
 
-function ActiveClue({
-  clue,
-  skipWord,
-}: ActiveClueProps) {
+function ActiveClue({ clue, skipWord }: ActiveClueProps) {
   return (
     <div className={styles.activeClue}>
       <button
@@ -23,8 +20,7 @@ function ActiveClue({
       </button>
       <div className={styles.activeClueContent}>
         <div className={styles.activeClueLabel}>
-          {clue &&
-            `${clue.number}${clue.direction.charAt(0).toUpperCase()}`}
+          {clue && `${clue.number}${clue.direction.charAt(0).toUpperCase()}`}
         </div>
         <div>{clue?.value}</div>
       </div>

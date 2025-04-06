@@ -77,9 +77,7 @@ function Game() {
   };
 
   const reverseCursor = () => {
-    setCursor(
-      stepCursor(numberedCells, cursor, clues, "backwards"),
-    );
+    setCursor(stepCursor(numberedCells, cursor, clues, "backwards"));
   };
 
   const advanceCursor = () => {
@@ -163,20 +161,12 @@ function Game() {
     setRowCount: setRowCount,
   };
 
-  const activeClue = getActiveClue(
-    numberedCells,
-    clues,
-    cursor,
-  );
+  const activeClue = getActiveClue(numberedCells, clues, cursor);
 
-  const orthogonalClue = getActiveClue(
-    numberedCells,
-    clues,
-    {
-      ...cursor,
-      direction: cursor.direction === "row" ? "col" : "row",
-    },
-  );
+  const orthogonalClue = getActiveClue(numberedCells, clues, {
+    ...cursor,
+    direction: cursor.direction === "row" ? "col" : "row",
+  });
 
   // CSS alone can't make the clues container match the height of the grid
   // because the grid's height is derived from its width via aspect-ratio. This
@@ -191,8 +181,8 @@ function Game() {
     if (!gridWrapperEl || !cluesWrapperEl) return;
 
     const observer = new ResizeObserver(([entry]) => {
-      cluesWrapperEl.style.height = `${entry.contentRect.height}px`
-    })
+      cluesWrapperEl.style.height = `${entry.contentRect.height}px`;
+    });
     observer.observe(gridWrapperEl);
     return () => observer.disconnect();
   }, []);
@@ -201,8 +191,7 @@ function Game() {
     <div className={styles.gameWrapper}>
       <Header settingsProps={settingsProps} />
       <div className={styles.gridAndClues2}>
-        <div className={styles.gridWrapper2}
-          ref={gridWrapperRef}>
+        <div className={styles.gridWrapper2} ref={gridWrapperRef}>
           <Grid
             cells={numberedCells}
             cursor={cursor}
@@ -215,14 +204,10 @@ function Game() {
             skipWord={skipWord}
           />
         </div>
-        <div className={styles.activeClueWrapper} >
-          <ActiveClue
-            skipWord={skipWord}
-            clue={activeClue}
-          />
+        <div className={styles.activeClueWrapper}>
+          <ActiveClue skipWord={skipWord} clue={activeClue} />
         </div>
-        <div className={styles.cluesWrapper2}
-          ref={cluesWrapperRef}>
+        <div className={styles.cluesWrapper2} ref={cluesWrapperRef}>
           <ClueBox
             clues={clues}
             activeClue={activeClue}
@@ -232,7 +217,7 @@ function Game() {
           />
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

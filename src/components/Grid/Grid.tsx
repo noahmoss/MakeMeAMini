@@ -116,7 +116,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />
@@ -147,8 +147,10 @@ function Grid({
               );
             }
 
-            const currentCell = cursor && isCurrentCell(rowIndex, colIndex, cursor);
-            const currentWord = cursor && isCurrentWord(rowIndex, colIndex, cursor);
+            const currentCell =
+              cursor && isCurrentCell(rowIndex, colIndex, cursor);
+            const currentWord =
+              cursor && isCurrentWord(rowIndex, colIndex, cursor);
 
             return (
               <div
