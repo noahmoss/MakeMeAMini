@@ -45,14 +45,12 @@ function initialClues(cells: NumberedCell[][]) {
 function Game() {
   const defaultRowCount = 5;
   const [cells, setCells] = useState<Cell[][]>(initialCells(defaultRowCount));
-
-  const rowCount = cells.length;
-
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
     col: 0,
     direction: "row",
   });
+  const [symmetry, setSymmetry] = useState<boolean>(false);
 
   const numberedCells: NumberedCell[][] = numberCells(cells);
   const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
@@ -157,8 +155,10 @@ function Game() {
   };
 
   const settingsProps = {
-    rowCount: rowCount,
-    setRowCount: setRowCount,
+    rowCount: cells.length,
+    setRowCount,
+    symmetry,
+    setSymmetry
   };
 
   const activeClue = getActiveClue(numberedCells, clues, cursor);
@@ -202,6 +202,7 @@ function Game() {
             advanceCursor={advanceCursor}
             reverseCursor={reverseCursor}
             skipWord={skipWord}
+            useSymmetry={symmetry}
           />
         </div>
         <div className={styles.activeClueWrapper}>

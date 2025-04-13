@@ -3,7 +3,7 @@ import styles from "./Grid.module.css";
 import { Cursor, MovementDirection } from "../Game";
 import { turn, findWordBoundaries } from "./utils";
 import { useKeydownListener } from "./hooks";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export interface Cell {
   filled: boolean;
@@ -24,6 +24,8 @@ type GridProps = {
   advanceCursor: () => void;
   reverseCursor: () => void;
   skipWord: (direction: MovementDirection) => void;
+  // Should we apply rotational symmetry when editing black squares?
+  useSymmetry: boolean;
 };
 
 function Grid({
@@ -36,10 +38,13 @@ function Grid({
   advanceCursor,
   reverseCursor,
   skipWord,
+  useSymmetry,
 }: GridProps) {
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
   const shiftDown = useKeydownListener("Shift");
+
+  const [hoveredCell, setHoveredCell] = useState<{ row: number, col: number } | null>(null)
 
   const isCurrentCell = (row: number, col: number, cursor: Cursor) => {
     return row === cursor.row && col === cursor.col;
@@ -62,6 +67,12 @@ function Grid({
     );
   };
 
+  const rotate = (cells: Cell[][], row: number, col: number) => {
+    const rotatedRow = Math.abs(cells.length - row - 1);
+    const rotatedCol = Math.abs(cells.length - col - 1);
+    return { rotatedRow, rotatedCol }
+  }
+
   const handleCellClick = (row: number, col: number) => {
     // Always refocus the hidden input
     if (!cursor) {
@@ -72,6 +83,13 @@ function Grid({
 
     if (shiftDown) {
       toggleFilledCell(row, col);
+      if (useSymmetry) {
+        const { rotatedRow, rotatedCol } = rotate(cells, row, col);
+        const isCenterSquare = row === rotatedRow && col === rotatedCol;
+        if (cells[row][col].filled === cells[rotatedRow][rotatedCol].filled && !isCenterSquare) {
+          toggleFilledCell(rotatedRow, rotatedCol);
+        }
+      }
       return;
     }
 
@@ -116,7 +134,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
@@ -152,18 +170,26 @@ function Grid({
             const currentWord =
               cursor && isCurrentWord(rowIndex, colIndex, cursor);
 
+            const isHoveredCell = rowIndex === hoveredCell?.row && colIndex === hoveredCell?.col;
+
+            const rotatedHoveredCell = hoveredCell && rotate(cells, hoveredCell.row, hoveredCell.col);
+            const isRotatedHoveredCell = rowIndex === rotatedHoveredCell?.rotatedRow && colIndex === rotatedHoveredCell?.rotatedCol;
+
             return (
               <div
                 className={`
                   ${styles.gridCell} 
                   ${currentWord && styles.cursorWord}
                   ${currentCell && styles.cursorCell}
-                  ${shiftDown && styles.fillCellHoverIndicator}
+                  ${shiftDown && isHoveredCell && styles.fillCellHoverIndicator}
+                  ${shiftDown && useSymmetry && isRotatedHoveredCell && styles.mirroredFillCellHoverIndicator}
               `}
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => {
                   handleCellClick(rowIndex, colIndex);
                 }}
+                onMouseEnter={() => setHoveredCell({ row: rowIndex, col: colIndex })}
+                onMouseLeave={() => isHoveredCell && setHoveredCell(null)}
                 tabIndex={-1}
               >
                 <div className={styles.gridCellNumber}>{cell.number}</div>

@@ -36,9 +36,12 @@
   background-color: var(--filled-cell-color);
 }
 
-.fillCellHoverIndicator:hover {
-  background: gray;
-  opacity: 0.95;
+.fillCellHoverIndicator {
+  background: hsl(0deg 0% 20%);
+}
+
+.mirroredFillCellHoverIndicator {
+  background: hsl(0deg 0% 50%);
 }
 
 .gridCellNumber {
