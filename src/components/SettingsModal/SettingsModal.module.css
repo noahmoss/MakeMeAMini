@@ -3,3 +3,8 @@
   flex-direction: column;
   gap: 32px;
 }
+
+.switchContainer {
+  display: flex;
+  justify-content: space-between;
+}

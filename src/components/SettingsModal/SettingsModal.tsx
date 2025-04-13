@@ -1,6 +1,7 @@
 import styles from "./SettingsModal.module.css";
 
-import { Modal, Select, Switch } from "@mantine/core";
+import { Info } from "react-feather";
+import { Modal, Select, Switch, Tooltip } from "@mantine/core";
 
 export type SettingsProps = {
   rowCount: number;
@@ -26,11 +27,22 @@ function Settings({ rowCount, setRowCount, symmetry, setSymmetry }: SettingsProp
           { value: "9", label: "9x9" },
         ]}
       />
-      <Switch
-        label="Rotational symmetry"
-        checked={symmetry}
-        onChange={(event) => setSymmetry(event.currentTarget.checked)}
-      />
+      <div className={styles.switchContainer}>
+        <Switch
+          label="Rotational symmetry"
+          checked={symmetry}
+          onChange={(event) => setSymmetry(event.currentTarget.checked)}
+        />
+        <Tooltip
+          multiline
+          label="When enabled, any black square you add or remove will be mirrored with 180° rotational symmetry. Existing grid squares won’t be changed."
+          w={300}
+          withArrow={true}>
+          <Info
+            size={"1.4rem"}
+            color="gray" />
+        </Tooltip >
+      </div>
     </div>
   );
 }
