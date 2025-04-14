@@ -46,16 +46,13 @@
 
 .gridCellNumber {
   position: absolute;
-  top: 10px;
-  left: 2px;
+  top: var(--cell-number-top-offset);
+  left: var(--cell-number-left-offset);
+  font-size: var(--cell-number-font-size);
 }
 
 .gridCellValue {
-  font-size: 9vw;
-
-  @media (min-width: 480px) {
-    font-size: min(5vw, 3rem);
-  }
+  font-size: var(--cell-value-font-size);
 
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);

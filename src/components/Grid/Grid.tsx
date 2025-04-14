@@ -3,7 +3,7 @@ import styles from "./Grid.module.css";
 import { Cursor, MovementDirection } from "../Game";
 import { turn, findWordBoundaries } from "./utils";
 import { useKeydownListener } from "./hooks";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export interface Cell {
   filled: boolean;
@@ -129,6 +129,35 @@ function Grid({
     }
   };
 
+  const gridRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const gridEl = gridRef?.current;
+    if (!gridEl) return;
+
+    const observer = new ResizeObserver(([entry]) => {
+      const gridWidth = entry.contentRect.width;
+      const cellWidth = gridWidth / cells.length;
+      gridEl.style.setProperty(
+        "--cell-value-font-size",
+        `${cellWidth * 0.6}px`,
+      );
+      gridEl.style.setProperty(
+        "--cell-number-font-size",
+        `${cellWidth * 0.25}px`,
+      );
+      gridEl.style.setProperty(
+        "--cell-number-top-offset",
+        `${cellWidth * 0.15}px`,
+      );
+      gridEl.style.setProperty(
+        "--cell-number-left-offset",
+        `${cellWidth * 0.03}px`,
+      );
+    });
+    observer.observe(gridEl);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       <input
@@ -147,6 +176,7 @@ function Grid({
 
       <div
         className={styles.grid}
+        ref={gridRef}
         style={
           {
             "--grid-row-count": cells.length,
