@@ -6,11 +6,16 @@ import { Modal, Select, Switch, Tooltip } from "@mantine/core";
 export type SettingsProps = {
   rowCount: number;
   setRowCount: (count: number) => void;
-  symmetry: boolean,
+  symmetry: boolean;
   setSymmetry: (symmetry: boolean) => void;
 };
 
-function Settings({ rowCount, setRowCount, symmetry, setSymmetry }: SettingsProps) {
+function Settings({
+  rowCount,
+  setRowCount,
+  symmetry,
+  setSymmetry,
+}: SettingsProps) {
   return (
     <div className={styles.settingsContainer}>
       <Select
@@ -37,11 +42,10 @@ function Settings({ rowCount, setRowCount, symmetry, setSymmetry }: SettingsProp
           multiline
           label="When enabled, any black square you add or remove will be mirrored with 180° rotational symmetry. Existing grid squares won’t be changed."
           w={300}
-          withArrow={true}>
-          <Info
-            size={"1.4rem"}
-            color="gray" />
-        </Tooltip >
+          withArrow={true}
+        >
+          <Info size={"1.4rem"} color="gray" />
+        </Tooltip>
       </div>
     </div>
   );

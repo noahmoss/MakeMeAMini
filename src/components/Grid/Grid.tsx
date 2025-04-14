@@ -44,7 +44,10 @@ function Grid({
 
   const shiftDown = useKeydownListener("Shift");
 
-  const [hoveredCell, setHoveredCell] = useState<{ row: number, col: number } | null>(null)
+  const [hoveredCell, setHoveredCell] = useState<{
+    row: number;
+    col: number;
+  } | null>(null);
 
   const isCurrentCell = (row: number, col: number, cursor: Cursor) => {
     return row === cursor.row && col === cursor.col;
@@ -70,8 +73,8 @@ function Grid({
   const rotate = (cells: Cell[][], row: number, col: number) => {
     const rotatedRow = Math.abs(cells.length - row - 1);
     const rotatedCol = Math.abs(cells.length - col - 1);
-    return { rotatedRow, rotatedCol }
-  }
+    return { rotatedRow, rotatedCol };
+  };
 
   const handleCellClick = (row: number, col: number) => {
     // Always refocus the hidden input
@@ -86,7 +89,10 @@ function Grid({
       if (useSymmetry) {
         const { rotatedRow, rotatedCol } = rotate(cells, row, col);
         const isCenterSquare = row === rotatedRow && col === rotatedCol;
-        if (cells[row][col].filled === cells[rotatedRow][rotatedCol].filled && !isCenterSquare) {
+        if (
+          cells[row][col].filled === cells[rotatedRow][rotatedCol].filled &&
+          !isCenterSquare
+        ) {
           toggleFilledCell(rotatedRow, rotatedCol);
         }
       }
@@ -134,7 +140,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />
@@ -170,10 +176,14 @@ function Grid({
             const currentWord =
               cursor && isCurrentWord(rowIndex, colIndex, cursor);
 
-            const isHoveredCell = rowIndex === hoveredCell?.row && colIndex === hoveredCell?.col;
+            const isHoveredCell =
+              rowIndex === hoveredCell?.row && colIndex === hoveredCell?.col;
 
-            const rotatedHoveredCell = hoveredCell && rotate(cells, hoveredCell.row, hoveredCell.col);
-            const isRotatedHoveredCell = rowIndex === rotatedHoveredCell?.rotatedRow && colIndex === rotatedHoveredCell?.rotatedCol;
+            const rotatedHoveredCell =
+              hoveredCell && rotate(cells, hoveredCell.row, hoveredCell.col);
+            const isRotatedHoveredCell =
+              rowIndex === rotatedHoveredCell?.rotatedRow &&
+              colIndex === rotatedHoveredCell?.rotatedCol;
 
             return (
               <div
@@ -188,7 +198,9 @@ function Grid({
                 onClick={() => {
                   handleCellClick(rowIndex, colIndex);
                 }}
-                onMouseEnter={() => setHoveredCell({ row: rowIndex, col: colIndex })}
+                onMouseEnter={() =>
+                  setHoveredCell({ row: rowIndex, col: colIndex })
+                }
                 onMouseLeave={() => isHoveredCell && setHoveredCell(null)}
                 tabIndex={-1}
               >

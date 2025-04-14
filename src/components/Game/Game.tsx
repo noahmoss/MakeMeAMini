@@ -158,7 +158,7 @@ function Game() {
     rowCount: cells.length,
     setRowCount,
     symmetry,
-    setSymmetry
+    setSymmetry,
   };
 
   const activeClue = getActiveClue(numberedCells, clues, cursor);
