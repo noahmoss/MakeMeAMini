@@ -190,8 +190,8 @@ function Game() {
   return (
     <div className={styles.gameWrapper}>
       <Header settingsProps={settingsProps} />
-      <div className={styles.gridAndClues2}>
-        <div className={styles.gridWrapper2} ref={gridWrapperRef}>
+      <div className={styles.gridAndClues}>
+        <div className={styles.gridWrapper} ref={gridWrapperRef}>
           <Grid
             cells={numberedCells}
             cursor={cursor}
@@ -208,7 +208,7 @@ function Game() {
         <div className={styles.activeClueWrapper}>
           <ActiveClue skipWord={skipWord} clue={activeClue} />
         </div>
-        <div className={styles.cluesWrapper2} ref={cluesWrapperRef}>
+        <div className={styles.cluesWrapper} ref={cluesWrapperRef}>
           <ClueBox
             clues={clues}
             activeClue={activeClue}
