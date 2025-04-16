@@ -1,8 +1,5 @@
 .cluesContainer {
   margin-top: -37px;
-
-  --active-tab-header-color: hsl(192.5deg, 100%, 40%);
-  --inactive-tab-header-color: #dee2e6;
 }
 
 .smallScreenClues {

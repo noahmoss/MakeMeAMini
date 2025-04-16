@@ -1,12 +1,16 @@
 body {
-  --background-color: hsl(25deg, 4%, 100%);
+  --background-color: hsl(25deg 4% 100%);
   --default-text-color: black;
-  --active-cell-color: #fff9d0;
-  --active-clue-color: #caf0ff;
-  --cursor-color: hsl(192.5deg, 100%, 89.6%);
-  --filled-cell-color: black;
+  --active-cell-color: hsl(52deg 100% 91%);
+  --active-clue-color: hsl(197deg 100% 90%);
+  --cursor-color: hsl(192.5deg 100% 89.6%);
 
-  --breakpoint-sm: 480px;
+  --active-tab-header-color: #012169;
+  --inactive-tab-header-color: hsl(210deg 14% 89%);
+
+  --filled-cell-color: black;
+  --filled-cell-hover-indicator: hsl(0deg 0% 20%);
+  --filled-cell-mirror-hover-indicator: hsl(0deg 0% 20%);
 }
 
 .App {

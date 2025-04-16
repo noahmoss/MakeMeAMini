@@ -37,11 +37,11 @@
 }
 
 .fillCellHoverIndicator {
-  background: hsl(0deg 0% 20%);
+  background: var(--filled-cell-hover-indicator);
 }
 
 .mirroredFillCellHoverIndicator {
-  background: hsl(0deg 0% 50%);
+  background: var(--filled-cell-mirror-hover-indicator);
 }
 
 .gridCellNumber {
