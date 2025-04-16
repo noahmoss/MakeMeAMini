@@ -107,20 +107,25 @@ function Game() {
     // Update clues with new numberings if needed
     const extractedClues = extractClues(numberCells(newCells));
     const mergeClues = (
+      dir: ClueDirection,
       newClues: ClueList,
       existingClues: ClueList,
     ): ClueList => {
       return Object.fromEntries(
         Object.entries(newClues).map(([number, { value }]) => [
           number,
-          { value: existingClues[number]?.value ?? value },
+          {
+            value: existingClues[number]?.value ?? value,
+            number: Number(number),
+            direction: dir,
+          },
         ]),
       );
     };
 
     const newClues = {
-      across: mergeClues(extractedClues.across, clues.across),
-      down: mergeClues(extractedClues.down, clues.down),
+      across: mergeClues("across", extractedClues.across, clues.across),
+      down: mergeClues("down", extractedClues.down, clues.down),
     };
 
     setClues(newClues);
