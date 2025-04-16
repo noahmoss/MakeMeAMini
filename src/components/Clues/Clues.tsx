@@ -11,13 +11,13 @@ export type Clue = {
   value: string;
 };
 
-export type EnrichedClue = Clue & {
+export type NumberedClue = Clue & {
   number: number;
   direction: ClueDirection;
 };
 
 export type ClueList = {
-  [key: string]: Clue;
+  [key: string]: NumberedClue;
 };
 
 export type Clues = {
@@ -50,7 +50,11 @@ export function extractClues(cells: NumberedCell[][]): Clues {
             direction: "row",
           })
         ) {
-          clues.across[cell.number] = { value: "" };
+          clues.across[cell.number] = {
+            value: "",
+            direction: "across",
+            number: cell.number,
+          };
         }
 
         // Check for "down" clues
@@ -61,7 +65,11 @@ export function extractClues(cells: NumberedCell[][]): Clues {
             direction: "col",
           })
         ) {
-          clues.down[cell.number] = { value: "" };
+          clues.down[cell.number] = {
+            value: "",
+            direction: "down",
+            number: cell.number,
+          };
         }
       }
     });
@@ -111,7 +119,7 @@ export function getActiveClue(
   cells: NumberedCell[][],
   clues: Clues,
   cursor: Cursor,
-): EnrichedClue | undefined {
+): NumberedClue | undefined {
   if (allFilled(cells)) {
     return undefined;
   }
@@ -131,15 +139,49 @@ export function getActiveClue(
   };
 }
 
+type ClueInputProps = {
+  clue: NumberedClue;
+  updateClue: updateClueFn;
+};
+
+export function ClueInput({ clue, updateClue }: ClueInputProps) {
+  return (
+    <Textarea
+      value={clue.value}
+      onChange={(e) =>
+        updateClue(clue?.number, clue?.direction, e.target.value)
+      }
+      autosize
+      minRows={1}
+      maxRows={3}
+      styles={{
+        root: {
+          width: "100%",
+        },
+        input: {
+          transition: "unset",
+          height: "min-content",
+        },
+        wrapper: {
+          paddingTop: "4px",
+          paddingBottom: "4px",
+        },
+      }}
+    />
+  );
+}
+
+export type updateClueFn = (
+  clueNumber: number,
+  direction: ClueDirection,
+  clue: string,
+) => void;
+
 type ClueListBaseProps = {
-  activeClue?: EnrichedClue;
-  orthogonalClue?: EnrichedClue;
+  activeClue?: NumberedClue;
+  orthogonalClue?: NumberedClue;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
-  updateClue: (
-    clueNumber: number,
-    direction: ClueDirection,
-    clue: string,
-  ) => void;
+  updateClue: updateClueFn;
 };
 
 type ClueListProps = ClueListBaseProps & {
@@ -209,29 +251,7 @@ function ClueList({
               >
                 {clueNumber}
               </span>
-              <Textarea
-                value={clue.value}
-                onChange={(e) =>
-                  updateClue(clueNumber, direction, e.target.value)
-                }
-                onFocus={() => setActiveClue(clueNumber, direction)}
-                autosize
-                minRows={1}
-                maxRows={3}
-                styles={{
-                  root: {
-                    width: "100%",
-                  },
-                  input: {
-                    transition: "unset",
-                    height: "min-content",
-                  },
-                  wrapper: {
-                    paddingTop: "4px",
-                    paddingBottom: "4px",
-                  },
-                }}
-              />
+              <ClueInput clue={clue} updateClue={updateClue} />
             </div>
           </li>
         );

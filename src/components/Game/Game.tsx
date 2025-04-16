@@ -206,7 +206,11 @@ function Game() {
           />
         </div>
         <div className={styles.activeClueWrapper}>
-          <ActiveClue skipWord={skipWord} clue={activeClue} />
+          <ActiveClue
+            skipWord={skipWord}
+            clue={activeClue}
+            updateClue={updateClue}
+          />
         </div>
         <div className={styles.cluesWrapper} ref={cluesWrapperRef}>
           <ClueBox

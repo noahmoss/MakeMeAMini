@@ -1,15 +1,17 @@
 import { ChevronLeft, ChevronRight } from "react-feather";
-import { EnrichedClue } from "../Clues";
+import { NumberedClue, updateClueFn } from "../Clues";
 import { MovementDirection } from "../Game";
 
 import styles from "./ActiveClue.module.css";
+import { Textarea } from "@mantine/core";
 
 type ActiveClueProps = {
-  clue?: EnrichedClue;
+  clue?: NumberedClue;
   skipWord: (direction: MovementDirection) => void;
+  updateClue: updateClueFn;
 };
 
-function ActiveClue({ clue, skipWord }: ActiveClueProps) {
+function ActiveClue({ clue, skipWord, updateClue }: ActiveClueProps) {
   return (
     <div className={styles.activeClue}>
       <button
@@ -22,7 +24,32 @@ function ActiveClue({ clue, skipWord }: ActiveClueProps) {
         <div className={styles.activeClueLabel}>
           {clue && `${clue.number}${clue.direction.charAt(0).toUpperCase()}`}
         </div>
-        <div>{clue?.value}</div>
+        <div className={styles.activeClueValue}>{clue?.value}</div>
+        {clue && (
+          <Textarea
+            className={styles.activeClueInput}
+            value={clue.value}
+            onChange={(e) =>
+              updateClue(clue?.number, clue?.direction, e.target.value)
+            }
+            autosize
+            minRows={1}
+            maxRows={3}
+            styles={{
+              root: {
+                width: "100%",
+              },
+              input: {
+                transition: "unset",
+                height: "min-content",
+              },
+              wrapper: {
+                paddingTop: "4px",
+                paddingBottom: "4px",
+              },
+            }}
+          />
+        )}
       </div>
       <button
         className={styles.clueSkipButton}
