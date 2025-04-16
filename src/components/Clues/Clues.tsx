@@ -120,7 +120,7 @@ export function getActiveClue(
 
   const clueNumber = cells[startCursor.row][startCursor.col]?.number;
   if (!clueNumber) {
-    throw new Error("findWordBoundaries did not return a valid word start!");
+    return undefined;
   }
   const clueDir = cursor.direction === "row" ? "across" : "down";
 
