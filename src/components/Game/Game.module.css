@@ -6,11 +6,16 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+  gap: 8px;
 
   padding: 0px 16px;
 
   @media (min-width: 480px) {
     justify-content: flex-end;
+  }
+
+  @media (min-width: 600px) {
+    gap: 16px;
   }
 }
 
@@ -18,7 +23,7 @@
   align-self: center;
   display: grid;
 
-  grid-template-rows: 4.5rem auto;
+  grid-template-rows: 2rem 4.5rem auto;
   grid-template-columns: auto;
 
   width: 100%;
@@ -38,14 +43,17 @@
     row-gap: 8px;
 
     grid-template-areas:
+      "controls"
       "header"
       "grid";
   }
 
   @media (min-width: 600px) {
+    grid-template-rows: 4.5rem auto;
+
     grid-template-columns: calc(50% - 8px) calc(50% - 8px);
     grid-template-areas:
-      "header ."
+      "header controls"
       "grid clues";
   }
 
@@ -66,6 +74,11 @@
   aspect-ratio: 1/1;
 
   width: 100%;
+}
+
+.controlsWrapper {
+  grid-area: controls;
+  border-color: red;
 }
 
 .cluesWrapper {

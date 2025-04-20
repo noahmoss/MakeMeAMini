@@ -171,7 +171,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />

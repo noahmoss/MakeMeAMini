@@ -17,10 +17,13 @@ import {
   ClueList,
 } from "../Clues";
 import ActiveClue from "../ActiveClue";
+import Controls from "../Controls";
 
 export type CursorDirection = "row" | "col";
 
 export type MovementDirection = "forwards" | "backwards";
+
+export type Mode = "solving" | "editing";
 
 export interface Cursor {
   row: number;
@@ -51,6 +54,8 @@ function Game() {
     direction: "row",
   });
   const [symmetry, setSymmetry] = useState<boolean>(false);
+
+  const [mode, setMode] = useState<Mode>("editing");
 
   const numberedCells: NumberedCell[][] = numberCells(cells);
   const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
@@ -194,8 +199,11 @@ function Game() {
 
   return (
     <div className={styles.gameWrapper}>
-      <Header settingsProps={settingsProps} />
+      <Header settingsProps={settingsProps} mode={mode} setMode={setMode} />
       <div className={styles.gridAndClues}>
+        <div className={styles.controlsWrapper}>
+          <Controls mode={mode} />
+        </div>
         <div className={styles.gridWrapper} ref={gridWrapperRef}>
           <Grid
             cells={numberedCells}
