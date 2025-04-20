@@ -16,23 +16,19 @@ function Logo() {
   return (
     <div className={styles.logoWrapper}>
       <div className={styles.logo}>
-        <LogoLetter letter="M" />
+        <LogoLetter letter="C" />
+        <LogoLetter letter="R" />
         <LogoLetter letter="A" />
-        <LogoLetter letter="K" />
-        <LogoLetter letter="E" />
+        <LogoLetter letter="F" />
+        <LogoLetter letter="T" />
         <LogoSpace />
-
-        <LogoLetter letter="M" />
-        <LogoLetter letter="E" />
-
         <LogoLetter letter="A" />
         <LogoSpace />
-
-        <LogoLetter letter="M" />
-        <LogoLetter letter="I" />
-        <LogoLetter letter="N" />
-        <LogoLetter letter="I" />
-        <LogoSpace />
+        <LogoLetter letter="C" />
+        <LogoLetter letter="R" />
+        <LogoLetter letter="O" />
+        <LogoLetter letter="S" />
+        <LogoLetter letter="S" />
       </div>
     </div>
   );
