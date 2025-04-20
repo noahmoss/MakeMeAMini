@@ -53,6 +53,7 @@ function Game() {
     col: 0,
     direction: "row",
   });
+
   const [symmetry, setSymmetry] = useState<boolean>(false);
 
   const [mode, setMode] = useState<Mode>("editing");
@@ -63,7 +64,11 @@ function Game() {
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
   const setRowCount = (rowCount: number) => {
-    setCells(initialCells(rowCount));
+    // When changing row count, do a hard reset of grid and clues
+    const newCells = initialCells(rowCount);
+    setCells(newCells);
+    const newClues = initialClues(numberCells(newCells));
+    setClues(newClues)
   };
 
   const updateCursorPosition = (row: number, col: number) => {
