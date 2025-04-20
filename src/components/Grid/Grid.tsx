@@ -129,6 +129,8 @@ function Grid({
     }
   };
 
+  // Attach a ResizeObserver to the grid to ensure the cell font sizes scale
+  // proportionally to cell width.
   const gridRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const gridEl = gridRef?.current;
@@ -156,7 +158,7 @@ function Grid({
     });
     observer.observe(gridEl);
     return () => observer.disconnect();
-  }, []);
+  }, [cells.length]);
 
   return (
     <>
@@ -169,7 +171,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
