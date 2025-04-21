@@ -2,4 +2,20 @@
   border-color: red;
   display: flex;
   justify-content: end;
+  transition:
+    opacity 0.2s ease-in,
+    max-height 0.1s ease-in 0.2s;
+}
+
+.visible {
+  opacity: 100%;
+  pointer-events: auto;
+  max-height: 100px;
+}
+
+.hidden {
+  opacity: 0%;
+  pointer-events: none;
+  max-height: 0px;
+  /*transform: translateY(10px);*/
 }

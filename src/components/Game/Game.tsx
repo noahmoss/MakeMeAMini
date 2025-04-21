@@ -68,7 +68,7 @@ function Game() {
     const newCells = initialCells(rowCount);
     setCells(newCells);
     const newClues = initialClues(numberCells(newCells));
-    setClues(newClues)
+    setClues(newClues);
   };
 
   const updateCursorPosition = (row: number, col: number) => {
@@ -209,6 +209,13 @@ function Game() {
         <div className={styles.controlsWrapper}>
           <Controls mode={mode} />
         </div>
+        <div className={styles.activeClueWrapper}>
+          <ActiveClue
+            skipWord={skipWord}
+            clue={activeClue}
+            updateClue={updateClue}
+          />
+        </div>
         <div className={styles.gridWrapper} ref={gridWrapperRef}>
           <Grid
             cells={numberedCells}
@@ -221,13 +228,6 @@ function Game() {
             reverseCursor={reverseCursor}
             skipWord={skipWord}
             useSymmetry={symmetry}
-          />
-        </div>
-        <div className={styles.activeClueWrapper}>
-          <ActiveClue
-            skipWord={skipWord}
-            clue={activeClue}
-            updateClue={updateClue}
           />
         </div>
         <div className={styles.cluesWrapper} ref={cluesWrapperRef}>

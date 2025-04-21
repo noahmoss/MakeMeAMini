@@ -38,17 +38,12 @@
   gap: 8px;
 
   @media (min-width: 480px) {
-    display: grid;
     column-gap: 16px;
     row-gap: 8px;
-
-    grid-template-areas:
-      "controls"
-      "header"
-      "grid";
   }
 
   @media (min-width: 600px) {
+    display: grid;
     grid-template-rows: 4.5rem auto;
 
     grid-template-columns: calc(50% - 8px) calc(50% - 8px);
@@ -66,6 +61,12 @@
 
 .activeClueWrapper {
   grid-area: header;
+
+  order: 2;
+
+  @media (min-width: 480px) {
+    order: 1;
+  }
 }
 
 .gridWrapper {
@@ -74,11 +75,11 @@
   aspect-ratio: 1/1;
 
   width: 100%;
+  order: 1;
 }
 
 .controlsWrapper {
   grid-area: controls;
-  border-color: red;
 }
 
 .cluesWrapper {

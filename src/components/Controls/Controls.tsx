@@ -1,6 +1,6 @@
 import styles from "./Controls.module.css";
 
-import { LifeBuoy, RotateCw, Flag, Tool } from "react-feather";
+import { LifeBuoy, RotateCw, Flag } from "react-feather";
 
 import { Button, Tooltip } from "@mantine/core";
 import { Mode } from "../Game";
@@ -10,8 +10,10 @@ type ControlsProps = {
 };
 
 function Controls({ mode }: ControlsProps) {
+  const visibilityClass = mode === "solving" ? styles.visible : styles.hidden;
+
   return (
-    <div className={styles.controls}>
+    <div className={`${styles.controls} ${visibilityClass}`}>
       <Tooltip label="Clear grid" withArrow={true}>
         <Button variant="subtle" color="black" size="compact-md">
           <RotateCw size="20" />
