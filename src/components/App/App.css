@@ -11,6 +11,8 @@ body {
   --filled-cell-color: black;
   --filled-cell-hover-indicator: hsl(0deg 0% 20%);
   --filled-cell-mirror-hover-indicator: hsl(0deg 0% 20%);
+
+  --header-height: 90px;
 }
 
 .App {

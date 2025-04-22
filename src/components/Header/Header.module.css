@@ -1,16 +1,84 @@
 .siteHeader {
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding-top: 16px;
   padding-bottom: 16px;
   border-bottom: 1px solid gray;
 }
 
+.hamburgerMenu {
+  display: block;
+
+  @media (min-width: 600px) {
+    display: none;
+  }
+}
+
+.sidebar {
+  @media (min-width: 600px) {
+    display: none;
+  }
+}
+
+.mobileHeaderActionsWrapper {
+  display: block;
+
+  @media (min-width: 600px) {
+    display: none;
+  }
+}
+
+.desktopHeaderActionsWrapper {
+  display: none;
+
+  @media (min-width: 600px) {
+    display: block;
+  }
+}
+
 .iconGroup {
   display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  /* Shift button group to the right to align icons with secondary buttons */
-  transform: translateX(6px);
+  flex-direction: column;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+}
+
+.iconAndLabel {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem;
+
+  @media (min-width: 600px) {
+    gap: 0px;
+  }
+
+}
+
+.tooltip {
+  display: none;
+
+  @media (min-width: 600px) {
+    display: block;
+  }
+}
+
+.actionButton {
+  display: grid;
+  grid-column: span 2;
+  grid-template-columns: subgrid;
+}
+
+.actionButtonLabel {
+  display: block;
+
+  @media (min-width: 600px) {
+    display: none;
+  }
+
 }
