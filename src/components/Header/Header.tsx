@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactNode } from "react";
+import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 
 import { Play, Edit3, Settings, Link, HelpCircle, Tool } from "react-feather";
 import { useDisclosure } from "@mantine/hooks";
@@ -8,6 +8,28 @@ import Logo from "../Logo";
 import SettingsModal, { SettingsProps } from "../SettingsModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSeconds((seconds) => seconds + 1)
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [])
+
+  const date = new Date(0);
+  date.setSeconds(seconds);
+  const timeStringStart = seconds < 3600 ? 14 : 11;
+  const timeStringEnd = 19;
+  const timeString = date.toISOString().substring(timeStringStart, timeStringEnd);
+
+  return (
+    <div className={styles.timer}>{timeString}</div>
+  )
+}
 
 type ActionButtonProps = {
   label: string;
@@ -94,7 +116,7 @@ type HeaderProps = {
   setMode: (mode: Mode) => void;
 };
 
-function Header({ settingsProps, setMode, ...delegated }: HeaderProps) {
+function Header({ settingsProps, setMode, mode }: HeaderProps) {
   const [burgerOpen, { toggle: toggleBurger }] = useDisclosure(false);
   const [settingsOpen, { open: openSettings, close: closeSettings }] = useDisclosure(false);
 
@@ -107,6 +129,7 @@ function Header({ settingsProps, setMode, ...delegated }: HeaderProps) {
       />
       <div className={styles.siteHeader}>
         <Logo />
+        {mode === "solving" && <Timer />}
         <Burger opened={burgerOpen} onClick={toggleBurger} className={styles.hamburgerMenu} />
         {/* Small screens - use a drawer */}
         <Drawer
@@ -124,7 +147,7 @@ function Header({ settingsProps, setMode, ...delegated }: HeaderProps) {
         >
           <div className={styles.mobileHeaderActionsWrapper}>
             <HeaderActions
-              {...delegated}
+              mode={mode}
               setMode={(mode: Mode) => {
                 toggleBurger();
                 setMode(mode);
@@ -140,8 +163,8 @@ function Header({ settingsProps, setMode, ...delegated }: HeaderProps) {
         <div className={styles.desktopHeaderActionsWrapper}>
           <HeaderActions
             openSettings={openSettings}
+            mode={mode}
             setMode={setMode}
-            {...delegated}
           />
         </div>
       </div>
