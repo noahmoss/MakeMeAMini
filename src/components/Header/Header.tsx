@@ -1,6 +1,6 @@
 import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 
-import { Play, Edit3, Settings, Link, HelpCircle, Tool } from "react-feather";
+import { Edit3, Settings, Link, HelpCircle, Tool } from "react-feather";
 import { useDisclosure } from "@mantine/hooks";
 import { Button, Tooltip, Burger, Drawer } from "@mantine/core";
 
@@ -9,33 +9,60 @@ import SettingsModal, { SettingsProps } from "../SettingsModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
 
-function Timer() {
+type TimerProps = {
+  mode: Mode;
+};
+
+function Timer({ mode }: TimerProps) {
+  const [visible, setVisible] = useState(false);
+  const [animationClass, setAnimationClass] = useState("");
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
+    if (mode === "editing") {
+      setSeconds(0);
+      return;
+    }
+
     const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1)
+      setSeconds((seconds) => seconds + 1);
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [])
+  }, [mode]);
+
+  useEffect(() => {
+    if (mode === "solving") {
+      setVisible(true);
+      setAnimationClass(styles.fadeIn);
+    } else {
+      setAnimationClass(styles.fadeOut);
+      // delay hiding until fade-out finishes
+      const timeout = setTimeout(() => setVisible(false), 400);
+      return () => clearTimeout(timeout);
+    }
+  }, [mode]);
+
+  if (!visible) return null;
 
   const date = new Date(0);
   date.setSeconds(seconds);
   const timeStringStart = seconds < 3600 ? 14 : 11;
   const timeStringEnd = 19;
-  const timeString = date.toISOString().substring(timeStringStart, timeStringEnd);
+  const timeString = date
+    .toISOString()
+    .substring(timeStringStart, timeStringEnd);
 
   return (
-    <div className={styles.timer}>{timeString}</div>
-  )
+    <div className={`${styles.timer} ${animationClass}`}>{timeString}</div>
+  );
 }
 
 type ActionButtonProps = {
   label: string;
-  onClick?: MouseEventHandler<HTMLButtonElement>,
-  children?: ReactNode,
-}
+  onClick?: MouseEventHandler<HTMLButtonElement>;
+  children?: ReactNode;
+};
 
 function ActionButton({ label, onClick, children }: ActionButtonProps) {
   return (
@@ -51,7 +78,7 @@ function ActionButton({ label, onClick, children }: ActionButtonProps) {
         {children}
       </Button>
     </Tooltip>
-  )
+  );
 }
 
 type HeaderActionsProps = {
@@ -64,50 +91,40 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
   return (
     <div className={styles.iconGroup}>
       {mode === "editing" ? (
-        <ActionButton label="Test solve" onClick={() => setMode("solving")} >
+        <ActionButton label="Test solve" onClick={() => setMode("solving")}>
           <div className={styles.iconAndLabel}>
             <Edit3 />
-            <div className={styles.actionButtonLabel}>
-              Test solve
-            </div>
+            <div className={styles.actionButtonLabel}>Test solve</div>
           </div>
         </ActionButton>
       ) : (
-        <ActionButton label="Edit grid" onClick={() => setMode("editing")} >
+        <ActionButton label="Edit grid" onClick={() => setMode("editing")}>
           <div className={styles.iconAndLabel}>
             <Tool />
-            <div className={styles.actionButtonLabel}>
-              Edit
-            </div>
+            <div className={styles.actionButtonLabel}>Edit</div>
           </div>
         </ActionButton>
       )}
-      <ActionButton label="Settings" onClick={openSettings} >
+      <ActionButton label="Settings" onClick={openSettings}>
         <div className={styles.iconAndLabel}>
           <Settings />
-          <div className={styles.actionButtonLabel}>
-            Settings
-          </div>
+          <div className={styles.actionButtonLabel}>Settings</div>
         </div>
       </ActionButton>
       <ActionButton label="Share">
         <div className={styles.iconAndLabel}>
           <Link />
-          <div className={styles.actionButtonLabel}>
-            Share
-          </div>
+          <div className={styles.actionButtonLabel}>Share</div>
         </div>
       </ActionButton>
       <ActionButton label="Help">
         <div className={styles.iconAndLabel}>
           <HelpCircle />
-          <div className={styles.actionButtonLabel}>
-            Help
-          </div>
+          <div className={styles.actionButtonLabel}>Help</div>
         </div>
       </ActionButton>
     </div>
-  )
+  );
 }
 
 type HeaderProps = {
@@ -118,7 +135,8 @@ type HeaderProps = {
 
 function Header({ settingsProps, setMode, mode }: HeaderProps) {
   const [burgerOpen, { toggle: toggleBurger }] = useDisclosure(false);
-  const [settingsOpen, { open: openSettings, close: closeSettings }] = useDisclosure(false);
+  const [settingsOpen, { open: openSettings, close: closeSettings }] =
+    useDisclosure(false);
 
   return (
     <>
@@ -129,8 +147,12 @@ function Header({ settingsProps, setMode, mode }: HeaderProps) {
       />
       <div className={styles.siteHeader}>
         <Logo />
-        {mode === "solving" && <Timer />}
-        <Burger opened={burgerOpen} onClick={toggleBurger} className={styles.hamburgerMenu} />
+        <Timer mode={mode} />
+        <Burger
+          opened={burgerOpen}
+          onClick={toggleBurger}
+          className={styles.hamburgerMenu}
+        />
         {/* Small screens - use a drawer */}
         <Drawer
           position="right"
@@ -141,7 +163,7 @@ function Header({ settingsProps, setMode, mode }: HeaderProps) {
           styles={{
             inner: {
               marginTop: "calc(var(--header-height) - 4px)",
-            }
+            },
           }}
           className={styles.sidebar}
         >

@@ -11,12 +11,34 @@
 .timer {
   font-size: 1.4rem;
   opacity: 0;
-  animation: fadeIn 0.5s forwards;
+  transition: opacity 0.4s ease-in-out;
+}
+
+.fadeIn {
+  animation: fadeIn 0.4s forwards;
+}
+
+.fadeOut {
+  animation: fadeOut 0.4s forwards;
 }
 
 @keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
   to {
     opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
   }
 }
 
@@ -69,7 +91,6 @@
   @media (min-width: 600px) {
     gap: 0px;
   }
-
 }
 
 .tooltip {
@@ -92,5 +113,4 @@
   @media (min-width: 600px) {
     display: none;
   }
-
 }
