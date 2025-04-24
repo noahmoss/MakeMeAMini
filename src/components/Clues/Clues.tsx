@@ -259,12 +259,45 @@ function ClueList({
     </ol>
   );
 }
+type ClueTabHeaderProps = {
+  activeClue?: NumberedClue;
+  orthogonalClue?: NumberedClue;
+  setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
+};
+
+function ClueTabHeader({ orthogonalClue, setActiveClue }: ClueTabHeaderProps) {
+  function toggleDirection() {
+    return (
+      orthogonalClue &&
+      setActiveClue(orthogonalClue.number, orthogonalClue.direction)
+    );
+  }
+
+  return (
+    <Tabs.List grow>
+      <Tabs.Tab value="across" onClick={toggleDirection}>
+        <h2 className={styles.cluesHeader}>Across</h2>
+      </Tabs.Tab>
+      <Tabs.Tab value="down">
+        <h2 className={styles.cluesHeader} onClick={toggleDirection}>
+          Down
+        </h2>
+      </Tabs.Tab>
+    </Tabs.List>
+  );
+}
 
 type CluesProps = ClueListBaseProps & {
   clues: Clues;
 };
 
-export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
+export function ClueBox({
+  clues,
+  activeClue,
+  orthogonalClue,
+  setActiveClue,
+  ...rest
+}: CluesProps) {
   const [activeTab, setActiveTab] = useState<string | null>(
     activeClue?.direction || "across",
   );
@@ -275,6 +308,13 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
     }
   }, [activeClue]);
 
+  function toggleDirection() {
+    return (
+      orthogonalClue &&
+      setActiveClue(orthogonalClue.number, orthogonalClue.direction)
+    );
+  }
+
   return (
     <>
       <div className={`${styles.cluesContainer} ${styles.smallScreenClues}`}>
@@ -283,21 +323,18 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
           onChange={setActiveTab}
           color="var(--active-tab-header-color)"
         >
-          <Tabs.List grow>
-            <Tabs.Tab value="across">
-              <h2 className={styles.cluesHeader}>Across</h2>
-            </Tabs.Tab>
-            <Tabs.Tab value="down">
-              <h2 className={styles.cluesHeader}>Down</h2>
-            </Tabs.Tab>
-          </Tabs.List>
-
+          <ClueTabHeader
+            activeClue={activeClue}
+            orthogonalClue={orthogonalClue}
+            setActiveClue={setActiveClue}
+          />
           <div className={styles.cluesSection}>
             <Tabs.Panel value="across">
               <ClueList
                 direction="across"
                 clueList={clues?.across}
                 activeClue={activeClue}
+                setActiveClue={setActiveClue}
                 {...rest}
               />
             </Tabs.Panel>
@@ -307,6 +344,7 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
                 direction="down"
                 clueList={clues?.down}
                 activeClue={activeClue}
+                setActiveClue={setActiveClue}
                 {...rest}
               />
             </Tabs.Panel>
@@ -316,8 +354,9 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
 
       <div className={`${styles.cluesContainer} ${styles.largeScreenClues}`}>
         <div className={styles.cluesSection}>
-          <h2
+          <button
             className={styles.largeScreenCluesHeader}
+            onClick={toggleDirection}
             style={{
               borderBottomColor:
                 activeClue?.direction === "across"
@@ -325,18 +364,20 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
                   : "var(--inactive-tab-header-color)",
             }}
           >
-            Across
-          </h2>
+            <h2>Across</h2>
+          </button>
           <ClueList
             direction="across"
             clueList={clues?.across}
             activeClue={activeClue}
+            setActiveClue={setActiveClue}
             {...rest}
           />
         </div>
         <div className={styles.cluesSection}>
-          <h2
+          <button
             className={styles.largeScreenCluesHeader}
+            onClick={toggleDirection}
             style={{
               borderBottomColor:
                 activeClue?.direction === "down"
@@ -344,12 +385,13 @@ export function ClueBox({ clues, activeClue, ...rest }: CluesProps) {
                   : "var(--inactive-tab-header-color)",
             }}
           >
-            Down
-          </h2>
+            <h2>Down</h2>
+          </button>
           <ClueList
             direction="down"
             clueList={clues?.down}
             activeClue={activeClue}
+            setActiveClue={setActiveClue}
             {...rest}
           />
         </div>

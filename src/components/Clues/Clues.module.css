@@ -28,7 +28,10 @@
 }
 
 .largeScreenCluesHeader {
-  font-size: 18px;
+  /* Unset default button styles */
+  all: unset;
+
+  font-size: 0.8rem;
   display: flex;
   justify-content: center;
   padding-bottom: 10px;
