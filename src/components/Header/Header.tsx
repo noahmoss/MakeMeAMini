@@ -64,7 +64,7 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
   return (
     <div className={styles.iconGroup}>
       {mode === "editing" ? (
-        <ActionButton label="Test solve" onClick={() => setMode("solving")} >
+        <ActionButton label="Solve" onClick={() => setMode("solving")} >
           <div className={styles.iconAndLabel}>
             <Edit3 />
             <div className={styles.actionButtonLabel}>
@@ -73,7 +73,7 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
           </div>
         </ActionButton>
       ) : (
-        <ActionButton label="Edit grid" onClick={() => setMode("editing")} >
+        <ActionButton label="Edit" onClick={() => setMode("editing")} >
           <div className={styles.iconAndLabel}>
             <Tool />
             <div className={styles.actionButtonLabel}>
