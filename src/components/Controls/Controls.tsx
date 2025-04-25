@@ -11,15 +11,24 @@ type ControlsProps = {
 };
 
 function Controls({ mode }: ControlsProps) {
+  // TODO: extract animation logic into a hook
+  const [visible, setVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
 
   useEffect(() => {
     if (mode === "solving") {
+      setVisible(true);
       setAnimationClass(styles.fadeIn);
     } else {
       setAnimationClass(styles.fadeOut);
+      const timeout = setTimeout(() => {
+        setVisible(false);
+      }, 400);
+      return () => clearTimeout(timeout);
     }
   }, [mode]);
+
+  if (!visible) return;
 
   return (
     <div className={`${styles.controls} ${animationClass}`}>
