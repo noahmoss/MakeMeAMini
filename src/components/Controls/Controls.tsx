@@ -4,16 +4,25 @@ import { LifeBuoy, RotateCw, Flag } from "react-feather";
 
 import { Button, Tooltip } from "@mantine/core";
 import { Mode } from "../Game";
+import { useEffect, useState } from "react";
 
 type ControlsProps = {
   mode: Mode;
 };
 
 function Controls({ mode }: ControlsProps) {
-  const visibilityClass = mode === "solving" ? styles.visible : styles.hidden;
+  const [animationClass, setAnimationClass] = useState("");
+
+  useEffect(() => {
+    if (mode === "solving") {
+      setAnimationClass(styles.fadeIn);
+    } else {
+      setAnimationClass(styles.fadeOut);
+    }
+  }, [mode]);
 
   return (
-    <div className={`${styles.controls} ${visibilityClass}`}>
+    <div className={`${styles.controls} ${animationClass}`}>
       <Tooltip label="Clear grid" withArrow={true}>
         <Button variant="subtle" color="black" size="compact-md">
           <RotateCw size="20" />

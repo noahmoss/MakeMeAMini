@@ -34,9 +34,9 @@ function Timer({ mode }: TimerProps) {
   useEffect(() => {
     if (mode === "solving") {
       setVisible(true);
-      setAnimationClass(styles.fadeIn);
+      setAnimationClass("fadeIn");
     } else {
-      setAnimationClass(styles.fadeOut);
+      setAnimationClass("fadeOut");
       // delay hiding until fade-out finishes
       const timeout = setTimeout(() => setVisible(false), 400);
       return () => clearTimeout(timeout);

@@ -27,3 +27,33 @@ body {
   justify-content: center;
   color: black;
 }
+
+/* Reusable animation helpers */
+
+.fadeIn {
+  animation: fade-in 0.4s forwards;
+}
+
+.fadeOut {
+  animation: fade-out 0.4s forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
