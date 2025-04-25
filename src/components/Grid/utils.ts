@@ -22,7 +22,7 @@ export function allFilled(cells: Cell[][]): boolean {
 export const findWordBoundaries = (cells: Cell[][], cursor: Cursor) => {
   const { row, col, direction } = cursor;
 
-  let currentCellInWord = (index: number): Cell =>
+  const currentCellInWord = (index: number): Cell =>
     direction === "row" ? cells[row][index] : cells[index][col];
   const maxIndex =
     (direction === "row" ? colCount(cells) : rowCount(cells)) - 1;
@@ -41,11 +41,11 @@ export const findWordBoundaries = (cells: Cell[][], cursor: Cursor) => {
   }
   wordEnd -= 1;
 
-  let startCursor =
+  const startCursor =
     direction === "row"
       ? { ...cursor, col: wordStart }
       : { ...cursor, row: wordStart };
-  let endCursor =
+  const endCursor =
     direction === "row"
       ? { ...cursor, col: wordEnd }
       : { ...cursor, row: wordEnd };
@@ -173,7 +173,7 @@ export function stepCursor(
 
   if (stepDirection === "forwards") {
     if (cursor[orthogonalDir] < endCursor[orthogonalDir]) {
-      let steppedCursor = { ...cursor };
+      const steppedCursor = { ...cursor };
       steppedCursor[orthogonalDir] += 1;
       return steppedCursor;
     } else {
@@ -187,7 +187,7 @@ export function stepCursor(
     }
   } else if (stepDirection === "backwards") {
     if (cursor[orthogonalDir] > startCursor[orthogonalDir]) {
-      let steppedCursor = { ...cursor };
+      const steppedCursor = { ...cursor };
       steppedCursor[orthogonalDir] -= 1;
       return steppedCursor;
     } else {

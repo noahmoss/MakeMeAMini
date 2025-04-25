@@ -5,11 +5,11 @@ import { MovementDirection } from "../Game";
 import styles from "./ActiveClue.module.css";
 import { Textarea } from "@mantine/core";
 
-type ActiveClueProps = {
+interface ActiveClueProps {
   clue?: NumberedClue;
   skipWord: (direction: MovementDirection) => void;
   updateClue: updateClueFn;
-};
+}
 
 function ActiveClue({ clue, skipWord, updateClue }: ActiveClueProps) {
   return (

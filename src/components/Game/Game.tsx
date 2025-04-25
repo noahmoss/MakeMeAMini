@@ -104,7 +104,7 @@ function Game() {
   };
 
   const toggleFilledCell = (row: number, col: number) => {
-    let newCells = [...cells];
+    const newCells = [...cells];
     newCells[row][col].filled = !cells[row][col].filled;
     newCells[row][col].value = "";
     setCells(newCells);
@@ -142,7 +142,7 @@ function Game() {
   };
 
   const setCurrentCellValue = (value: string) => {
-    let newCells = [...cells];
+    const newCells = [...cells];
     newCells[cursor.row][cursor.col].value = value;
     setCells(newCells);
   };

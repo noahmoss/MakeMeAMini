@@ -9,9 +9,9 @@ import SettingsModal, { SettingsProps } from "../SettingsModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
 
-type TimerProps = {
+interface TimerProps {
   mode: Mode;
-};
+}
 
 function Timer({ mode }: TimerProps) {
   const [visible, setVisible] = useState(false);
@@ -58,11 +58,11 @@ function Timer({ mode }: TimerProps) {
   );
 }
 
-type ActionButtonProps = {
+interface ActionButtonProps {
   label: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   children?: ReactNode;
-};
+}
 
 function ActionButton({ label, onClick, children }: ActionButtonProps) {
   return (
@@ -81,11 +81,11 @@ function ActionButton({ label, onClick, children }: ActionButtonProps) {
   );
 }
 
-type HeaderActionsProps = {
+interface HeaderActionsProps {
   mode: Mode;
   setMode: (mode: Mode) => void;
   openSettings: () => void;
-};
+}
 
 function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
   return (
@@ -127,11 +127,11 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
   );
 }
 
-type HeaderProps = {
+interface HeaderProps {
   settingsProps: SettingsProps;
   mode: Mode;
   setMode: (mode: Mode) => void;
-};
+}
 
 function Header({ settingsProps, setMode, mode }: HeaderProps) {
   const [burgerOpen, { toggle: toggleBurger }] = useDisclosure(false);

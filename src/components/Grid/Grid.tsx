@@ -14,7 +14,7 @@ export interface NumberedCell extends Cell {
   number: number | null;
 }
 
-type GridProps = {
+interface GridProps {
   cells: NumberedCell[][];
   cursor?: Cursor;
   updateCursorPosition: (row: number, col: number) => void;
@@ -26,7 +26,7 @@ type GridProps = {
   skipWord: (direction: MovementDirection) => void;
   // Should we apply rotational symmetry when editing black squares?
   useSymmetry: boolean;
-};
+}
 
 function Grid({
   cells,

@@ -7,38 +7,36 @@ import { Tabs, Textarea } from "@mantine/core";
 import styles from "./Clues.module.css";
 import { useEffect, useRef, useState } from "react";
 
-export type Clue = {
+export interface Clue {
   value: string;
-};
+}
 
 export type NumberedClue = Clue & {
   number: number;
   direction: ClueDirection;
 };
 
-export type ClueList = {
-  [key: string]: NumberedClue;
-};
+export type ClueList = Record<string, NumberedClue>;
 
-export type Clues = {
+export interface Clues {
   across: ClueList;
   down: ClueList;
-};
+}
 
-type ClueStart = {
+interface ClueStart {
   row: number;
   col: number;
-};
+}
 
-export type ClueStarts = {
-  across: { [key: string]: ClueStart };
-  down: { [key: string]: ClueStart };
-};
+export interface ClueStarts {
+  across: Record<string, ClueStart>;
+  down: Record<string, ClueStart>;
+}
 
 export type ClueDirection = "across" | "down";
 
 export function extractClues(cells: NumberedCell[][]): Clues {
-  let clues: Clues = { down: {}, across: {} };
+  const clues: Clues = { down: {}, across: {} };
   cells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
       if (cell.number) {
@@ -78,7 +76,7 @@ export function extractClues(cells: NumberedCell[][]): Clues {
 }
 
 export function clueStartLocations(cells: NumberedCell[][]): ClueStarts {
-  let clueStarts: ClueStarts = { down: {}, across: {} };
+  const clueStarts: ClueStarts = { down: {}, across: {} };
   cells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
       if (cell.number) {
@@ -139,10 +137,10 @@ export function getActiveClue(
   };
 }
 
-type ClueInputProps = {
+interface ClueInputProps {
   clue: NumberedClue;
   updateClue: updateClueFn;
-};
+}
 
 export function ClueInput({ clue, updateClue }: ClueInputProps) {
   return (
@@ -177,12 +175,12 @@ export type updateClueFn = (
   clue: string,
 ) => void;
 
-type ClueListBaseProps = {
+interface ClueListBaseProps {
   activeClue?: NumberedClue;
   orthogonalClue?: NumberedClue;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
   updateClue: updateClueFn;
-};
+}
 
 type ClueListProps = ClueListBaseProps & {
   direction: ClueDirection;
@@ -259,11 +257,11 @@ function ClueList({
     </ol>
   );
 }
-type ClueTabHeaderProps = {
+interface ClueTabHeaderProps {
   activeClue?: NumberedClue;
   orthogonalClue?: NumberedClue;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
-};
+}
 
 function ClueTabHeader({ orthogonalClue, setActiveClue }: ClueTabHeaderProps) {
   function toggleDirection() {

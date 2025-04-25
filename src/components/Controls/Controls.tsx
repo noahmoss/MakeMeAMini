@@ -6,9 +6,9 @@ import { Button, Tooltip } from "@mantine/core";
 import { Mode } from "../Game";
 import { useEffect, useState } from "react";
 
-type ControlsProps = {
+interface ControlsProps {
   mode: Mode;
-};
+}
 
 function Controls({ mode }: ControlsProps) {
   // TODO: extract animation logic into a hook

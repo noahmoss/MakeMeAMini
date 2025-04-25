@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-export function useKeydownListener(key: string): Boolean {
+export function useKeydownListener(key: string): boolean {
   const [keydown, setKeydown] = useState(false);
 
   useEffect(() => {

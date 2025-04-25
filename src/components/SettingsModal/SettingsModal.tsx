@@ -3,12 +3,12 @@ import styles from "./SettingsModal.module.css";
 import { Info } from "react-feather";
 import { Modal, Select, Switch, Tooltip } from "@mantine/core";
 
-export type SettingsProps = {
+export interface SettingsProps {
   rowCount: number;
   setRowCount: (count: number) => void;
   symmetry: boolean;
   setSymmetry: (symmetry: boolean) => void;
-};
+}
 
 function Settings({
   rowCount,
@@ -51,11 +51,11 @@ function Settings({
   );
 }
 
-type SettingsModalProps = {
+interface SettingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   settingsProps: SettingsProps;
-};
+}
 
 function SettingsModal({ isOpen, onClose, settingsProps }: SettingsModalProps) {
   return (
