@@ -10,14 +10,13 @@ import {
   Clues,
   ClueBox,
   ClueDirection,
-  extractClues,
   getActiveClue,
-  clueStartLocations,
   ClueStarts,
   ClueList,
 } from "../Clues";
 import ActiveClue from "../ActiveClue";
 import Controls from "../Controls";
+import { clueStartLocations, extractClues } from "../Clues/utils";
 
 export type CursorDirection = "row" | "col";
 
