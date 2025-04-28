@@ -285,10 +285,10 @@ export function ClueBox({
     }
   }, [activeClue]);
 
-  function toggleDirection() {
+  function toggleDirection(direction: ClueDirection) {
     return (
       orthogonalClue &&
-      setActiveClue(orthogonalClue.number, orthogonalClue.direction)
+      setActiveClue(orthogonalClue.number, direction)
     );
   }
 
@@ -333,7 +333,7 @@ export function ClueBox({
         <div className={styles.cluesSection}>
           <button
             className={styles.largeScreenCluesHeader}
-            onClick={toggleDirection}
+            onClick={() => toggleDirection("across")}
             style={{
               borderBottomColor:
                 activeClue?.direction === "across"
@@ -354,7 +354,7 @@ export function ClueBox({
         <div className={styles.cluesSection}>
           <button
             className={styles.largeScreenCluesHeader}
-            onClick={toggleDirection}
+            onClick={() => toggleDirection("down")}
             style={{
               borderBottomColor:
                 activeClue?.direction === "down"
