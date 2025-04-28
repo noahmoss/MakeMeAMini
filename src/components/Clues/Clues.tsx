@@ -243,20 +243,20 @@ interface ClueTabHeaderProps {
 }
 
 function ClueTabHeader({ orthogonalClue, setActiveClue }: ClueTabHeaderProps) {
-  function toggleDirection() {
+  function toggleDirection(direction: ClueDirection) {
     return (
       orthogonalClue &&
-      setActiveClue(orthogonalClue.number, orthogonalClue.direction)
+      setActiveClue(orthogonalClue.number, direction)
     );
   }
 
   return (
     <Tabs.List grow>
-      <Tabs.Tab value="across" onClick={toggleDirection}>
+      <Tabs.Tab value="across" onClick={() => toggleDirection("across")}>
         <h2 className={styles.cluesHeader}>Across</h2>
       </Tabs.Tab>
-      <Tabs.Tab value="down">
-        <h2 className={styles.cluesHeader} onClick={toggleDirection}>
+      <Tabs.Tab value="down" onClick={() => toggleDirection("down")}>
+        <h2 className={styles.cluesHeader} >
           Down
         </h2>
       </Tabs.Tab>
