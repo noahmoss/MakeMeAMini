@@ -13,6 +13,9 @@ body {
   --filled-cell-mirror-hover-indicator: hsl(0deg 0% 20%);
 
   --header-height: 90px;
+
+  --fade-in-duration: 0.6s;
+  --fade-out-duration: 0.4s;
 }
 
 .App {
@@ -31,11 +34,11 @@ body {
 /* Reusable animation helpers */
 
 .fadeIn {
-  animation: fade-in 0.4s forwards;
+  animation: fade-in var(--fade-in-duration) forwards var(--fade-out-duration);
 }
 
 .fadeOut {
-  animation: fade-out 0.4s forwards;
+  animation: fade-out var(--fade-out-duration) forwards;
 }
 
 @keyframes fade-in {

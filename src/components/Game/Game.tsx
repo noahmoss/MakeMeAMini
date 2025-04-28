@@ -231,6 +231,7 @@ function Game() {
         </div>
         <div className={styles.cluesWrapper} ref={cluesWrapperRef}>
           <ClueBox
+            mode={mode}
             clues={clues}
             activeClue={activeClue}
             orthogonalClue={orthogonalClue}

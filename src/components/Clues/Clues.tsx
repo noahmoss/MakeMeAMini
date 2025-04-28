@@ -1,6 +1,6 @@
-import { Cursor } from "../Game";
+import { Cursor, Mode } from "../Game";
 import { NumberedCell } from "../Grid";
-import { allFilled, findWordBoundaries, isStartOfWord } from "../Grid/utils";
+import { allFilled, findWordBoundaries } from "../Grid/utils";
 
 import { Tabs, Textarea } from "@mantine/core";
 
@@ -59,14 +59,67 @@ export function getActiveClue(
   };
 }
 
-interface ClueInputProps {
+interface ClueTextProps {
   clue: NumberedClue;
+  mode: Mode;
+}
+
+export function ClueText({ clue, mode }: ClueTextProps) {
+  const [mounted, setMounted] = useState(false);
+  const [animationClass, setAnimationClass] = useState(styles.textInvisible);
+
+  useEffect(() => {
+    if (!mounted) {
+      setMounted(true);
+      return;
+    }
+
+    if (mode === "editing") {
+      setAnimationClass(styles.fadeOut)
+      setTimeout(() => setAnimationClass(styles.textInvisible), 400);
+    } else {
+      setAnimationClass(styles.fadeIn);
+      setTimeout(() => setAnimationClass(styles.textVisible), 400);
+    }
+  }, [mode])
+
+  return (
+    <span className={animationClass}>
+      {clue.value}
+    </span>
+  );
+}
+
+
+interface ClueInputProps extends ClueTextProps {
   updateClue: updateClueFn;
 }
 
-export function ClueInput({ clue, updateClue }: ClueInputProps) {
+function ClueInput({ clue, updateClue, mode }: ClueInputProps) {
+  const [mounted, setMounted] = useState(false);
+  const [animationClass, setAnimationClass] = useState('');
+
+  const fadeInDurationMs = 800;
+  const fadeOutDurationMs = 400;
+
+  useEffect(() => {
+    if (!mounted) {
+      setMounted(true);
+      return;
+    }
+
+    if (mode === "editing") {
+      setAnimationClass(styles.fadeIn)
+      setTimeout(() => setAnimationClass(styles.textVisible), fadeInDurationMs);
+    } else {
+      setAnimationClass(styles.fadeOut);
+      setTimeout(() => setAnimationClass(styles.textInvisible), fadeOutDurationMs);
+    }
+  }, [mode])
+
   return (
     <Textarea
+      className={animationClass}
       value={clue.value}
       onChange={(e) =>
         updateClue(clue?.number, clue?.direction, e.target.value)
@@ -79,7 +132,6 @@ export function ClueInput({ clue, updateClue }: ClueInputProps) {
           width: "100%",
         },
         input: {
-          transition: "unset",
           height: "min-content",
         },
         wrapper: {
@@ -98,6 +150,7 @@ export type updateClueFn = (
 ) => void;
 
 interface ClueListBaseProps {
+  mode: Mode;
   activeClue?: NumberedClue;
   orthogonalClue?: NumberedClue;
   setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
@@ -110,6 +163,7 @@ type ClueListProps = ClueListBaseProps & {
 };
 
 function ClueList({
+  mode,
   direction,
   activeClue,
   orthogonalClue,
@@ -171,7 +225,10 @@ function ClueList({
               >
                 {clueNumber}
               </span>
-              <ClueInput clue={clue} updateClue={updateClue} />
+              <div className={styles.clueContainer}>
+                <ClueInput clue={clue} updateClue={updateClue} mode={mode} />
+                <ClueText clue={clue} mode={mode} />
+              </div>
             </div>
           </li>
         );
