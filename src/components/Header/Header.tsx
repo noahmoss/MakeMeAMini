@@ -1,7 +1,7 @@
 import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
 
 import { Edit3, Settings, Link, HelpCircle, Tool } from "react-feather";
-import { useDisclosure } from "@mantine/hooks";
+import { useDebouncedCallback, useDisclosure } from "@mantine/hooks";
 import { Button, Tooltip, Burger, Drawer } from "@mantine/core";
 
 import Logo from "../Logo";
@@ -88,17 +88,21 @@ interface HeaderActionsProps {
 }
 
 function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
+  const debouncedSetMode = useDebouncedCallback((mode: Mode) => {
+    setMode(mode);
+  }, 200)
+
   return (
     <div className={styles.iconGroup}>
       {mode === "editing" ? (
-        <ActionButton label="Solve" onClick={() => setMode("solving")}>
+        <ActionButton label="Solve" onClick={() => debouncedSetMode("solving")}>
           <div className={styles.iconAndLabel}>
             <Edit3 />
             <div className={styles.actionButtonLabel}>Test solve</div>
           </div>
         </ActionButton>
       ) : (
-        <ActionButton label="Edit" onClick={() => setMode("editing")}>
+        <ActionButton label="Edit" onClick={() => debouncedSetMode("editing")}>
           <div className={styles.iconAndLabel}>
             <Tool />
             <div className={styles.actionButtonLabel}>Edit</div>
