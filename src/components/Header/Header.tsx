@@ -90,7 +90,7 @@ interface HeaderActionsProps {
 function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
   const debouncedSetMode = useDebouncedCallback((mode: Mode) => {
     setMode(mode);
-  }, 200)
+  }, 500)
 
   return (
     <div className={styles.iconGroup}>
