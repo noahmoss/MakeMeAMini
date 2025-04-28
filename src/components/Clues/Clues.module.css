@@ -103,15 +103,16 @@
 .fadeOut {
   opacity: 100%;
   pointer-events: none;
+  grid-area: 1/1;
   animation: fade-out var(--fade-out-duration) forwards;
 }
 
 .textVisible {
-  display: block;
+  visibility: visible;
 }
 
 .textInvisible {
-  display: none;
+  visibility: hidden;
 }
 
 @keyframes fade-in {
@@ -136,6 +137,7 @@
 
 .clueContainer {
   display: grid;
+  align-items: center;
 }
 
 .clueContainer>* {
