@@ -138,8 +138,9 @@
 .clueContainer {
   display: grid;
   align-items: center;
+  width: 100%;
 }
 
-.clueContainer > * {
+.clueContainer>* {
   grid-area: 1/1;
 }
