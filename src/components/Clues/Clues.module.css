@@ -30,7 +30,7 @@
 .largeScreenCluesHeader {
   /* Unset default button styles */
   all: unset;
-
+  cursor: pointer;
   font-size: 0.8rem;
   display: flex;
   justify-content: center;

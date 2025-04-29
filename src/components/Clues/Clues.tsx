@@ -88,9 +88,10 @@ export function ClueText({ clue, mode }: ClueTextProps) {
 
 interface ClueInputProps extends ClueTextProps {
   updateClue: updateClueFn;
+  setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
 }
 
-function ClueInput({ clue, updateClue, mode }: ClueInputProps) {
+function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
   const [mounted, setMounted] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
 
@@ -119,9 +120,11 @@ function ClueInput({ clue, updateClue, mode }: ClueInputProps) {
     <Textarea
       className={animationClass}
       value={clue.value}
-      onChange={(e) =>
-        updateClue(clue?.number, clue?.direction, e.target.value)
-      }
+      onChange={(e) => updateClue(clue.number, clue.direction, e.target.value)}
+      onFocus={() => {
+        console.log(clue);
+        setActiveClue(clue.number, clue.direction);
+      }}
       autosize
       minRows={1}
       maxRows={3}
@@ -224,7 +227,12 @@ function ClueList({
                 {clueNumber}
               </span>
               <div className={styles.clueContainer}>
-                <ClueInput clue={clue} updateClue={updateClue} mode={mode} />
+                <ClueInput
+                  clue={clue}
+                  updateClue={updateClue}
+                  setActiveClue={setActiveClue}
+                  mode={mode}
+                />
                 <ClueText clue={clue} mode={mode} />
               </div>
             </div>
