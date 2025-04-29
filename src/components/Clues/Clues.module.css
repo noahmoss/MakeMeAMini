@@ -140,6 +140,6 @@
   align-items: center;
 }
 
-.clueContainer>* {
+.clueContainer > * {
   grid-area: 1/1;
 }

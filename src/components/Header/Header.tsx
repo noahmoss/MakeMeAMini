@@ -1,7 +1,13 @@
-import { MouseEventHandler, ReactNode, useEffect, useState } from "react";
+import {
+  MouseEventHandler,
+  ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { Edit3, Settings, Link, HelpCircle, Tool } from "react-feather";
-import { useDebouncedCallback, useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useThrottledCallback } from "@mantine/hooks";
 import { Button, Tooltip, Burger, Drawer } from "@mantine/core";
 
 import Logo from "../Logo";
@@ -88,21 +94,27 @@ interface HeaderActionsProps {
 }
 
 function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
-  const debouncedSetMode = useDebouncedCallback((mode: Mode) => {
+  // Debounce editing/solving mode changes to prevent animation flicker
+  const lastModeChangeRef = useRef<number>(Date.now());
+  const throttleMs = 700;
+  function setModeThrottled(mode: Mode) {
+    if (Date.now() - lastModeChangeRef.current < throttleMs) return;
+
     setMode(mode);
-  }, 500)
+    lastModeChangeRef.current = Date.now();
+  }
 
   return (
     <div className={styles.iconGroup}>
       {mode === "editing" ? (
-        <ActionButton label="Solve" onClick={() => debouncedSetMode("solving")}>
+        <ActionButton label="Solve" onClick={() => setModeThrottled("solving")}>
           <div className={styles.iconAndLabel}>
             <Edit3 />
             <div className={styles.actionButtonLabel}>Test solve</div>
           </div>
         </ActionButton>
       ) : (
-        <ActionButton label="Edit" onClick={() => debouncedSetMode("editing")}>
+        <ActionButton label="Edit" onClick={() => setModeThrottled("editing")}>
           <div className={styles.iconAndLabel}>
             <Tool />
             <div className={styles.actionButtonLabel}>Edit</div>

@@ -75,21 +75,16 @@ export function ClueText({ clue, mode }: ClueTextProps) {
     }
 
     if (mode === "editing") {
-      setAnimationClass(styles.fadeOut)
+      setAnimationClass(styles.fadeOut);
       setTimeout(() => setAnimationClass(styles.textInvisible), 400);
     } else {
       setAnimationClass(styles.fadeIn);
       setTimeout(() => setAnimationClass(styles.textVisible), 400);
     }
-  }, [mode])
+  }, [mode]);
 
-  return (
-    <span className={animationClass}>
-      {clue.value}
-    </span>
-  );
+  return <span className={animationClass}>{clue.value}</span>;
 }
-
 
 interface ClueInputProps extends ClueTextProps {
   updateClue: updateClueFn;
@@ -97,7 +92,7 @@ interface ClueInputProps extends ClueTextProps {
 
 function ClueInput({ clue, updateClue, mode }: ClueInputProps) {
   const [mounted, setMounted] = useState(false);
-  const [animationClass, setAnimationClass] = useState('');
+  const [animationClass, setAnimationClass] = useState("");
 
   const fadeInDurationMs = 800;
   const fadeOutDurationMs = 400;
@@ -109,13 +104,16 @@ function ClueInput({ clue, updateClue, mode }: ClueInputProps) {
     }
 
     if (mode === "editing") {
-      setAnimationClass(styles.fadeIn)
+      setAnimationClass(styles.fadeIn);
       setTimeout(() => setAnimationClass(styles.textVisible), fadeInDurationMs);
     } else {
       setAnimationClass(styles.fadeOut);
-      setTimeout(() => setAnimationClass(styles.textInvisible), fadeOutDurationMs);
+      setTimeout(
+        () => setAnimationClass(styles.textInvisible),
+        fadeOutDurationMs,
+      );
     }
-  }, [mode])
+  }, [mode]);
 
   return (
     <Textarea
@@ -244,10 +242,7 @@ interface ClueTabHeaderProps {
 
 function ClueTabHeader({ orthogonalClue, setActiveClue }: ClueTabHeaderProps) {
   function toggleDirection(direction: ClueDirection) {
-    return (
-      orthogonalClue &&
-      setActiveClue(orthogonalClue.number, direction)
-    );
+    return orthogonalClue && setActiveClue(orthogonalClue.number, direction);
   }
 
   return (
@@ -256,9 +251,7 @@ function ClueTabHeader({ orthogonalClue, setActiveClue }: ClueTabHeaderProps) {
         <h2 className={styles.cluesHeader}>Across</h2>
       </Tabs.Tab>
       <Tabs.Tab value="down" onClick={() => toggleDirection("down")}>
-        <h2 className={styles.cluesHeader} >
-          Down
-        </h2>
+        <h2 className={styles.cluesHeader}>Down</h2>
       </Tabs.Tab>
     </Tabs.List>
   );
@@ -286,10 +279,7 @@ export function ClueBox({
   }, [activeClue]);
 
   function toggleDirection(direction: ClueDirection) {
-    return (
-      orthogonalClue &&
-      setActiveClue(orthogonalClue.number, direction)
-    );
+    return orthogonalClue && setActiveClue(orthogonalClue.number, direction);
   }
 
   return (
