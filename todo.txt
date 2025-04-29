@@ -1,0 +1,25 @@
+Easy & concrete
+===========
+Fade out grid letters
+Fade out mobile clue input
+Cycle clue input tabbing between across/down
+
+Medium
+============
+General solving mode functionality (reset, check, reveal)
+Sharing with URL-encoded data
+Help message
+QR codes
+Solved message
+Larger grid support
+Puzzle titles
+Non-square grids
+Setting: skip filled squares
+
+Hard
+============
+Auto-fill generator with word list
+URL shortener w/persistent links
+Public puzzles with up/down voting
+Multiplayer mode
+.puz export
