@@ -62,6 +62,8 @@ function Game() {
 
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+
   const setRowCount = (rowCount: number) => {
     // When changing row count, do a hard reset of grid and clues
     const newCells = initialCells(rowCount);
@@ -156,6 +158,11 @@ function Game() {
         col: col,
       });
     }
+
+    // If we're solving the puzzle, always direct focus back to the hidden input for the grid
+    if (mode === "solving") {
+      hiddenInputRef.current?.focus();
+    }
   };
 
   const updateClue = (
@@ -227,6 +234,7 @@ function Game() {
             reverseCursor={reverseCursor}
             skipWord={skipWord}
             useSymmetry={symmetry}
+            hiddenInputRef={hiddenInputRef}
           />
         </div>
         <div className={styles.cluesWrapper} ref={cluesWrapperRef}>

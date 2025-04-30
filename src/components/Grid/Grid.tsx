@@ -26,6 +26,8 @@ interface GridProps {
   skipWord: (direction: MovementDirection) => void;
   // Should we apply rotational symmetry when editing black squares?
   useSymmetry: boolean;
+  // Ref for hidden <input> that powers typing in grid
+  hiddenInputRef: React.RefObject<HTMLInputElement>;
 }
 
 function Grid({
@@ -39,15 +41,14 @@ function Grid({
   reverseCursor,
   skipWord,
   useSymmetry,
+  hiddenInputRef,
 }: GridProps) {
-  const hiddenInputRef = useRef<HTMLInputElement>(null);
-
-  const shiftDown = useKeydownListener("Shift");
-
   const [hoveredCell, setHoveredCell] = useState<{
     row: number;
     col: number;
   } | null>(null);
+
+  const shiftDown = useKeydownListener("Shift");
 
   const isCurrentCell = (row: number, col: number, cursor: Cursor) => {
     return row === cursor.row && col === cursor.col;
@@ -171,7 +172,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
