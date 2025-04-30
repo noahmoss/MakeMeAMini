@@ -87,7 +87,6 @@ function Grid({
 
     hiddenInputRef.current?.focus();
 
-
     if (shiftDown && mode === "editing") {
       toggleFilledCell(row, col);
       if (useSymmetry) {
@@ -175,7 +174,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => { }}
+        onChange={() => {}}
         autoFocus
         value=""
       />
@@ -214,7 +213,8 @@ function Grid({
 
             const isHoveredCell =
               mode === "editing" &&
-              rowIndex === hoveredCell?.row && colIndex === hoveredCell?.col;
+              rowIndex === hoveredCell?.row &&
+              colIndex === hoveredCell?.col;
 
             const rotatedHoveredCell =
               hoveredCell && rotate(cells, hoveredCell.row, hoveredCell.col);

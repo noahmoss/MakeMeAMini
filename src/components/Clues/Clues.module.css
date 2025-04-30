@@ -141,6 +141,15 @@
   width: 100%;
 }
 
-.clueContainer>* {
+.clueContainer > * {
   grid-area: 1/1;
+}
+
+.clueText {
+  user-select: none;
+}
+
+.emptyClue {
+  color: var(--empty-clue-text);
+  user-select: none;
 }

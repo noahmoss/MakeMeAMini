@@ -12,6 +12,8 @@ body {
   --filled-cell-hover-indicator: hsl(0deg 0% 20%);
   --filled-cell-mirror-hover-indicator: hsl(0deg 0% 20%);
 
+  --empty-clue-text: hsl(0deg 0% 50%);
+
   --header-height: 90px;
 
   --fade-in-duration: 0.6s;

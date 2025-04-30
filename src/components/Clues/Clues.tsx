@@ -83,7 +83,17 @@ export function ClueText({ clue, mode }: ClueTextProps) {
     }
   }, [mode]);
 
-  return <span className={animationClass}>{clue.value}</span>;
+  if (!clue.value) {
+    return (
+      <span className={`${animationClass} ${styles.emptyClue}`}>
+        (empty clue)
+      </span>
+    );
+  }
+
+  return (
+    <span className={`${animationClass} ${styles.clueText}`}>{clue.value}</span>
+  );
 }
 
 interface ClueInputProps extends ClueTextProps {
