@@ -1,11 +1,13 @@
 Easy & concrete
 ===========
+Disable toggling black squares in solving mode
 Fade out grid letters
 Fade out mobile clue input
 Cycle clue input tabbing between across/down
 
 Medium
 ============
+Make breakpoints reusable
 General solving mode functionality (reset, check, reveal)
 Sharing with URL-encoded data
 Help message
