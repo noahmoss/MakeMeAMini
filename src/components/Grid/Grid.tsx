@@ -1,6 +1,6 @@
 import styles from "./Grid.module.css";
 
-import { Cursor, MovementDirection } from "../Game";
+import { Cursor, Mode, MovementDirection } from "../Game";
 import { turn, findWordBoundaries } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useEffect, useRef, useState } from "react";
@@ -15,6 +15,7 @@ export interface NumberedCell extends Cell {
 }
 
 interface GridProps {
+  mode: Mode;
   cells: NumberedCell[][];
   cursor?: Cursor;
   updateCursorPosition: (row: number, col: number) => void;
@@ -31,6 +32,7 @@ interface GridProps {
 }
 
 function Grid({
+  mode,
   cells,
   cursor,
   updateCursorPosition,
@@ -77,7 +79,7 @@ function Grid({
     return { rotatedRow, rotatedCol };
   };
 
-  const handleCellClick = (row: number, col: number) => {
+  const handleCellClick = (mode: Mode, row: number, col: number) => {
     // Always refocus the hidden input
     if (!cursor) {
       return;
@@ -85,7 +87,8 @@ function Grid({
 
     hiddenInputRef.current?.focus();
 
-    if (shiftDown) {
+
+    if (shiftDown && mode === "editing") {
       toggleFilledCell(row, col);
       if (useSymmetry) {
         const { rotatedRow, rotatedCol } = rotate(cells, row, col);
@@ -197,7 +200,7 @@ function Grid({
                   ${styles.filledCell}
                   `}
                   onClick={() => {
-                    handleCellClick(rowIndex, colIndex);
+                    handleCellClick(mode, rowIndex, colIndex);
                   }}
                   key={`${rowIndex}-${colIndex}`}
                 />
@@ -210,11 +213,13 @@ function Grid({
               cursor && isCurrentWord(rowIndex, colIndex, cursor);
 
             const isHoveredCell =
+              mode === "editing" &&
               rowIndex === hoveredCell?.row && colIndex === hoveredCell?.col;
 
             const rotatedHoveredCell =
               hoveredCell && rotate(cells, hoveredCell.row, hoveredCell.col);
             const isRotatedHoveredCell =
+              mode === "editing" &&
               rowIndex === rotatedHoveredCell?.rotatedRow &&
               colIndex === rotatedHoveredCell?.rotatedCol;
 
@@ -229,7 +234,7 @@ function Grid({
               `}
                 key={`${rowIndex}-${colIndex}`}
                 onClick={() => {
-                  handleCellClick(rowIndex, colIndex);
+                  handleCellClick(mode, rowIndex, colIndex);
                 }}
                 onMouseEnter={() =>
                   setHoveredCell({ row: rowIndex, col: colIndex })

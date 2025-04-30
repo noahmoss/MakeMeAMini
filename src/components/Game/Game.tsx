@@ -224,6 +224,7 @@ function Game() {
         </div>
         <div className={styles.gridWrapper} ref={gridWrapperRef}>
           <Grid
+            mode={mode}
             cells={numberedCells}
             cursor={cursor}
             updateCursorPosition={updateCursorPosition}
