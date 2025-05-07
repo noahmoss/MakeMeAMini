@@ -1,6 +1,5 @@
 Easy & concrete
 ===========
-Bug: changing grid size while in playing mode (snap back to editing?)
 Fade out grid letters
 Fade out mobile clue input
 Cycle clue input tabbing between across/down

@@ -6,12 +6,18 @@ import {
   useState,
 } from "react";
 
-import { Edit3, Settings, Link, HelpCircle, Tool } from "react-feather";
-import { useDisclosure, useThrottledCallback } from "@mantine/hooks";
+import {
+  Edit3,
+  Settings as SettingsIcon,
+  Link,
+  HelpCircle,
+  Tool,
+} from "react-feather";
+import { useDisclosure } from "@mantine/hooks";
 import { Button, Tooltip, Burger, Drawer } from "@mantine/core";
 
 import Logo from "../Logo";
-import SettingsModal, { SettingsProps } from "../SettingsModal";
+import SettingsModal, { Settings } from "../SettingsModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
 
@@ -123,7 +129,7 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
       )}
       <ActionButton label="Settings" onClick={openSettings}>
         <div className={styles.iconAndLabel}>
-          <Settings />
+          <SettingsIcon />
           <div className={styles.actionButtonLabel}>Settings</div>
         </div>
       </ActionButton>
@@ -144,7 +150,7 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
 }
 
 interface HeaderProps {
-  settingsProps: SettingsProps;
+  settingsProps: Settings;
   mode: Mode;
   setMode: (mode: Mode) => void;
 }
@@ -158,8 +164,9 @@ function Header({ settingsProps, setMode, mode }: HeaderProps) {
     <>
       <SettingsModal
         isOpen={settingsOpen}
-        onClose={closeSettings}
+        closeSettings={closeSettings}
         settingsProps={settingsProps}
+        setMode={setMode}
       />
       <div className={styles.siteHeader}>
         <Logo />

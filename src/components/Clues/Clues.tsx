@@ -132,7 +132,6 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
       value={clue.value}
       onChange={(e) => updateClue(clue.number, clue.direction, e.target.value)}
       onFocus={() => {
-        console.log(clue);
         setActiveClue(clue.number, clue.direction);
       }}
       autosize
@@ -186,6 +185,8 @@ function ClueList({
     .map(Number)
     .sort((a, b) => a - b);
 
+  const maxClue = Math.max(...clueNumbers);
+
   // Scroll active & orthogonal clues into view whenever active clue changes
   const clueRefs = useRef(new Map<number, HTMLLIElement | null>());
 
@@ -214,7 +215,8 @@ function ClueList({
 
         return (
           <li
-            key={clueNumber}
+            // Force a re-render whenever clue count changes to avoid inconsistent animations
+            key={`${clueNumber}-${maxClue}`}
             className={styles.clueItemWrapper}
             ref={(el) => {
               if (el) {

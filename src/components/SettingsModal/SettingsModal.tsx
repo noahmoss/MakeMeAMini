@@ -1,28 +1,74 @@
-import styles from "./SettingsModal.module.css";
+import { AlertCircle, Info } from "react-feather";
+import {
+  Alert,
+  Button,
+  Flex,
+  Group,
+  Modal,
+  Select,
+  Stack,
+  Switch,
+  Tooltip,
+} from "@mantine/core";
+import { useState } from "react";
+import { Mode } from "../Game";
 
-import { Info } from "react-feather";
-import { Modal, Select, Switch, Tooltip } from "@mantine/core";
+const RowCountChangeConfirmation = ({
+  confirmRowCount,
+}: {
+  confirmRowCount: () => void;
+}) => {
+  return (
+    <Alert variant="light" color="red" icon={<AlertCircle />}>
+      <Flex justify={"space-between"}>
+        Changing the grid size will reset the puzzle!
+        <Button color="red" variant="light" onClick={confirmRowCount}>
+          Confirm
+        </Button>
+      </Flex>
+    </Alert>
+  );
+};
 
-export interface SettingsProps {
+export interface Settings {
   rowCount: number;
   setRowCount: (count: number) => void;
   symmetry: boolean;
   setSymmetry: (symmetry: boolean) => void;
 }
 
+type SettingsProps = Settings & {
+  closeSettings: () => void;
+  setMode: (mode: Mode) => void;
+};
+
 function Settings({
+  closeSettings,
   rowCount,
   setRowCount,
   symmetry,
   setSymmetry,
+  setMode,
 }: SettingsProps) {
+  const [tentativeRowCount, setTentativeRowCount] = useState<
+    number | undefined
+  >();
+
+  const confirmRowCount = () => {
+    if (tentativeRowCount) {
+      setRowCount(tentativeRowCount);
+    }
+    closeSettings();
+    setMode("editing");
+  };
+
   return (
-    <div className={styles.settingsContainer}>
+    <Stack gap={"md"}>
       <Select
         label="Grid dimensions"
-        value={`${rowCount}`}
+        value={`${tentativeRowCount || rowCount}`}
         onChange={(value) => {
-          value && setRowCount(parseInt(value));
+          value && setTentativeRowCount(parseInt(value));
         }}
         data={[
           { value: "5", label: "5x5" },
@@ -32,7 +78,11 @@ function Settings({
           { value: "9", label: "9x9" },
         ]}
       />
-      <div className={styles.switchContainer}>
+      {tentativeRowCount && (
+        <RowCountChangeConfirmation confirmRowCount={confirmRowCount} />
+      )}
+
+      <Group justify="space-between">
         <Switch
           label="Rotational symmetry"
           checked={symmetry}
@@ -46,21 +96,31 @@ function Settings({
         >
           <Info size={"1.4rem"} color="gray" />
         </Tooltip>
-      </div>
-    </div>
+      </Group>
+    </Stack>
   );
 }
 
 interface SettingsModalProps {
   isOpen: boolean;
-  onClose: () => void;
-  settingsProps: SettingsProps;
+  closeSettings: () => void;
+  settingsProps: Settings;
+  setMode: (mode: Mode) => void;
 }
 
-function SettingsModal({ isOpen, onClose, settingsProps }: SettingsModalProps) {
+function SettingsModal({
+  isOpen,
+  closeSettings,
+  setMode,
+  settingsProps,
+}: SettingsModalProps) {
   return (
-    <Modal opened={isOpen} onClose={onClose} title="Settings">
-      <Settings {...settingsProps} />
+    <Modal opened={isOpen} onClose={closeSettings} title="Settings">
+      <Settings
+        {...settingsProps}
+        closeSettings={closeSettings}
+        setMode={setMode}
+      />
     </Modal>
   );
 }
