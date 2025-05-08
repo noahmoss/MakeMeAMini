@@ -116,7 +116,7 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
         <ActionButton label="Solve" onClick={() => setModeThrottled("solving")}>
           <div className={styles.iconAndLabel}>
             <Edit3 />
-            <div className={styles.actionButtonLabel}>Test solve</div>
+            <div className={styles.actionButtonLabel}>Solve</div>
           </div>
         </ActionButton>
       ) : (

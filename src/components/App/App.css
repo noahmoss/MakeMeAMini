@@ -12,7 +12,7 @@ body {
   --filled-cell-hover-indicator: hsl(0deg 0% 20%);
   --filled-cell-mirror-hover-indicator: hsl(0deg 0% 20%);
 
-  --empty-clue-text: hsl(0deg 0% 50%);
+  --empty-clue-text: hsl(0deg 0% 70%);
 
   --header-height: 90px;
 

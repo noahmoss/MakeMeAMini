@@ -46,18 +46,26 @@ function initialClues(cells: NumberedCell[][]) {
 
 function Game() {
   const defaultRowCount = 5;
-  const [cells, setCells] = useState<Cell[][]>(initialCells(defaultRowCount));
+
   const [cursor, setCursor] = useState<Cursor>({
     row: 0,
     col: 0,
     direction: "row",
   });
+  const [cells, setCells] = useState<Cell[][]>(initialCells(defaultRowCount));
+
+  // Cell values to use when in "solving" mode
+  const [solvingCells, setSolvingCells] = useState<Cell[][]>(
+    initialCells(defaultRowCount),
+  );
 
   const [symmetry, setSymmetry] = useState<boolean>(false);
 
   const [mode, setMode] = useState<Mode>("editing");
 
   const numberedCells: NumberedCell[][] = numberCells(cells);
+  const numberedSolvingCells: NumberedCell[][] = numberCells(solvingCells);
+
   const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
 
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
@@ -68,6 +76,7 @@ function Game() {
     // When changing row count, do a hard reset of grid and clues
     const newCells = initialCells(rowCount);
     setCells(newCells);
+    setSolvingCells(initialCells(rowCount));
     const newClues = initialClues(numberCells(newCells));
     setClues(newClues);
   };
@@ -143,9 +152,9 @@ function Game() {
   };
 
   const setCurrentCellValue = (value: string) => {
-    const newCells = [...cells];
+    const newCells = [...(mode === "editing" ? cells : solvingCells)];
     newCells[cursor.row][cursor.col].value = value;
-    setCells(newCells);
+    mode === "editing" ? setCells(newCells) : setSolvingCells(newCells);
   };
 
   const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
@@ -226,6 +235,7 @@ function Game() {
           <Grid
             mode={mode}
             cells={numberedCells}
+            solvingCells={numberedSolvingCells}
             cursor={cursor}
             updateCursorPosition={updateCursorPosition}
             toggleCursorDirection={toggleCursorDirection}

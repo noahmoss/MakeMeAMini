@@ -51,11 +51,16 @@
   font-size: var(--cell-number-font-size);
 }
 
-.gridCellValue {
+.gridCellValueWrapper {
+  display: grid;
   font-size: var(--cell-value-font-size);
 
   /* Shift cell value slightly down from center for visual balance */
   transform: translate(0, 0.5rem);
+}
+
+.gridCellValue {
+  grid-area: 1/1;
 }
 
 .hiddenInput {
@@ -66,4 +71,44 @@
   width: 0;
   /* Place it out of the viewport */
   left: -9999px;
+}
+
+.fadeIn {
+  opacity: 0%;
+  animation: fade-in var(--fade-in-duration) forwards var(--fade-out-duration);
+}
+
+.fadeOut {
+  opacity: 100%;
+  pointer-events: none;
+  grid-area: 1/1;
+  animation: fade-out var(--fade-out-duration) forwards;
+}
+
+.textVisible {
+  visibility: visible;
+}
+
+.textInvisible {
+  visibility: hidden;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 100%;
+  }
+
+  100% {
+    opacity: 0%;
+  }
 }

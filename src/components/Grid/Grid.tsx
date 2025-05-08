@@ -11,12 +11,103 @@ export interface Cell {
 }
 
 export interface NumberedCell extends Cell {
-  number: number | null;
+  number?: number;
+}
+
+type FilledCellProps = {
+  handleClick: () => void;
+};
+
+function FilledCell({ handleClick }: FilledCellProps) {
+  return (
+    <div
+      className={` ${styles.gridCell} ${styles.filledCell} `}
+      onClick={handleClick}
+    />
+  );
+}
+
+type CellProps = {
+  cell: NumberedCell;
+  solvingCell: NumberedCell;
+  className: string;
+  rowIndex: number;
+  colIndex: number;
+  mode: Mode;
+  handleCellClick: (mode: Mode, rowIndex: number, colIndex: number) => void;
+  isHoveredCell: boolean;
+  setHoveredCell: (hovered: { row: number; col: number } | null) => void;
+};
+
+function Cell({
+  cell,
+  solvingCell,
+  className,
+  rowIndex,
+  colIndex,
+  mode,
+  handleCellClick,
+  isHoveredCell,
+  setHoveredCell,
+}: CellProps) {
+  const [mounted, setMounted] = useState(false);
+  const [editingAnimationClass, setEditingAnimationClass] = useState(
+    styles.textVisible,
+  );
+  const [solvingAnimationClass, setSolvingAnimationClass] = useState(
+    styles.textInvisible,
+  );
+
+  useEffect(() => {
+    if (!mounted) {
+      setMounted(true);
+      return;
+    }
+
+    if (mode === "editing") {
+      // Transition from solving -> editing
+      setSolvingAnimationClass(styles.fadeOut);
+      setTimeout(() => setSolvingAnimationClass(styles.textInvisible), 400);
+
+      setEditingAnimationClass(styles.fadeIn);
+      setTimeout(() => setEditingAnimationClass(styles.textVisible), 400);
+    } else if (mode === "solving") {
+      // Transition from editing -> solving
+      setEditingAnimationClass(styles.fadeOut);
+      setTimeout(() => setEditingAnimationClass(styles.textInvisible), 400);
+
+      setSolvingAnimationClass(styles.fadeIn);
+      setTimeout(() => setSolvingAnimationClass(styles.textVisible), 400);
+    }
+  }, [mode]);
+
+  return (
+    <div
+      className={className}
+      onClick={() => {
+        handleCellClick(mode, rowIndex, colIndex);
+      }}
+      onMouseEnter={() => setHoveredCell({ row: rowIndex, col: colIndex })}
+      onMouseLeave={() => isHoveredCell && setHoveredCell(null)}
+      tabIndex={-1}
+    >
+      <div className={styles.gridCellNumber}>{cell?.number}</div>
+      <div className={styles.gridCellValueWrapper}>
+        <div className={`${editingAnimationClass} ${styles.gridCellValue}`}>
+          {cell?.value}
+        </div>
+        <div className={`${solvingAnimationClass} ${styles.gridCellValue}`}>
+          {solvingCell?.value}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface GridProps {
   mode: Mode;
   cells: NumberedCell[][];
+  solvingCells: NumberedCell[][];
   cursor?: Cursor;
   updateCursorPosition: (row: number, col: number) => void;
   toggleCursorDirection: () => void;
@@ -34,6 +125,7 @@ interface GridProps {
 function Grid({
   mode,
   cells,
+  solvingCells,
   cursor,
   updateCursorPosition,
   toggleCursorDirection,
@@ -193,12 +285,8 @@ function Grid({
           row.map((cell: NumberedCell, colIndex: number) => {
             if (cell.filled) {
               return (
-                <div
-                  className={`
-                  ${styles.gridCell}
-                  ${styles.filledCell}
-                  `}
-                  onClick={() => {
+                <FilledCell
+                  handleClick={() => {
                     handleCellClick(mode, rowIndex, colIndex);
                   }}
                   key={`${rowIndex}-${colIndex}`}
@@ -223,8 +311,13 @@ function Grid({
               rowIndex === rotatedHoveredCell?.rotatedRow &&
               colIndex === rotatedHoveredCell?.rotatedCol;
 
+            //const activeCell = mode === "editing" ? cell : solvingCells[rowIndex][colIndex];
+            //
             return (
-              <div
+              <Cell
+                cell={cell}
+                solvingCell={solvingCells[rowIndex][colIndex]}
+                mode={mode}
                 className={`
                   ${styles.gridCell} 
                   ${currentWord && styles.cursorWord}
@@ -232,19 +325,13 @@ function Grid({
                   ${shiftDown && isHoveredCell && styles.fillCellHoverIndicator}
                   ${shiftDown && useSymmetry && isRotatedHoveredCell && styles.mirroredFillCellHoverIndicator}
               `}
+                rowIndex={rowIndex}
+                colIndex={colIndex}
+                handleCellClick={handleCellClick}
+                isHoveredCell={isHoveredCell}
+                setHoveredCell={setHoveredCell}
                 key={`${rowIndex}-${colIndex}`}
-                onClick={() => {
-                  handleCellClick(mode, rowIndex, colIndex);
-                }}
-                onMouseEnter={() =>
-                  setHoveredCell({ row: rowIndex, col: colIndex })
-                }
-                onMouseLeave={() => isHoveredCell && setHoveredCell(null)}
-                tabIndex={-1}
-              >
-                <div className={styles.gridCellNumber}>{cell.number}</div>
-                <div className={styles.gridCellValue}>{cell.value}</div>
-              </div>
+              />
             );
           }),
         )}
