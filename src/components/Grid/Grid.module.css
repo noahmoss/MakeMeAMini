@@ -74,12 +74,12 @@
 }
 
 .fadeIn {
-  opacity: 0%;
+  opacity: 0;
   animation: fade-in var(--fade-in-duration) forwards var(--fade-out-duration);
 }
 
 .fadeOut {
-  opacity: 100%;
+  opacity: 1;
   pointer-events: none;
   grid-area: 1/1;
   animation: fade-out var(--fade-out-duration) forwards;
@@ -95,20 +95,20 @@
 
 @keyframes fade-in {
   0% {
-    opacity: 0%;
+    opacity: 0;
   }
 
   100% {
-    opacity: 100%;
+    opacity: 1;
   }
 }
 
 @keyframes fade-out {
   0% {
-    opacity: 100%;
+    opacity: 1;
   }
 
   100% {
-    opacity: 0%;
+    opacity: 0;
   }
 }

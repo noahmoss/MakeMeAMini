@@ -70,14 +70,14 @@ function Cell({
       setTimeout(() => setSolvingAnimationClass(styles.textInvisible), 400);
 
       setEditingAnimationClass(styles.fadeIn);
-      setTimeout(() => setEditingAnimationClass(styles.textVisible), 400);
+      setTimeout(() => setEditingAnimationClass(styles.textVisible), 800);
     } else if (mode === "solving") {
       // Transition from editing -> solving
       setEditingAnimationClass(styles.fadeOut);
       setTimeout(() => setEditingAnimationClass(styles.textInvisible), 400);
 
       setSolvingAnimationClass(styles.fadeIn);
-      setTimeout(() => setSolvingAnimationClass(styles.textVisible), 400);
+      setTimeout(() => setSolvingAnimationClass(styles.textVisible), 800);
     }
   }, [mode]);
 
@@ -266,7 +266,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
@@ -311,8 +311,6 @@ function Grid({
               rowIndex === rotatedHoveredCell?.rotatedRow &&
               colIndex === rotatedHoveredCell?.rotatedCol;
 
-            //const activeCell = mode === "editing" ? cell : solvingCells[rowIndex][colIndex];
-            //
             return (
               <Cell
                 cell={cell}
