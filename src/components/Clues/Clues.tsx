@@ -218,6 +218,7 @@ function ClueList({
             // Force a re-render whenever clue count changes to avoid inconsistent animations
             key={`${clueNumber}-${maxClue}`}
             className={styles.clueItemWrapper}
+            onClick={() => setActiveClue(clueNumber, direction)}
             ref={(el) => {
               if (el) {
                 clueRefs.current.set(clueNumber, el);
@@ -230,7 +231,6 @@ function ClueList({
               className={`${styles.clueItem} 
                           ${isActiveClue ? styles.activeClueItem : undefined}`}
               key={clueNumber}
-              onClick={() => setActiveClue(clueNumber, direction)}
             >
               <span
                 className={`${styles.clueID}

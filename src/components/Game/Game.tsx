@@ -72,6 +72,11 @@ function Game() {
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
 
+  const setModeAndRefocus = (newMode: Mode) => {
+    setMode(newMode);
+    hiddenInputRef.current?.focus()
+  }
+
   const setRowCount = (rowCount: number) => {
     // When changing row count, do a hard reset of grid and clues
     const newCells = initialCells(rowCount);
@@ -219,7 +224,7 @@ function Game() {
 
   return (
     <div className={styles.gameWrapper}>
-      <Header settingsProps={settingsProps} mode={mode} setMode={setMode} />
+      <Header settingsProps={settingsProps} mode={mode} setMode={setModeAndRefocus} />
       <div className={styles.gridAndClues}>
         <div className={styles.controlsWrapper}>
           <Controls mode={mode} />
