@@ -1,9 +1,8 @@
 Easy & concrete
 ===========
+Pause timer
 Fade out mobile clue input
 Cycle clue input tabbing between across/down
-Warning about losing data when changing grid size 
-Favicon
 Don't require two tab hits to switch between across/down clues
 
 Medium

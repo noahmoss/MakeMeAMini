@@ -12,6 +12,7 @@ import {
   Link,
   HelpCircle,
   Tool,
+  Pause,
 } from "react-feather";
 import { useDisclosure } from "@mantine/hooks";
 import { Button, Tooltip, Burger, Drawer } from "@mantine/core";
@@ -66,7 +67,11 @@ function Timer({ mode }: TimerProps) {
     .substring(timeStringStart, timeStringEnd);
 
   return (
-    <div className={`${styles.timer} ${animationClass}`}>{timeString}</div>
+    <div className={styles.timerContainer}>
+      <div className={`${styles.timer} ${animationClass}`}>{timeString}</div>
+      <Pause className={styles.pause} color={"black"} />
+    </div>
+
   );
 }
 

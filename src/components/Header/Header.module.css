@@ -8,10 +8,20 @@
   border-bottom: 1px solid gray;
 }
 
+.timerContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .timer {
   font-size: 1.4rem;
   opacity: 0;
   transition: opacity 0.4s ease-in-out;
+}
+
+.pause {
+  transform: translate(0, -1px);
 }
 
 .hamburgerMenu {
