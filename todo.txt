@@ -4,6 +4,7 @@ Switch out clear icon to an eraser
 Fade out mobile clue input
 Cycle clue input tabbing between across/down
 Don't require two tab hits to switch between across/down clues
+Arrow key navigation
 
 Medium
 ============
@@ -27,6 +28,7 @@ URL shortener w/persistent links
 Public puzzles with up/down voting
 Multiplayer mode
 .puz export
+vim mode
 
 Tech debt
 ============
