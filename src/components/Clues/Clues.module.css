@@ -86,8 +86,9 @@
 
 .clueID {
   font-weight: bold;
-  margin-right: 16px;
+  margin-right: 4px;
   padding: 16px;
+  min-width: 3rem;
   border-radius: 4px;
 }
 
@@ -138,7 +139,7 @@
 .clueContainer {
   display: grid;
   align-items: center;
-  width: 1;
+  width: 100%;
 }
 
 .clueContainer>* {
