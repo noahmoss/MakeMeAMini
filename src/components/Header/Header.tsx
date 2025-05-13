@@ -105,7 +105,7 @@ function Timer({ mode, seconds, setSeconds }: TimerProps) {
           blur: 4,
         }}
         withCloseButton={false}
-        yOffset={"200px"}
+        yOffset={"250px"}
       >
         <Flex direction="column" gap="2rem" align={"center"}>
           <Title order={3}>Your game is paused.</Title>
@@ -116,7 +116,7 @@ function Timer({ mode, seconds, setSeconds }: TimerProps) {
               color: "white",
             }}
           >
-            Unpause
+            Resume
           </Button>
         </Flex>
       </Modal>
