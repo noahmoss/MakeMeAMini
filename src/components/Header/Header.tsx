@@ -245,9 +245,11 @@ function Header({
           withOverlay={false}
           withCloseButton={false}
           onClose={toggleBurger}
+          size="xs"
+          shadow="0"
           styles={{
             inner: {
-              marginTop: "calc(var(--header-height) - 4px)",
+              marginTop: "calc(var(--small-header-height) - 4px)",
             },
           }}
           className={styles.sidebar}
