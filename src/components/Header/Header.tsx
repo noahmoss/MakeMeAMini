@@ -15,7 +15,16 @@ import {
   Pause,
 } from "react-feather";
 import { useDisclosure } from "@mantine/hooks";
-import { Button, Tooltip, Burger, Drawer, ModalStack, Modal, Flex, Title } from "@mantine/core";
+import {
+  Button,
+  Tooltip,
+  Burger,
+  Drawer,
+  ModalStack,
+  Modal,
+  Flex,
+  Title,
+} from "@mantine/core";
 
 import Logo from "../Logo";
 import SettingsModal, { Settings } from "../SettingsModal";
@@ -71,28 +80,21 @@ function Timer({ mode }: TimerProps) {
   const pause = () => {
     open();
     isPausedRef.current = true;
-  }
+  };
 
   const unpause = () => {
     close();
     isPausedRef.current = false;
-  }
+  };
 
   return (
     <>
       <div className={`${styles.timerContainer} ${animationClass}`}>
         <div className={`${styles.timer}`}>{timeString}</div>
-        <Button
-          variant="transparent"
-          px="0px"
-          onClick={pause}>
-          <Pause
-            className={styles.pause}
-            color={"black"}
-            height={"1.2rem"}
-          />
+        <Button variant="transparent" px="0px" onClick={pause}>
+          <Pause className={styles.pause} color={"black"} height={"1.2rem"} />
         </Button>
-      </div >
+      </div>
       <Modal
         opened={opened}
         onClose={unpause}
@@ -103,15 +105,10 @@ function Timer({ mode }: TimerProps) {
         withCloseButton={false}
         yOffset={"200px"}
       >
-        <Flex
-          direction="column"
-          gap="2rem"
-          align={"center"}
-        >
-          <Title order={3}>
-            Your game is paused.
-          </Title>
-          <Button onClick={unpause}
+        <Flex direction="column" gap="2rem" align={"center"}>
+          <Title order={3}>Your game is paused.</Title>
+          <Button
+            onClick={unpause}
             style={{
               backgroundColor: "var(--dark-blue)",
               color: "white",
@@ -120,7 +117,7 @@ function Timer({ mode }: TimerProps) {
             Unpause
           </Button>
         </Flex>
-      </Modal >
+      </Modal>
     </>
   );
 }

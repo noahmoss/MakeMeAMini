@@ -142,7 +142,7 @@
   width: 100%;
 }
 
-.clueContainer>* {
+.clueContainer > * {
   grid-area: 1/1;
 }
 

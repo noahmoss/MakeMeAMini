@@ -305,11 +305,7 @@ export function ClueBox({
   return (
     <>
       <div className={`${styles.cluesContainer} ${styles.smallScreenClues}`}>
-        <Tabs
-          value={activeTab}
-          onChange={setActiveTab}
-          color="black"
-        >
+        <Tabs value={activeTab} onChange={setActiveTab} color="black">
           <ClueTabHeader
             activeClue={activeClue}
             orthogonalClue={orthogonalClue}
