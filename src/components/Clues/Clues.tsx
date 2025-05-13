@@ -308,7 +308,7 @@ export function ClueBox({
         <Tabs
           value={activeTab}
           onChange={setActiveTab}
-          color="var(--active-tab-header-color)"
+          color="black"
         >
           <ClueTabHeader
             activeClue={activeClue}

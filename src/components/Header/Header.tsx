@@ -15,7 +15,7 @@ import {
   Pause,
 } from "react-feather";
 import { useDisclosure } from "@mantine/hooks";
-import { Button, Tooltip, Burger, Drawer } from "@mantine/core";
+import { Button, Tooltip, Burger, Drawer, ModalStack, Modal, Flex, Title } from "@mantine/core";
 
 import Logo from "../Logo";
 import SettingsModal, { Settings } from "../SettingsModal";
@@ -30,6 +30,8 @@ function Timer({ mode }: TimerProps) {
   const [visible, setVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
   const [seconds, setSeconds] = useState(0);
+  const [opened, { open, close }] = useDisclosure(false);
+  const isPausedRef = useRef(false);
 
   useEffect(() => {
     if (mode === "editing") {
@@ -38,7 +40,7 @@ function Timer({ mode }: TimerProps) {
     }
 
     const interval = setInterval(() => {
-      setSeconds((seconds) => seconds + 1);
+      if (!isPausedRef.current) setSeconds((seconds) => seconds + 1);
     }, 1000);
 
     return () => clearInterval(interval);
@@ -66,12 +68,60 @@ function Timer({ mode }: TimerProps) {
     .toISOString()
     .substring(timeStringStart, timeStringEnd);
 
-  return (
-    <div className={styles.timerContainer}>
-      <div className={`${styles.timer} ${animationClass}`}>{timeString}</div>
-      <Pause className={styles.pause} color={"black"} />
-    </div>
+  const pause = () => {
+    open();
+    isPausedRef.current = true;
+  }
 
+  const unpause = () => {
+    close();
+    isPausedRef.current = false;
+  }
+
+  return (
+    <>
+      <div className={`${styles.timerContainer} ${animationClass}`}>
+        <div className={`${styles.timer}`}>{timeString}</div>
+        <Button
+          variant="transparent"
+          px="0px"
+          onClick={pause}>
+          <Pause
+            className={styles.pause}
+            color={"black"}
+            height={"1.2rem"}
+          />
+        </Button>
+      </div >
+      <Modal
+        opened={opened}
+        onClose={unpause}
+        overlayProps={{
+          backgroundOpacity: 0.45,
+          blur: 4,
+        }}
+        withCloseButton={false}
+        yOffset={"200px"}
+      >
+        <Flex
+          direction="column"
+          gap="2rem"
+          align={"center"}
+        >
+          <Title order={3}>
+            Your game is paused.
+          </Title>
+          <Button onClick={unpause}
+            style={{
+              backgroundColor: "var(--dark-blue)",
+              color: "white",
+            }}
+          >
+            Unpause
+          </Button>
+        </Flex>
+      </Modal >
+    </>
   );
 }
 

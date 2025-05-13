@@ -12,12 +12,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  opacity: 0;
+  transition: opacity 0.4s ease-in-out;
 }
 
 .timer {
   font-size: 1.4rem;
-  opacity: 0;
-  transition: opacity 0.4s ease-in-out;
 }
 
 .pause {
