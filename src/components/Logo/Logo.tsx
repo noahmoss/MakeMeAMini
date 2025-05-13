@@ -2,14 +2,14 @@ import styles from "./Logo.module.css";
 
 function LogoLetter({ letter }: { letter: string }) {
   return (
-    <span className={styles.letterSquare}>
+    <span className={`${styles.letterSquare}`}>
       <span className={styles.letter}>{letter}</span>
     </span>
   );
 }
 
 function LogoSpace() {
-  return <span className={styles.blackSquare} />;
+  return <span className={`${styles.letterSquare} ${styles.blackSquare}`} />;
 }
 
 function Logo() {

@@ -11,14 +11,19 @@
 }
 
 .letterSquare {
-  font-size: 1rem;
+  font-size: .7rem;
   font-weight: bold;
   background-color: white;
   aspect-ratio: 1 / 1;
-  width: 1.5rem;
+  width: 1.2rem;
 
   display: grid;
   place-content: center;
+
+  @media (min-width: 600px) {
+    width: 1.5rem;
+    font-size: 1rem;
+  }
 }
 
 .letter {
@@ -27,7 +32,5 @@
 }
 
 .blackSquare {
-  aspect-ratio: 1 / 1;
-  width: 1.5rem;
   background-color: black;
 }
