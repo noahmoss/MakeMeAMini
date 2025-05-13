@@ -68,6 +68,8 @@ function Game() {
 
   const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
 
+  const [seconds, setSeconds] = useState(0);
+
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
   const hiddenInputRef = useRef<HTMLInputElement>(null);
@@ -189,6 +191,10 @@ function Game() {
     setClues(updatedClues);
   };
 
+  const clearSolvingGrid = () => {
+    setSolvingCells(initialCells(solvingCells.length));
+  };
+
   const settingsProps = {
     rowCount: cells.length,
     setRowCount,
@@ -228,10 +234,16 @@ function Game() {
         settingsProps={settingsProps}
         mode={mode}
         setMode={setModeAndRefocus}
+        seconds={seconds}
+        setSeconds={setSeconds}
       />
       <div className={styles.gridAndClues}>
         <div className={styles.controlsWrapper}>
-          <Controls mode={mode} />
+          <Controls
+            mode={mode}
+            clearPuzzle={clearSolvingGrid}
+            clearTimer={() => setSeconds(0)}
+          />
         </div>
         <div className={styles.activeClueWrapper}>
           <ActiveClue

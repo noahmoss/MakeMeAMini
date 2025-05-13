@@ -6,12 +6,34 @@ import { Button, Combobox, Tooltip, useCombobox } from "@mantine/core";
 import { Mode } from "../Game";
 import { useEffect, useState } from "react";
 
-function ClearControls() {
+function ClearControls({
+  clearPuzzle,
+  clearTimer,
+}: {
+  clearPuzzle: () => void;
+  clearTimer: () => void;
+}) {
   const combobox = useCombobox();
-  const options = ["Incorrect", "Puzzle", "Puzzle + Timer"];
+  const options = {
+    Incorrect: () => {},
+    Puzzle: clearPuzzle,
+    "Puzzle + Timer": () => {
+      clearPuzzle();
+      clearTimer();
+    },
+  } as const;
+  type ClearOption = keyof typeof options;
 
   return (
-    <Combobox store={combobox} position="bottom-end" width={140}>
+    <Combobox
+      store={combobox}
+      position="bottom-end"
+      width={140}
+      onOptionSubmit={(option: string) => {
+        options[option as ClearOption]();
+        combobox.closeDropdown();
+      }}
+    >
       <Combobox.Target>
         <Tooltip label="Clear" withArrow={true}>
           <Button
@@ -26,7 +48,7 @@ function ClearControls() {
       </Combobox.Target>
       <Combobox.Dropdown>
         <Combobox.Options>
-          {options.map((option) => (
+          {Object.keys(options).map((option) => (
             <Combobox.Option value={option} key={option}>
               {option}
             </Combobox.Option>
@@ -101,9 +123,11 @@ function RevealControls() {
 
 interface ControlsProps {
   mode: Mode;
+  clearPuzzle: () => void;
+  clearTimer: () => void;
 }
 
-function Controls({ mode }: ControlsProps) {
+function Controls({ mode, clearPuzzle, clearTimer }: ControlsProps) {
   // TODO: extract animation logic into a hook
   const [visible, setVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
@@ -125,7 +149,7 @@ function Controls({ mode }: ControlsProps) {
 
   return (
     <div className={`${styles.controls} ${animationClass}`}>
-      <ClearControls />
+      <ClearControls clearPuzzle={clearPuzzle} clearTimer={clearTimer} />
       <CheckControls />
       <RevealControls />
     </div>

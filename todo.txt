@@ -1,6 +1,5 @@
 Easy & concrete
 ===========
-Pause timer
 Fade out mobile clue input
 Cycle clue input tabbing between across/down
 Don't require two tab hits to switch between across/down clues

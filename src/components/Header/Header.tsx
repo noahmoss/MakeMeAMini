@@ -20,7 +20,6 @@ import {
   Tooltip,
   Burger,
   Drawer,
-  ModalStack,
   Modal,
   Flex,
   Title,
@@ -33,12 +32,13 @@ import { Mode } from "../Game";
 
 interface TimerProps {
   mode: Mode;
+  seconds: number;
+  setSeconds: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function Timer({ mode }: TimerProps) {
+function Timer({ mode, seconds, setSeconds }: TimerProps) {
   const [visible, setVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
-  const [seconds, setSeconds] = useState(0);
   const [opened, { open, close }] = useDisclosure(false);
   const isPausedRef = useRef(false);
 
@@ -49,7 +49,9 @@ function Timer({ mode }: TimerProps) {
     }
 
     const interval = setInterval(() => {
-      if (!isPausedRef.current) setSeconds((seconds) => seconds + 1);
+      if (!isPausedRef.current) {
+        setSeconds((s: number) => s + 1);
+      }
     }, 1000);
 
     return () => clearInterval(interval);
@@ -205,9 +207,17 @@ interface HeaderProps {
   settingsProps: Settings;
   mode: Mode;
   setMode: (mode: Mode) => void;
+  seconds: number;
+  setSeconds: React.Dispatch<React.SetStateAction<number>>;
 }
 
-function Header({ settingsProps, setMode, mode }: HeaderProps) {
+function Header({
+  settingsProps,
+  setMode,
+  mode,
+  seconds,
+  setSeconds,
+}: HeaderProps) {
   const [burgerOpen, { toggle: toggleBurger }] = useDisclosure(false);
   const [settingsOpen, { open: openSettings, close: closeSettings }] =
     useDisclosure(false);
@@ -222,7 +232,7 @@ function Header({ settingsProps, setMode, mode }: HeaderProps) {
       />
       <div className={styles.siteHeader}>
         <Logo />
-        <Timer mode={mode} />
+        <Timer mode={mode} seconds={seconds} setSeconds={setSeconds} />
         <Burger
           opened={burgerOpen}
           onClick={toggleBurger}
