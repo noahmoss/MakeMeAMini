@@ -1,5 +1,5 @@
 import { Cursor, Mode } from "../Game";
-import { NumberedCell } from "../Grid";
+import { Cell } from "../Grid";
 import { allFilled, findWordBoundaries } from "../Grid/utils";
 
 import { Tabs, Textarea } from "@mantine/core";
@@ -36,7 +36,7 @@ export interface ClueStarts {
 export type ClueDirection = "across" | "down";
 
 export function getActiveClue(
-  cells: NumberedCell[][],
+  cells: Cell[][],
   clues: Clues,
   cursor: Cursor,
 ): NumberedClue | undefined {

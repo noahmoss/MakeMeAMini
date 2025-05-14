@@ -8,10 +8,11 @@ import { useEffect, useRef, useState } from "react";
 export interface Cell {
   filled: boolean;
   value: string;
+  number?: number | null;
 }
 
-export interface NumberedCell extends Cell {
-  number?: number;
+export interface SolvingCell extends Cell {
+  check: boolean;
 }
 
 type FilledCellProps = {
@@ -28,8 +29,8 @@ function FilledCell({ handleClick }: FilledCellProps) {
 }
 
 type CellProps = {
-  cell: NumberedCell;
-  solvingCell: NumberedCell;
+  cell: Cell;
+  solvingCell: Cell;
   className: string;
   rowIndex: number;
   colIndex: number;
@@ -106,8 +107,8 @@ function Cell({
 
 interface GridProps {
   mode: Mode;
-  cells: NumberedCell[][];
-  solvingCells: NumberedCell[][];
+  cells: Cell[][];
+  solvingCells: SolvingCell[][];
   cursor?: Cursor;
   updateCursorPosition: (row: number, col: number) => void;
   toggleCursorDirection: () => void;
@@ -266,7 +267,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
@@ -281,8 +282,8 @@ function Grid({
           } as React.CSSProperties
         }
       >
-        {cells.map((row: NumberedCell[], rowIndex: number) =>
-          row.map((cell: NumberedCell, colIndex: number) => {
+        {cells.map((row: Cell[], rowIndex: number) =>
+          row.map((cell: Cell, colIndex: number) => {
             if (cell.filled) {
               return (
                 <FilledCell

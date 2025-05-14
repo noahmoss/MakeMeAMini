@@ -3,9 +3,9 @@ import {
   findWordBoundaries,
   isStartOfWord,
   isStartOfAnyWord,
-  numberCells,
 } from "./utils";
-import { Cell, NumberedCell } from "./Grid";
+import { Cell } from "./Grid";
+import { numberCells } from "../Game";
 
 const transformGrid = (cells: string[][]): Cell[][] => {
   return cells.map((row) =>
@@ -138,7 +138,7 @@ test("isStartOfAnyWord correctly detects word starts", () => {
 });
 
 test("numberCells", () => {
-  const numbers = (numberedCells: NumberedCell[][]) => {
+  const numbers = (numberedCells: Cell[][]) => {
     return numberedCells.map((row) => row.map((cell) => cell.number));
   };
 
@@ -168,5 +168,3 @@ test("numberCells", () => {
     [22, null, null, null, null, 23, null],
   ]);
 });
-
-test("startOfAdjacentWord", () => {});

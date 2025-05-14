@@ -1,4 +1,4 @@
-import { Cell, NumberedCell } from "./Grid";
+import { Cell } from "./Grid";
 import { Cursor, CursorDirection, MovementDirection } from "../Game";
 import { ClueDirection, Clues, ClueStarts } from "../Clues";
 import { clueStartLocations } from "../Clues/utils";
@@ -80,18 +80,8 @@ export const isStartOfWord = (
   }
 };
 
-export function numberCells(cells: readonly Cell[][]): NumberedCell[][] {
-  let num = 1;
-  return cells.map((rowArray, rowIndex) =>
-    rowArray.map((cell, colIndex) => ({
-      ...cell,
-      number: isStartOfAnyWord(cells, rowIndex, colIndex) ? num++ : null,
-    })),
-  );
-}
-
 export function startOfAdjacentWord(
-  cells: NumberedCell[][],
+  cells: Cell[][],
   cursor: Cursor,
   clues: Clues,
   clueStarts: ClueStarts,
@@ -158,7 +148,7 @@ export function startOfAdjacentWord(
 
 // Steps a cursor forward or backward
 export function stepCursor(
-  cells: NumberedCell[][],
+  cells: Cell[][],
   cursor: Cursor,
   clues: Clues,
   stepDirection: MovementDirection,

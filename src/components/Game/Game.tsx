@@ -1,8 +1,8 @@
 // @format
 import { useState, useRef, useEffect } from "react";
-import Grid, { Cell, NumberedCell } from "../Grid";
+import Grid, { Cell, SolvingCell } from "../Grid";
 import Header from "../Header";
-import { stepCursor, numberCells, startOfAdjacentWord } from "../Grid/utils";
+import { stepCursor, startOfAdjacentWord, isStartOfAnyWord } from "../Grid/utils";
 
 import styles from "./Game.module.css";
 
@@ -15,8 +15,10 @@ import {
   ClueList,
 } from "../Clues";
 import ActiveClue from "../ActiveClue";
-import Controls from "../Controls";
+import Controls, { CheckOption } from "../Controls";
 import { clueStartLocations, extractClues } from "../Clues/utils";
+
+const DEFAULT_ROW_COUNT = 5;
 
 export type CursorDirection = "row" | "col";
 
@@ -30,49 +32,62 @@ export interface Cursor {
   direction: CursorDirection;
 }
 
-function initialCells(rows: number): Cell[][] {
-  return Array.from({ length: rows }, () =>
-    Array.from({ length: rows }, () => ({
-      filled: false,
-      value: "",
-      number: null,
+export function numberCells<T extends Cell>(cells: readonly T[][]): T[][] {
+  let num = 1;
+  return cells.map((rowArray, rowIndex) =>
+    rowArray.map((cell, colIndex) => ({
+      ...cell,
+      number: isStartOfAnyWord(cells, rowIndex, colIndex) ? num++ : null,
     })),
   );
 }
 
-function initialClues(cells: NumberedCell[][]) {
-  return extractClues(cells);
+
+function initialCells(rows: number): Cell[][] {
+  return numberCells(
+    Array.from({ length: rows }, () =>
+      Array.from({ length: rows }, () => ({
+        filled: false,
+        value: "",
+      })),
+    )
+  )
+}
+
+function initialSolvingCells(rows: number): SolvingCell[][] {
+  return numberCells(
+    Array.from({ length: rows }, () =>
+      Array.from({ length: rows }, () => ({
+        filled: false,
+        value: "",
+        check: false,
+      })),
+    )
+  )
 }
 
 function Game() {
-  const defaultRowCount = 5;
+  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const gridWrapperRef = useRef<HTMLDivElement>(null);
+  const cluesWrapperRef = useRef<HTMLDivElement>(null);
 
-  const [cursor, setCursor] = useState<Cursor>({
-    row: 0,
-    col: 0,
-    direction: "row",
-  });
-  const [cells, setCells] = useState<Cell[][]>(initialCells(defaultRowCount));
+  // Cursor
+  const [cursor, setCursor] = useState<Cursor>({ row: 0, col: 0, direction: "row" });
 
-  // Cell values to use when in "solving" mode
-  const [solvingCells, setSolvingCells] = useState<Cell[][]>(
-    initialCells(defaultRowCount),
-  );
-
-  const [symmetry, setSymmetry] = useState<boolean>(false);
-
-  const [mode, setMode] = useState<Mode>("editing");
-
-  const numberedCells: NumberedCell[][] = numberCells(cells);
-  const numberedSolvingCells: NumberedCell[][] = numberCells(solvingCells);
-
-  const [clues, setClues] = useState<Clues>(initialClues(numberedCells));
-
-  const [seconds, setSeconds] = useState(0);
-
+  // Puzzle state
+  const [cells, setCells] = useState<Cell[][]>(initialCells(DEFAULT_ROW_COUNT));
+  const numberedCells: Cell[][] = numberCells(cells);
+  const [clues, setClues] = useState<Clues>(extractClues(numberedCells));
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
-  const hiddenInputRef = useRef<HTMLInputElement>(null);
+  // Solving mode state
+  const [mode, setMode] = useState<Mode>("editing");
+  const [seconds, setSeconds] = useState(0);
+  const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(initialSolvingCells(DEFAULT_ROW_COUNT));
+  const [check, setCheck] = useState<CheckOption | null>(null)
+
+  // Settings
+  const [symmetry, setSymmetry] = useState<boolean>(false);
 
   const setModeAndRefocus = (newMode: Mode) => {
     setMode(newMode);
@@ -83,8 +98,8 @@ function Game() {
     // When changing row count, do a hard reset of grid and clues
     const newCells = initialCells(rowCount);
     setCells(newCells);
-    setSolvingCells(initialCells(rowCount));
-    const newClues = initialClues(numberCells(newCells));
+    setSolvingCells(initialSolvingCells(rowCount));
+    const newClues = extractClues(numberCells(newCells));
     setClues(newClues);
   };
 
@@ -161,7 +176,7 @@ function Game() {
   const setCurrentCellValue = (value: string) => {
     const newCells = [...(mode === "editing" ? cells : solvingCells)];
     newCells[cursor.row][cursor.col].value = value;
-    mode === "editing" ? setCells(newCells) : setSolvingCells(newCells);
+    mode === "editing" ? setCells(newCells) : setSolvingCells(newCells as SolvingCell[][]);
   };
 
   const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
@@ -192,7 +207,7 @@ function Game() {
   };
 
   const clearSolvingGrid = () => {
-    setSolvingCells(initialCells(solvingCells.length));
+    setSolvingCells(initialSolvingCells(solvingCells.length));
   };
 
   const settingsProps = {
@@ -213,8 +228,6 @@ function Game() {
   // because the grid's height is derived from its width via aspect-ratio. This
   // ResizeObserver ensures the clues container always matches the grid's
   // height.
-  const gridWrapperRef = useRef<HTMLDivElement>(null);
-  const cluesWrapperRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     // Only sync height on desktop screen widths
     const gridWrapperEl = gridWrapperRef?.current;
@@ -243,6 +256,8 @@ function Game() {
             mode={mode}
             clearPuzzle={clearSolvingGrid}
             clearTimer={() => setSeconds(0)}
+            check={check}
+            setCheck={setCheck}
           />
         </div>
         <div className={styles.activeClueWrapper}>
@@ -256,7 +271,7 @@ function Game() {
           <Grid
             mode={mode}
             cells={numberedCells}
-            solvingCells={numberedSolvingCells}
+            solvingCells={solvingCells}
             cursor={cursor}
             updateCursorPosition={updateCursorPosition}
             toggleCursorDirection={toggleCursorDirection}

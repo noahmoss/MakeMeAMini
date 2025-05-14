@@ -6,6 +6,8 @@ import { Button, Combobox, Tooltip, useCombobox } from "@mantine/core";
 import { Mode } from "../Game";
 import { useEffect, useState } from "react";
 
+export type CheckOption = "Auto" | "Square" | "Word" | "Puzzle";
+
 function ClearControls({
   clearPuzzle,
   clearTimer,
@@ -15,7 +17,7 @@ function ClearControls({
 }) {
   const combobox = useCombobox();
   const options = {
-    Incorrect: () => {},
+    Incorrect: () => { },
     Puzzle: clearPuzzle,
     "Puzzle + Timer": () => {
       clearPuzzle();
@@ -59,12 +61,26 @@ function ClearControls({
   );
 }
 
-function CheckControls() {
+type CheckControlsProps = {
+  check: CheckOption;
+  setCheck: (option: CheckOption | null) => void;
+};
+
+function CheckControls({ check, setCheck }: CheckControlsProps) {
   const combobox = useCombobox();
   const options = ["Auto", "Square", "Word", "Puzzle"];
+  console.log(check)
 
   return (
-    <Combobox store={combobox} position="bottom" width={80}>
+    <Combobox
+      store={combobox}
+      position="bottom"
+      width={80}
+      onOptionSubmit={(option: string) => {
+        setCheck(option as CheckOption);
+        combobox.closeDropdown();
+      }
+      }>
       <Combobox.Target>
         <Tooltip label="Check" withArrow={true}>
           <Button
@@ -80,7 +96,7 @@ function CheckControls() {
       <Combobox.Dropdown>
         <Combobox.Options>
           {options.map((option) => (
-            <Combobox.Option value={option} key={option}>
+            <Combobox.Option value={option} key={option} active>
               {option}
             </Combobox.Option>
           ))}
@@ -125,9 +141,11 @@ interface ControlsProps {
   mode: Mode;
   clearPuzzle: () => void;
   clearTimer: () => void;
+  check: CheckOption | null;
+  setCheck: (option: CheckOption | null) => void;
 }
 
-function Controls({ mode, clearPuzzle, clearTimer }: ControlsProps) {
+function Controls({ mode, clearPuzzle, clearTimer, check, setCheck }: ControlsProps) {
   // TODO: extract animation logic into a hook
   const [visible, setVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
@@ -150,7 +168,7 @@ function Controls({ mode, clearPuzzle, clearTimer }: ControlsProps) {
   return (
     <div className={`${styles.controls} ${animationClass}`}>
       <ClearControls clearPuzzle={clearPuzzle} clearTimer={clearTimer} />
-      <CheckControls />
+      <CheckControls check={check} setCheck={setCheck} />
       <RevealControls />
     </div>
   );

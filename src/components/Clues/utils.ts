@@ -1,8 +1,8 @@
-import { NumberedCell } from "../Grid";
+import { Cell as Cell } from "../Grid";
 import { isStartOfWord } from "../Grid/utils";
 import { Clues, ClueStarts } from "./Clues";
 
-export function extractClues(cells: NumberedCell[][]): Clues {
+export function extractClues(cells: Cell[][]): Clues {
   const clues: Clues = { down: {}, across: {} };
   cells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
@@ -42,7 +42,7 @@ export function extractClues(cells: NumberedCell[][]): Clues {
   return clues;
 }
 
-export function clueStartLocations(cells: NumberedCell[][]): ClueStarts {
+export function clueStartLocations(cells: Cell[][]): ClueStarts {
   const clueStarts: ClueStarts = { down: {}, across: {} };
   cells.forEach((row, rowIndex) => {
     row.forEach((cell, colIndex) => {
