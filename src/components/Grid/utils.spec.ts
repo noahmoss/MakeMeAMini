@@ -1,9 +1,5 @@
 import { expect, test } from "vitest";
-import {
-  findWordBoundaries,
-  isStartOfWord,
-  isStartOfAnyWord,
-} from "./utils";
+import { findWordBoundaries, isStartOfWord, isStartOfAnyWord } from "./utils";
 import { Cell } from "./Grid";
 import { numberCells } from "../Game";
 

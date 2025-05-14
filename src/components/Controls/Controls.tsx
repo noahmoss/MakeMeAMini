@@ -17,7 +17,7 @@ function ClearControls({
 }) {
   const combobox = useCombobox();
   const options = {
-    Incorrect: () => { },
+    Incorrect: () => {},
     Puzzle: clearPuzzle,
     "Puzzle + Timer": () => {
       clearPuzzle();
@@ -69,7 +69,6 @@ type CheckControlsProps = {
 function CheckControls({ check, setCheck }: CheckControlsProps) {
   const combobox = useCombobox();
   const options = ["Auto", "Square", "Word", "Puzzle"];
-  console.log(check)
 
   return (
     <Combobox
@@ -79,8 +78,8 @@ function CheckControls({ check, setCheck }: CheckControlsProps) {
       onOptionSubmit={(option: string) => {
         setCheck(option as CheckOption);
         combobox.closeDropdown();
-      }
-      }>
+      }}
+    >
       <Combobox.Target>
         <Tooltip label="Check" withArrow={true}>
           <Button
@@ -145,7 +144,13 @@ interface ControlsProps {
   setCheck: (option: CheckOption | null) => void;
 }
 
-function Controls({ mode, clearPuzzle, clearTimer, check, setCheck }: ControlsProps) {
+function Controls({
+  mode,
+  clearPuzzle,
+  clearTimer,
+  check,
+  setCheck,
+}: ControlsProps) {
   // TODO: extract animation logic into a hook
   const [visible, setVisible] = useState(false);
   const [animationClass, setAnimationClass] = useState("");

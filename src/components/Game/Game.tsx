@@ -2,7 +2,11 @@
 import { useState, useRef, useEffect } from "react";
 import Grid, { Cell, SolvingCell } from "../Grid";
 import Header from "../Header";
-import { stepCursor, startOfAdjacentWord, isStartOfAnyWord } from "../Grid/utils";
+import {
+  stepCursor,
+  startOfAdjacentWord,
+  isStartOfAnyWord,
+} from "../Grid/utils";
 
 import styles from "./Game.module.css";
 
@@ -42,7 +46,6 @@ export function numberCells<T extends Cell>(cells: readonly T[][]): T[][] {
   );
 }
 
-
 function initialCells(rows: number): Cell[][] {
   return numberCells(
     Array.from({ length: rows }, () =>
@@ -50,8 +53,8 @@ function initialCells(rows: number): Cell[][] {
         filled: false,
         value: "",
       })),
-    )
-  )
+    ),
+  );
 }
 
 function initialSolvingCells(rows: number): SolvingCell[][] {
@@ -62,8 +65,8 @@ function initialSolvingCells(rows: number): SolvingCell[][] {
         value: "",
         check: false,
       })),
-    )
-  )
+    ),
+  );
 }
 
 function Game() {
@@ -72,7 +75,11 @@ function Game() {
   const cluesWrapperRef = useRef<HTMLDivElement>(null);
 
   // Cursor
-  const [cursor, setCursor] = useState<Cursor>({ row: 0, col: 0, direction: "row" });
+  const [cursor, setCursor] = useState<Cursor>({
+    row: 0,
+    col: 0,
+    direction: "row",
+  });
 
   // Puzzle state
   const [cells, setCells] = useState<Cell[][]>(initialCells(DEFAULT_ROW_COUNT));
@@ -83,8 +90,10 @@ function Game() {
   // Solving mode state
   const [mode, setMode] = useState<Mode>("editing");
   const [seconds, setSeconds] = useState(0);
-  const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(initialSolvingCells(DEFAULT_ROW_COUNT));
-  const [check, setCheck] = useState<CheckOption | null>(null)
+  const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(
+    initialSolvingCells(DEFAULT_ROW_COUNT),
+  );
+  const [check, setCheck] = useState<CheckOption | null>(null);
 
   // Settings
   const [symmetry, setSymmetry] = useState<boolean>(false);
@@ -173,10 +182,18 @@ function Game() {
     setClues(newClues);
   };
 
+  // Maybe this doesn't need to be polymorphic for editing vs solving cells
   const setCurrentCellValue = (value: string) => {
     const newCells = [...(mode === "editing" ? cells : solvingCells)];
     newCells[cursor.row][cursor.col].value = value;
-    mode === "editing" ? setCells(newCells) : setSolvingCells(newCells as SolvingCell[][]);
+
+    if (mode === "solving") {
+      (newCells[cursor.row][cursor.col] as SolvingCell).check = false;
+    }
+
+    mode === "editing"
+      ? setCells(newCells)
+      : setSolvingCells(newCells as SolvingCell[][]);
   };
 
   const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
@@ -280,6 +297,7 @@ function Game() {
             advanceCursor={advanceCursor}
             reverseCursor={reverseCursor}
             skipWord={skipWord}
+            check={check}
             useSymmetry={symmetry}
             hiddenInputRef={hiddenInputRef}
           />
