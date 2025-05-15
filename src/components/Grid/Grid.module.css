@@ -45,7 +45,7 @@
 }
 
 .incorrectCell {
-  background-color: red;
+  color: #d61400;
 }
 
 .gridCellNumber {

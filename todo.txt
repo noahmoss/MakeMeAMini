@@ -1,10 +1,12 @@
 Easy & concrete
 ===========
 Switch out clear icon to an eraser
+Solid pause icon
 Fade out mobile clue input
 Cycle clue input tabbing between across/down
 Don't require two tab hits to switch between across/down clues
 Arrow key navigation
+Delete should not back up cursor
 
 Medium
 ============
