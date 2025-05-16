@@ -241,6 +241,7 @@ function Grid({
 
   // Attach a ResizeObserver to the grid to ensure the cell font sizes scale
   // proportionally to cell width.
+  // TODO: A little cleaner to use a single CSS var + calc
   const gridRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const gridEl = gridRef?.current;
