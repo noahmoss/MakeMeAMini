@@ -19,7 +19,7 @@ function ClearControls({
 }) {
   const combobox = useCombobox();
   const options = {
-    Incorrect: () => { },
+    Incorrect: () => {},
     Puzzle: clearPuzzle,
     "Puzzle + Timer": () => {
       clearPuzzle();
@@ -120,14 +120,15 @@ function CheckControls({ autocheck, check }: CheckControlsProps) {
 
 type RevealControlsProps = {
   reveal: (option: RevealOption) => void;
-}
+};
 
 function RevealControls({ reveal }: RevealControlsProps) {
   const combobox = useCombobox();
   const options = ["Square", "Word", "Puzzle"];
 
   return (
-    <Combobox store={combobox}
+    <Combobox
+      store={combobox}
       position="bottom"
       width={80}
       onOptionSubmit={(option: string) => {

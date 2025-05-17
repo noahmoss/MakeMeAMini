@@ -48,7 +48,6 @@ export function numberCells<T extends Cell>(cells: readonly T[][]): T[][] {
   );
 }
 
-
 export function incorrectValue(cell: Cell, solvingCell: SolvingCell) {
   if (
     cell.value &&
@@ -58,8 +57,7 @@ export function incorrectValue(cell: Cell, solvingCell: SolvingCell) {
   ) {
     return cell.value !== solvingCell.value;
   } else return false;
-};
-
+}
 
 function initialCells(rows: number): Cell[][] {
   return numberCells(
@@ -256,7 +254,12 @@ function Game() {
     const checkedCells = solvingCells.map((row, rowIndex) => {
       return row.map((solvingCell, colIndex) => {
         const currentCell = isCurrentCell(rowIndex, colIndex, cursor);
-        const currentWord = isCurrentWord(solvingCells, rowIndex, colIndex, cursor);
+        const currentWord = isCurrentWord(
+          solvingCells,
+          rowIndex,
+          colIndex,
+          cursor,
+        );
 
         const shouldCheck =
           checkMode === "Auto" ||
@@ -268,21 +271,27 @@ function Game() {
           return {
             ...solvingCell,
             incorrect: incorrectValue(cells[rowIndex][colIndex], solvingCell),
-          }
+          };
         }
         return solvingCell;
-      })
+      });
     });
     setSolvingCells(checkedCells);
-  }
+  };
 
   const reveal = (revealMode: RevealOption) => {
     const revealedCells = solvingCells.map((row, rowIndex) => {
       return row.map((solvingCell, colIndex) => {
         const currentCell = isCurrentCell(rowIndex, colIndex, cursor);
-        const currentWord = isCurrentWord(solvingCells, rowIndex, colIndex, cursor);
+        const currentWord = isCurrentWord(
+          solvingCells,
+          rowIndex,
+          colIndex,
+          cursor,
+        );
 
-        const shouldReveal = revealMode === "Puzzle" ||
+        const shouldReveal =
+          revealMode === "Puzzle" ||
           (currentCell && revealMode === "Square") ||
           (currentWord && revealMode === "Word");
 
@@ -290,11 +299,11 @@ function Game() {
           return {
             ...solvingCell,
             value: cells[rowIndex][colIndex].value,
-          }
+          };
         }
         return solvingCell;
       });
-    })
+    });
     setSolvingCells(revealedCells);
   };
 
