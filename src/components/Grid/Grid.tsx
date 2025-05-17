@@ -1,7 +1,7 @@
 import styles from "./Grid.module.css";
 
 import { Cursor, Mode, MovementDirection } from "../Game";
-import { turn, findWordBoundaries } from "./utils";
+import { isCurrentCell, isCurrentWord } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useEffect, useRef, useState } from "react";
 import { CheckOption } from "../Controls";
@@ -112,17 +112,6 @@ function Cell({
   );
 }
 
-const incorrectValue = (cell: Cell, solvingCell: SolvingCell) => {
-  if (
-    cell.value &&
-    cell.value != " " &&
-    solvingCell.value &&
-    solvingCell.value != " "
-  ) {
-    return cell.value !== solvingCell.value;
-  } else return false;
-};
-
 interface GridProps {
   mode: Mode;
   cells: Cell[][];
@@ -135,7 +124,6 @@ interface GridProps {
   advanceCursor: () => void;
   reverseCursor: () => void;
   skipWord: (direction: MovementDirection) => void;
-  check: CheckOption | null;
   // Should we apply rotational symmetry when editing black squares?
   useSymmetry: boolean;
   // Ref for hidden <input> that powers typing in grid
@@ -154,7 +142,6 @@ function Grid({
   advanceCursor,
   reverseCursor,
   skipWord,
-  check,
   useSymmetry,
   hiddenInputRef,
 }: GridProps) {
@@ -164,27 +151,6 @@ function Grid({
   } | null>(null);
 
   const shiftDown = useKeydownListener("Shift");
-
-  const isCurrentCell = (row: number, col: number, cursor: Cursor) => {
-    return row === cursor.row && col === cursor.col;
-  };
-
-  const isCurrentWord = (row: number, col: number, cursor: Cursor) => {
-    const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
-    const wordStart = startCursor[turn(cursor.direction)];
-    const wordEnd = endCursor[turn(cursor.direction)];
-
-    return (
-      (cursor.direction === "row" &&
-        cursor.row === row &&
-        col >= wordStart &&
-        col <= wordEnd) ||
-      (cursor.direction === "col" &&
-        cursor.col === col &&
-        row >= wordStart &&
-        row <= wordEnd)
-    );
-  };
 
   const rotate = (cells: Cell[][], row: number, col: number) => {
     const rotatedRow = Math.abs(cells.length - row - 1);
@@ -288,7 +254,7 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
+        onChange={() => { }}
         autoFocus
         value=""
       />
@@ -319,7 +285,7 @@ function Grid({
             const currentCell =
               cursor && isCurrentCell(rowIndex, colIndex, cursor);
             const currentWord =
-              cursor && isCurrentWord(rowIndex, colIndex, cursor);
+              cursor && isCurrentWord(cells, rowIndex, colIndex, cursor);
 
             const isHoveredCell =
               mode === "editing" &&

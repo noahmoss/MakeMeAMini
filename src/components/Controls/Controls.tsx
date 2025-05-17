@@ -17,7 +17,7 @@ function ClearControls({
 }) {
   const combobox = useCombobox();
   const options = {
-    Incorrect: () => {},
+    Incorrect: () => { },
     Puzzle: clearPuzzle,
     "Puzzle + Timer": () => {
       clearPuzzle();
@@ -62,11 +62,11 @@ function ClearControls({
 }
 
 type CheckControlsProps = {
-  check: CheckOption | null;
-  setCheck: (option: CheckOption | null) => void;
+  autocheck: boolean;
+  check: (option: CheckOption | null) => void;
 };
 
-function CheckControls({ check, setCheck }: CheckControlsProps) {
+function CheckControls({ autocheck, check }: CheckControlsProps) {
   const combobox = useCombobox();
   const options = ["Auto", "Square", "Word", "Puzzle"];
 
@@ -76,10 +76,11 @@ function CheckControls({ check, setCheck }: CheckControlsProps) {
       position="bottom"
       width={100}
       onOptionSubmit={(option: string) => {
-        if (option === "Auto" && check === "Auto") {
-          setCheck(null);
+        if (option === "Auto" && autocheck) {
+          // Disable autocheck if already selected
+          check(null);
         } else {
-          setCheck(option as CheckOption);
+          check(option as CheckOption);
         }
         combobox.closeDropdown();
       }}
@@ -99,7 +100,7 @@ function CheckControls({ check, setCheck }: CheckControlsProps) {
       <Combobox.Dropdown>
         <Combobox.Options>
           {options.map((option) => {
-            const active = check === "Auto" && option === "Auto";
+            const active = autocheck && option === "Auto";
             return (
               <Combobox.Option value={option} key={option} active={active}>
                 <Flex align={"baseline"} gap={"xs"}>
@@ -150,16 +151,16 @@ interface ControlsProps {
   mode: Mode;
   clearPuzzle: () => void;
   clearTimer: () => void;
-  check: CheckOption | null;
-  setCheck: (option: CheckOption | null) => void;
+  autocheck: boolean;
+  check: (option: CheckOption | null) => void;
 }
 
 function Controls({
   mode,
   clearPuzzle,
   clearTimer,
+  autocheck,
   check,
-  setCheck,
 }: ControlsProps) {
   // TODO: extract animation logic into a hook
   const [visible, setVisible] = useState(false);
@@ -183,7 +184,7 @@ function Controls({
   return (
     <div className={`${styles.controls} ${animationClass}`}>
       <ClearControls clearPuzzle={clearPuzzle} clearTimer={clearTimer} />
-      <CheckControls check={check} setCheck={setCheck} />
+      <CheckControls autocheck={autocheck} check={check} />
       <RevealControls />
     </div>
   );

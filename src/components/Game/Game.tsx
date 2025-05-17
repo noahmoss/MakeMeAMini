@@ -6,6 +6,8 @@ import {
   stepCursor,
   startOfAdjacentWord,
   isStartOfAnyWord,
+  isCurrentCell,
+  isCurrentWord,
 } from "../Grid/utils";
 
 import styles from "./Game.module.css";
@@ -93,7 +95,7 @@ function Game() {
   const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(
     initialSolvingCells(DEFAULT_ROW_COUNT),
   );
-  const [check, setCheck] = useState<CheckOption | null>(null);
+  const [autocheck, setAutocheck] = useState<boolean>(false);
 
   // Settings
   const [symmetry, setSymmetry] = useState<boolean>(false);
@@ -227,6 +229,41 @@ function Game() {
     setSolvingCells(initialSolvingCells(solvingCells.length));
   };
 
+  const incorrectValue = (cell: Cell, solvingCell: SolvingCell) => {
+    if (
+      cell.value &&
+      cell.value != " " &&
+      solvingCell.value &&
+      solvingCell.value != " "
+    ) {
+      return cell.value !== solvingCell.value;
+    } else return false;
+  };
+
+  const checkGrid = (checkMode: CheckOption) => {
+    const checkedCells = solvingCells.map((row, rowIndex) => {
+      return row.map((solvingCell, colIndex) => {
+        const currentCell = isCurrentCell(rowIndex, colIndex, cursor);
+        const currentWord = isCurrentWord(solvingCells, rowIndex, colIndex, cursor);
+
+        const shouldCheck =
+          checkMode === "Auto" ||
+          checkMode === "Puzzle" ||
+          (currentCell && checkMode === "Square") ||
+          (currentWord && checkMode === "Word");
+
+        if (shouldCheck) {
+          return {
+            ...solvingCell,
+            check: incorrectValue(cells[rowIndex][colIndex], solvingCell),
+          }
+        }
+        return solvingCell;
+      })
+    });
+    setSolvingCells(checkedCells);
+  }
+
   const settingsProps = {
     rowCount: cells.length,
     setRowCount,
@@ -273,8 +310,8 @@ function Game() {
             mode={mode}
             clearPuzzle={clearSolvingGrid}
             clearTimer={() => setSeconds(0)}
-            check={check}
-            setCheck={setCheck}
+            check={autocheck}
+            setCheck={setAutocheck}
           />
         </div>
         <div className={styles.activeClueWrapper}>
@@ -297,7 +334,6 @@ function Game() {
             advanceCursor={advanceCursor}
             reverseCursor={reverseCursor}
             skipWord={skipWord}
-            check={check}
             useSymmetry={symmetry}
             hiddenInputRef={hiddenInputRef}
           />

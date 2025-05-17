@@ -19,6 +19,28 @@ export function allFilled(cells: Cell[][]): boolean {
   return cells.every((row) => row.every((cell) => !!cell.filled));
 }
 
+
+export const isCurrentCell = (row: number, col: number, cursor: Cursor) => {
+  return row === cursor.row && col === cursor.col;
+};
+
+export const isCurrentWord = (cells: Cell[][], row: number, col: number, cursor: Cursor) => {
+  const { startCursor, endCursor } = findWordBoundaries(cells, cursor);
+  const wordStart = startCursor[turn(cursor.direction)];
+  const wordEnd = endCursor[turn(cursor.direction)];
+
+  return (
+    (cursor.direction === "row" &&
+      cursor.row === row &&
+      col >= wordStart &&
+      col <= wordEnd) ||
+    (cursor.direction === "col" &&
+      cursor.col === col &&
+      row >= wordStart &&
+      row <= wordEnd)
+  );
+};
+
 // Returns two cursors for the beginning and end cells of the current word
 export const findWordBoundaries = (cells: Cell[][], cursor: Cursor) => {
   const { row, col, direction } = cursor;
