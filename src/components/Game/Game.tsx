@@ -21,7 +21,7 @@ import {
   ClueList,
 } from "../Clues";
 import ActiveClue from "../ActiveClue";
-import Controls, { CheckOption } from "../Controls";
+import Controls, { CheckOption, RevealOption } from "../Controls";
 import { clueStartLocations, extractClues } from "../Clues/utils";
 
 const DEFAULT_ROW_COUNT = 5;
@@ -276,6 +276,28 @@ function Game() {
     setSolvingCells(checkedCells);
   }
 
+  const reveal = (revealMode: RevealOption) => {
+    const revealedCells = solvingCells.map((row, rowIndex) => {
+      return row.map((solvingCell, colIndex) => {
+        const currentCell = isCurrentCell(rowIndex, colIndex, cursor);
+        const currentWord = isCurrentWord(solvingCells, rowIndex, colIndex, cursor);
+
+        const shouldReveal = revealMode === "Puzzle" ||
+          (currentCell && revealMode === "Square") ||
+          (currentWord && revealMode === "Word");
+
+        if (shouldReveal) {
+          return {
+            ...solvingCell,
+            value: cells[rowIndex][colIndex].value,
+          }
+        }
+        return solvingCell;
+      });
+    })
+    setSolvingCells(revealedCells);
+  };
+
   const settingsProps = {
     rowCount: cells.length,
     setRowCount,
@@ -324,6 +346,7 @@ function Game() {
             clearTimer={() => setSeconds(0)}
             autocheck={autocheck}
             check={check}
+            reveal={reveal}
           />
         </div>
         <div className={styles.activeClueWrapper}>

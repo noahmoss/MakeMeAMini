@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 
 export type CheckOption = "Auto" | "Square" | "Word" | "Puzzle";
 
+export type RevealOption = "Square" | "Word" | "Puzzle";
+
 function ClearControls({
   clearPuzzle,
   clearTimer,
@@ -116,12 +118,23 @@ function CheckControls({ autocheck, check }: CheckControlsProps) {
   );
 }
 
-function RevealControls() {
+type RevealControlsProps = {
+  reveal: (option: RevealOption) => void;
+}
+
+function RevealControls({ reveal }: RevealControlsProps) {
   const combobox = useCombobox();
   const options = ["Square", "Word", "Puzzle"];
 
   return (
-    <Combobox store={combobox} position="bottom" width={80}>
+    <Combobox store={combobox}
+      position="bottom"
+      width={80}
+      onOptionSubmit={(option: string) => {
+        reveal(option as RevealOption);
+        combobox.closeDropdown();
+      }}
+    >
       <Combobox.Target>
         <Tooltip label="Reveal" withArrow={true}>
           <Button
@@ -153,6 +166,7 @@ interface ControlsProps {
   clearTimer: () => void;
   autocheck: boolean;
   check: (option: CheckOption | null) => void;
+  reveal: (option: RevealOption) => void;
 }
 
 function Controls({
@@ -161,6 +175,7 @@ function Controls({
   clearTimer,
   autocheck,
   check,
+  reveal,
 }: ControlsProps) {
   // TODO: extract animation logic into a hook
   const [visible, setVisible] = useState(false);
@@ -185,7 +200,7 @@ function Controls({
     <div className={`${styles.controls} ${animationClass}`}>
       <ClearControls clearPuzzle={clearPuzzle} clearTimer={clearTimer} />
       <CheckControls autocheck={autocheck} check={check} />
-      <RevealControls />
+      <RevealControls reveal={reveal} />
     </div>
   );
 }
