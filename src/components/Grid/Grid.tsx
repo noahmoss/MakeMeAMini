@@ -36,6 +36,7 @@ type CellProps = {
   rowIndex: number;
   colIndex: number;
   mode: Mode;
+  incorrect: boolean;
   handleCellClick: (mode: Mode, rowIndex: number, colIndex: number) => void;
   isHoveredCell: boolean;
   setHoveredCell: (hovered: { row: number; col: number } | null) => void;
@@ -48,6 +49,7 @@ function Cell({
   rowIndex,
   colIndex,
   mode,
+  incorrect,
   handleCellClick,
   isHoveredCell,
   setHoveredCell,
@@ -98,7 +100,11 @@ function Cell({
         <div className={`${editingAnimationClass} ${styles.gridCellValue}`}>
           {cell?.value}
         </div>
-        <div className={`${solvingAnimationClass} ${styles.gridCellValue}`}>
+        <div
+          className={`${solvingAnimationClass} 
+                      ${styles.gridCellValue}
+                      ${incorrect && styles.incorrectCell}`}
+        >
           {solvingCell?.value}
         </div>
       </div>
@@ -338,13 +344,13 @@ function Grid({
                 cell={cell}
                 solvingCell={solvingCells[rowIndex][colIndex]}
                 mode={mode}
+                incorrect={incorrect}
                 className={`
                   ${styles.gridCell} 
                   ${currentWord && styles.cursorWord}
                   ${currentCell && styles.cursorCell}
                   ${shiftDown && isHoveredCell && styles.fillCellHoverIndicator}
                   ${shiftDown && useSymmetry && isRotatedHoveredCell && styles.mirroredFillCellHoverIndicator}
-                  ${incorrect && styles.incorrectCell}
               `}
                 rowIndex={rowIndex}
                 colIndex={colIndex}
