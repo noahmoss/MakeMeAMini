@@ -1,8 +1,8 @@
 import styles from "./Controls.module.css";
 
-import { LifeBuoy, RotateCw, Flag } from "react-feather";
+import { LifeBuoy, RotateCw, Flag, Check } from "react-feather";
 
-import { Button, Combobox, Tooltip, useCombobox } from "@mantine/core";
+import { Button, Combobox, Flex, Tooltip, useCombobox } from "@mantine/core";
 import { Mode } from "../Game";
 import { useEffect, useState } from "react";
 
@@ -62,7 +62,7 @@ function ClearControls({
 }
 
 type CheckControlsProps = {
-  check: CheckOption;
+  check: CheckOption | null;
   setCheck: (option: CheckOption | null) => void;
 };
 
@@ -74,9 +74,13 @@ function CheckControls({ check, setCheck }: CheckControlsProps) {
     <Combobox
       store={combobox}
       position="bottom"
-      width={80}
+      width={100}
       onOptionSubmit={(option: string) => {
-        setCheck(option as CheckOption);
+        if (option === "Auto" && check === "Auto") {
+          setCheck(null);
+        } else {
+          setCheck(option as CheckOption);
+        }
         combobox.closeDropdown();
       }}
     >
@@ -94,11 +98,17 @@ function CheckControls({ check, setCheck }: CheckControlsProps) {
       </Combobox.Target>
       <Combobox.Dropdown>
         <Combobox.Options>
-          {options.map((option) => (
-            <Combobox.Option value={option} key={option} active>
-              {option}
-            </Combobox.Option>
-          ))}
+          {options.map((option) => {
+            const active = check === "Auto" && option === "Auto";
+            return (
+              <Combobox.Option value={option} key={option} active={active}>
+                <Flex align={"baseline"} gap={"xs"}>
+                  {active && <Check size="12" />}
+                  {option}
+                </Flex>
+              </Combobox.Option>
+            );
+          })}
         </Combobox.Options>
       </Combobox.Dropdown>
     </Combobox>
