@@ -1,10 +1,9 @@
 import styles from "./Grid.module.css";
 
-import { Cursor, Mode, MovementDirection } from "../Game";
+import { Cursor, incorrectValue, Mode, MovementDirection } from "../Game";
 import { isCurrentCell, isCurrentWord } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useEffect, useRef, useState } from "react";
-import { CheckOption } from "../Controls";
 
 export interface Cell {
   filled: boolean;
@@ -13,7 +12,7 @@ export interface Cell {
 }
 
 export interface SolvingCell extends Cell {
-  check: boolean;
+  incorrect: boolean;
 }
 
 type FilledCellProps = {
@@ -124,6 +123,7 @@ interface GridProps {
   advanceCursor: () => void;
   reverseCursor: () => void;
   skipWord: (direction: MovementDirection) => void;
+  autocheck: boolean;
   // Should we apply rotational symmetry when editing black squares?
   useSymmetry: boolean;
   // Ref for hidden <input> that powers typing in grid
@@ -142,6 +142,7 @@ function Grid({
   advanceCursor,
   reverseCursor,
   skipWord,
+  autocheck,
   useSymmetry,
   hiddenInputRef,
 }: GridProps) {
@@ -302,8 +303,8 @@ function Grid({
             const solvingCell = solvingCells[rowIndex][colIndex];
             const incorrect =
               mode === "solving" &&
-              (check === "Auto" || solvingCell.check) &&
-              incorrectValue(cell, solvingCell);
+              (solvingCell.incorrect ||
+                (autocheck && incorrectValue(cell, solvingCell)));
 
             return (
               <Cell

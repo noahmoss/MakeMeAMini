@@ -48,6 +48,19 @@ export function numberCells<T extends Cell>(cells: readonly T[][]): T[][] {
   );
 }
 
+
+export function incorrectValue(cell: Cell, solvingCell: SolvingCell) {
+  if (
+    cell.value &&
+    cell.value != " " &&
+    solvingCell.value &&
+    solvingCell.value != " "
+  ) {
+    return cell.value !== solvingCell.value;
+  } else return false;
+};
+
+
 function initialCells(rows: number): Cell[][] {
   return numberCells(
     Array.from({ length: rows }, () =>
@@ -103,6 +116,10 @@ function Game() {
   const setModeAndRefocus = (newMode: Mode) => {
     setMode(newMode);
     hiddenInputRef.current?.focus();
+    if (newMode === "solving") {
+      setSolvingCells(initialSolvingCells(cells.length));
+      setAutocheck(false);
+    }
   };
 
   const setRowCount = (rowCount: number) => {
@@ -190,7 +207,7 @@ function Game() {
     newCells[cursor.row][cursor.col].value = value;
 
     if (mode === "solving") {
-      (newCells[cursor.row][cursor.col] as SolvingCell).check = false;
+      (newCells[cursor.row][cursor.col] as SolvingCell).incorrect = false;
     }
 
     mode === "editing"
@@ -229,18 +246,13 @@ function Game() {
     setSolvingCells(initialSolvingCells(solvingCells.length));
   };
 
-  const incorrectValue = (cell: Cell, solvingCell: SolvingCell) => {
-    if (
-      cell.value &&
-      cell.value != " " &&
-      solvingCell.value &&
-      solvingCell.value != " "
-    ) {
-      return cell.value !== solvingCell.value;
-    } else return false;
-  };
+  const check = (checkMode: CheckOption | null) => {
+    if (!checkMode) {
+      setAutocheck(false);
+      return;
+    }
 
-  const checkGrid = (checkMode: CheckOption) => {
+    if (checkMode === "Auto") setAutocheck(true);
     const checkedCells = solvingCells.map((row, rowIndex) => {
       return row.map((solvingCell, colIndex) => {
         const currentCell = isCurrentCell(rowIndex, colIndex, cursor);
@@ -255,7 +267,7 @@ function Game() {
         if (shouldCheck) {
           return {
             ...solvingCell,
-            check: incorrectValue(cells[rowIndex][colIndex], solvingCell),
+            incorrect: incorrectValue(cells[rowIndex][colIndex], solvingCell),
           }
         }
         return solvingCell;
@@ -310,8 +322,8 @@ function Game() {
             mode={mode}
             clearPuzzle={clearSolvingGrid}
             clearTimer={() => setSeconds(0)}
-            check={autocheck}
-            setCheck={setAutocheck}
+            autocheck={autocheck}
+            check={check}
           />
         </div>
         <div className={styles.activeClueWrapper}>
@@ -334,6 +346,7 @@ function Game() {
             advanceCursor={advanceCursor}
             reverseCursor={reverseCursor}
             skipWord={skipWord}
+            autocheck={autocheck}
             useSymmetry={symmetry}
             hiddenInputRef={hiddenInputRef}
           />
