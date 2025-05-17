@@ -77,6 +77,7 @@ function initialSolvingCells(rows: number): SolvingCell[][] {
         filled: false,
         value: "",
         check: false,
+        incorrect: false,
       })),
     ),
   );
