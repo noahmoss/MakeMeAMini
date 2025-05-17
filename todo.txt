@@ -1,5 +1,6 @@
 Easy & concrete
 ===========
+Fix mobile layout for larger grids than 5x5
 Switch out clear icon to an eraser
 Solid pause icon
 Fade out mobile clue input
