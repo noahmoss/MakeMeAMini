@@ -14,6 +14,9 @@ import {
   Tool,
   Pause,
 } from "react-feather";
+
+import { IconPlayerPauseFilled } from "@tabler/icons-react";
+
 import { useDisclosure } from "@mantine/hooks";
 import {
   Button,
@@ -93,8 +96,15 @@ function Timer({ mode, seconds, setSeconds }: TimerProps) {
     <>
       <div className={`${styles.timerContainer} ${animationClass}`}>
         <div className={`${styles.timer}`}>{timeString}</div>
-        <Button variant="transparent" px="0px" onClick={pause}>
-          <Pause className={styles.pause} color={"black"} height={"1.2rem"} />
+        <Button
+          variant="transparent"
+          px="0px"
+          onClick={pause}
+          fz="1.2rem"
+          lts=".1rem"
+          color="black"
+        >
+          ||
         </Button>
       </div>
       <Modal

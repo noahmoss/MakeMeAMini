@@ -13,6 +13,9 @@ importers:
       "@mantine/hooks":
         specifier: ^7.17.3
         version: 7.17.3(react@18.3.1)
+      "@tabler/icons-react":
+        specifier: ^3.33.0
+        version: 3.33.0(react@18.3.1)
       classnames:
         specifier: ^2.5.1
         version: 2.5.1
@@ -825,6 +828,20 @@ packages:
       }
     cpu: [x64]
     os: [win32]
+
+  "@tabler/icons-react@3.33.0":
+    resolution:
+      {
+        integrity: sha512-ay+HDecCjmFl25Lg14hcl59ffSjnOcgfrlV14shu8Qjbz+Xh4LRus93DuoyLQte8YSxE7Pe5gnEz6OF0GtwNtw==,
+      }
+    peerDependencies:
+      react: ">= 16"
+
+  "@tabler/icons@3.33.0":
+    resolution:
+      {
+        integrity: sha512-NZeFfzcYe7xcBHR3zKoCSrw/cFWvfj6LjenPQ48yVMTGdX854HH9nH44ZfMH8rrDzHBllfjwl4CIX6Vh2tyN0Q==,
+      }
 
   "@types/babel__core@7.20.5":
     resolution:
@@ -3719,6 +3736,13 @@ snapshots:
 
   "@rollup/rollup-win32-x64-msvc@4.39.0":
     optional: true
+
+  "@tabler/icons-react@3.33.0(react@18.3.1)":
+    dependencies:
+      "@tabler/icons": 3.33.0
+      react: 18.3.1
+
+  "@tabler/icons@3.33.0": {}
 
   "@types/babel__core@7.20.5":
     dependencies:

@@ -1,6 +1,11 @@
 import styles from "./Controls.module.css";
 
-import { LifeBuoy, RotateCw, Flag, Check } from "react-feather";
+import {
+  IconEraser,
+  IconLifebuoy,
+  IconFlag,
+  IconCheck,
+} from "@tabler/icons-react";
 
 import { Button, Combobox, Flex, Tooltip, useCombobox } from "@mantine/core";
 import { Mode } from "../Game";
@@ -46,7 +51,7 @@ function ClearControls({
             size="compact-md"
             onClick={() => combobox.openDropdown()}
           >
-            <RotateCw size="20" />
+            <IconEraser size="24" />
           </Button>
         </Tooltip>
       </Combobox.Target>
@@ -76,7 +81,7 @@ function CheckControls({ autocheck, check }: CheckControlsProps) {
     <Combobox
       store={combobox}
       position="bottom"
-      width={100}
+      width={80}
       onOptionSubmit={(option: string) => {
         if (option === "Auto" && autocheck) {
           // Disable autocheck if already selected
@@ -95,7 +100,7 @@ function CheckControls({ autocheck, check }: CheckControlsProps) {
             size="compact-md"
             onClick={() => combobox.openDropdown()}
           >
-            <LifeBuoy size="20" />
+            <IconLifebuoy size="24" />
           </Button>
         </Tooltip>
       </Combobox.Target>
@@ -105,8 +110,8 @@ function CheckControls({ autocheck, check }: CheckControlsProps) {
             const active = autocheck && option === "Auto";
             return (
               <Combobox.Option value={option} key={option} active={active}>
-                <Flex align={"baseline"} gap={"xs"}>
-                  {active && <Check size="12" />}
+                <Flex align={"center"} gap={".2rem"}>
+                  {active && <IconCheck size="16" />}
                   {option}
                 </Flex>
               </Combobox.Option>
@@ -144,7 +149,7 @@ function RevealControls({ reveal }: RevealControlsProps) {
             size="compact-md"
             onClick={() => combobox.openDropdown()}
           >
-            <Flag size="20" />
+            <IconFlag size="24" />
           </Button>
         </Tooltip>
       </Combobox.Target>
