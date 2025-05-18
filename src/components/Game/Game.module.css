@@ -21,21 +21,15 @@
 
 .gridAndClues {
   align-self: center;
-  display: grid;
-
   grid-template-rows: var(--header-height) 4.5rem auto;
   grid-template-columns: auto;
 
-  width: 100%;
-  grid-template-areas:
-    "header"
-    "grid";
-
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   gap: 8px;
+
+  width: 100%;
 
   @media (min-width: 480px) {
     column-gap: 16px;
