@@ -12,10 +12,7 @@ import {
   Link,
   HelpCircle,
   Tool,
-  Pause,
 } from "react-feather";
-
-import { IconPlayerPauseFilled } from "@tabler/icons-react";
 
 import { useDisclosure } from "@mantine/hooks";
 import {
