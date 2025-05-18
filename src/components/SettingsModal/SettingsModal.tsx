@@ -20,10 +20,15 @@ const RowCountChangeConfirmation = ({
 }) => {
   return (
     <Alert variant="light" color="red" icon={<AlertCircle />}>
-      <Flex justify={"space-between"}>
+      <Flex gap={"8px"}>
         Changing the grid size will reset the puzzle!
-        <Button color="red" variant="light" onClick={confirmRowCount}>
-          Confirm
+        <Button
+          color="red"
+          variant="light"
+          onClick={confirmRowCount}
+          miw="fit-content"
+        >
+          OK
         </Button>
       </Flex>
     </Alert>
