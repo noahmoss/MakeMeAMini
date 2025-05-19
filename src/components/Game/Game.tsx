@@ -364,6 +364,7 @@ function Game() {
             skipWord={skipWord}
             clue={activeClue}
             updateClue={updateClue}
+            mode={mode}
           />
         </div>
         <div className={styles.gridWrapper} ref={gridWrapperRef}>

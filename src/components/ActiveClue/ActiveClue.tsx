@@ -1,17 +1,18 @@
 import { ChevronLeft, ChevronRight } from "react-feather";
 import { NumberedClue, updateClueFn } from "../Clues";
-import { MovementDirection } from "../Game";
+import { Mode, MovementDirection } from "../Game";
 
 import styles from "./ActiveClue.module.css";
-import { Textarea } from "@mantine/core";
+import EditableClue from "../Clues/EditableClue";
 
 interface ActiveClueProps {
   clue?: NumberedClue;
   skipWord: (direction: MovementDirection) => void;
   updateClue: updateClueFn;
+  mode: Mode;
 }
 
-function ActiveClue({ clue, skipWord, updateClue }: ActiveClueProps) {
+function ActiveClue({ clue, skipWord, updateClue, mode }: ActiveClueProps) {
   return (
     <div className={styles.activeClue}>
       <button
@@ -26,29 +27,7 @@ function ActiveClue({ clue, skipWord, updateClue }: ActiveClueProps) {
         </div>
         <div className={styles.activeClueValue}>{clue?.value}</div>
         {clue && (
-          <Textarea
-            className={styles.activeClueInput}
-            value={clue.value}
-            onChange={(e) =>
-              updateClue(clue?.number, clue?.direction, e.target.value)
-            }
-            autosize
-            minRows={1}
-            maxRows={3}
-            styles={{
-              root: {
-                width: "100%",
-              },
-              input: {
-                transition: "unset",
-                height: "min-content",
-              },
-              wrapper: {
-                paddingTop: "4px",
-                paddingBottom: "4px",
-              },
-            }}
-          />
+          <EditableClue clue={clue} updateClue={updateClue} mode={mode} />
         )}
       </div>
       <button

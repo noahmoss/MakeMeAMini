@@ -44,7 +44,7 @@ function ClueText({ clue, mode }: ClueTextProps) {
 
 interface ClueInputProps extends ClueTextProps {
   updateClue: updateClueFn;
-  setActiveClue: (clueNumber: number, direction: ClueDirection) => void;
+  setActiveClue?: (clueNumber: number, direction: ClueDirection) => void;
 }
 
 function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
@@ -78,7 +78,7 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
       value={clue.value}
       onChange={(e) => updateClue(clue.number, clue.direction, e.target.value)}
       onFocus={() => {
-        setActiveClue(clue.number, clue.direction);
+        setActiveClue?.(clue.number, clue.direction);
       }}
       autosize
       minRows={1}
