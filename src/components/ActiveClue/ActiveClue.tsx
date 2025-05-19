@@ -2,6 +2,8 @@ import { ChevronLeft, ChevronRight } from "react-feather";
 import { NumberedClue, updateClueFn } from "../Clues";
 import { Mode, MovementDirection } from "../Game";
 
+import { useMediaQuery } from "@mantine/hooks";
+
 import styles from "./ActiveClue.module.css";
 import EditableClue from "../Clues/EditableClue";
 
@@ -13,6 +15,8 @@ interface ActiveClueProps {
 }
 
 function ActiveClue({ clue, skipWord, updateClue, mode }: ActiveClueProps) {
+  const disallowEdit = useMediaQuery("(min-width: 480px)");
+
   return (
     <div className={styles.activeClue}>
       <button
@@ -25,9 +29,13 @@ function ActiveClue({ clue, skipWord, updateClue, mode }: ActiveClueProps) {
         <div className={styles.activeClueLabel}>
           {clue && `${clue.number}${clue.direction.charAt(0).toUpperCase()}`}
         </div>
-        <div className={styles.activeClueValue}>{clue?.value}</div>
         {clue && (
-          <EditableClue clue={clue} updateClue={updateClue} mode={mode} />
+          <EditableClue
+            clue={clue}
+            updateClue={updateClue}
+            mode={mode}
+            allowEdit={!disallowEdit}
+          />
         )}
       </div>
       <button

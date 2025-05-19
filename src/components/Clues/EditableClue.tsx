@@ -99,23 +99,32 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
   );
 }
 
-interface EditableClueProps extends ClueInputProps {}
+interface EditableClueProps extends ClueInputProps {
+  allowEdit?: boolean;
+}
 
 function EditableClue({
   clue,
   updateClue,
   setActiveClue,
   mode,
+  allowEdit = true,
 }: EditableClueProps) {
   return (
     <div className={styles.clueContainer}>
-      <ClueInput
-        clue={clue}
-        updateClue={updateClue}
-        setActiveClue={setActiveClue}
-        mode={mode}
-      />
-      <ClueText clue={clue} mode={mode} />
+      {allowEdit ? (
+        <>
+          <ClueInput
+            clue={clue}
+            updateClue={updateClue}
+            setActiveClue={setActiveClue}
+            mode={mode}
+          />
+          <ClueText clue={clue} mode={mode} />
+        </>
+      ) : (
+        <span className={`${styles.clueText}`}>{clue.value}</span>
+      )}
     </div>
   );
 }
