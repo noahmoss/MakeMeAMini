@@ -15,7 +15,7 @@ interface ActiveClueProps {
 }
 
 function ActiveClue({ clue, skipWord, updateClue, mode }: ActiveClueProps) {
-  const disallowEdit = useMediaQuery("(min-width: 480px)");
+  const disallowEdit = useMediaQuery("(min-width: 600px)");
 
   return (
     <div className={styles.activeClue}>
