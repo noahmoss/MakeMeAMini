@@ -27,8 +27,12 @@
 }
 
 .letter {
-  /* Shift text down a pixel to visually center letters */
-  transform: translate(0, 2px);
+  /* Shift text down slightly to visually center letters */
+  transform: translate(0, 1px);
+
+  @media (min-width: 600px) {
+    transform: translate(0, 2px);
+  }
 }
 
 .blackSquare {

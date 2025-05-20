@@ -1,5 +1,6 @@
 Easy & concrete
 ===========
+Standardize on one icon set
 Cycle clue input tabbing between across/down
 Don't require two tab hits to switch between across/down clues
 Arrow key navigation
