@@ -7,6 +7,9 @@ defmodule BackendWeb.Router do
 
   scope "/api", BackendWeb do
     pipe_through :api
+
+    post "/crossword", CrosswordController, :create
+    get "/crossword/:key", CrosswordController, :show
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

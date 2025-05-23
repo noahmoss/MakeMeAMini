@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :backend, Backend.Repo,
-  username: "noahmoss",
-  password: "",
-  hostname: "localhost",
-  database: "makemeamini",
+  username: System.get_env("DB_USERNAME") || "postgres",
+  password: System.get_env("DB_PASSWORD") || "",
+  hostname: System.get_env("DB_HOST") || "localhost",
+  database: System.get_env("DB_NAME") || "makemeamini",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
