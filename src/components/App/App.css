@@ -5,6 +5,7 @@ body {
   --active-clue-color: hsl(197deg 100% 90%);
   --cursor-color: hsl(197deg 100% 90%);
 
+  --light-gray: #d5d5d5;
   --dark-blue: hsl(197deg 100% 40%);
 
   --inactive-tab-header-color: hsl(210deg 14% 89%);

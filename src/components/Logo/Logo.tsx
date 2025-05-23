@@ -8,7 +8,7 @@ function LogoLetter({ letter }: { letter: string }) {
   );
 }
 
-function LogoSpace() {
+export function LogoSpace() {
   return <span className={`${styles.letterSquare} ${styles.blackSquare}`} />;
 }
 

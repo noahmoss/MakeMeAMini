@@ -1,6 +1,9 @@
+import { IconBackspace } from "@tabler/icons-react";
 import styles from "./Keyboard.module.css";
+import { ReactNode } from "react";
+import { LogoSpace } from "../Logo";
 
-function Letter({ value }: { value: string }) {
+function Letter({ value }: { value: ReactNode }) {
   return <div className={styles.letter}>{value}</div>;
 }
 
@@ -31,6 +34,7 @@ function Keyboard() {
         <Letter value={"L"} />
       </div>
       <div className={styles.row}>
+        <Letter value={<LogoSpace />} />
         <Letter value={"Z"} />
         <Letter value={"X"} />
         <Letter value={"C"} />
@@ -38,6 +42,7 @@ function Keyboard() {
         <Letter value={"B"} />
         <Letter value={"N"} />
         <Letter value={"M"} />
+        <Letter value={<IconBackspace />} />
       </div>
     </div>
   );

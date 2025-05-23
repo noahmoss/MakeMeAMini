@@ -12,11 +12,11 @@
 }
 
 .letter {
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   display: grid;
   place-content: center;
   padding: 2px;
   width: 2rem;
   border-radius: 4px;
-  background-color: lightgray;
+  background-color: var(--light-gray);
 }
