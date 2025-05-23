@@ -23,6 +23,7 @@ import {
 import ActiveClue from "../ActiveClue";
 import Controls, { CheckOption, RevealOption } from "../Controls";
 import { clueStartLocations, extractClues } from "../Clues/utils";
+import Keyboard from "../Keyboard";
 
 const DEFAULT_ROW_COUNT = 5;
 
@@ -394,6 +395,9 @@ function Game() {
             setActiveClue={setActiveClue}
             updateClue={updateClue}
           />
+        </div>
+        <div className={styles.mobileKeyboard}>
+          <Keyboard />
         </div>
       </div>
     </div>

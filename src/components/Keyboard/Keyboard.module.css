@@ -1,0 +1,22 @@
+.keyboard {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.letter {
+  font-size: 1.6rem;
+  display: grid;
+  place-content: center;
+  padding: 2px;
+  width: 2rem;
+  border-radius: 4px;
+  background-color: lightgray;
+}
