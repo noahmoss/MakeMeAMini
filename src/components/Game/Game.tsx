@@ -397,7 +397,7 @@ function Game() {
           />
         </div>
         <div className={styles.mobileKeyboard}>
-          <Keyboard />
+          <Keyboard setCurrentCellValue={setCurrentCellValue} />
         </div>
       </div>
     </div>

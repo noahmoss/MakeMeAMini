@@ -19,4 +19,27 @@
   width: 2rem;
   border-radius: 4px;
   background-color: var(--light-gray);
+
+  /* Button-specific styles */
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.1s ease;
+
+  /* Ensure consistent styling */
+  font-family: inherit;
+  color: inherit;
 }
+
+.letter:hover {
+  background-color: var(--medium-gray, #d0d0d0);
+}
+
+.letter:active {
+  background-color: var(--dark-gray, #b0b0b0);
+  transform: translateY(1px);
+}
+
+/*.letter:focus {*/
+/*  outline: 2px solid var(--focus-color, #007acc);*/
+/*  outline-offset: 2px;*/
+/*}*/

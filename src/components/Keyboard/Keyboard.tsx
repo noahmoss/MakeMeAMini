@@ -3,47 +3,58 @@ import styles from "./Keyboard.module.css";
 import { ReactNode } from "react";
 import { LogoSpace } from "../Logo";
 
-function Letter({ value }: { value: ReactNode }) {
-  return <div className={styles.letter}>{value}</div>;
+interface KeyButtonProps {
+  value: string;
+  children: ReactNode;
+  onClick: (value: string) => void;
 }
 
-function Keyboard() {
+function KeyButton({ value, children, onClick }: KeyButtonProps) {
+  return (
+    <button
+      className={styles.letter}
+      onClick={() => onClick(value)}
+      type="button"
+      aria-label={`Key ${value}`}
+    >
+      {children}
+    </button>
+  );
+}
+
+interface KeyboardProps {
+  setCurrentCellValue: (value: string) => void;
+}
+
+const KEYBOARD_LAYOUT = [
+  ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+  ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+  ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"],
+] as const;
+
+function Keyboard({ setCurrentCellValue }: KeyboardProps) {
+  const renderKey = (key: string) => {
+    switch (key) {
+      case "ENTER":
+        return <LogoSpace />;
+      case "BACKSPACE":
+        return <IconBackspace />;
+      default:
+        return key;
+    }
+  };
+
   return (
     <div className={styles.keyboard}>
-      <div className={styles.row}>
-        <Letter value={"Q"} />
-        <Letter value={"W"} />
-        <Letter value={"E"} />
-        <Letter value={"R"} />
-        <Letter value={"T"} />
-        <Letter value={"Y"} />
-        <Letter value={"U"} />
-        <Letter value={"I"} />
-        <Letter value={"O"} />
-        <Letter value={"P"} />
-      </div>
-      <div className={styles.row}>
-        <Letter value={"A"} />
-        <Letter value={"S"} />
-        <Letter value={"D"} />
-        <Letter value={"F"} />
-        <Letter value={"G"} />
-        <Letter value={"H"} />
-        <Letter value={"J"} />
-        <Letter value={"K"} />
-        <Letter value={"L"} />
-      </div>
-      <div className={styles.row}>
-        <Letter value={<LogoSpace />} />
-        <Letter value={"Z"} />
-        <Letter value={"X"} />
-        <Letter value={"C"} />
-        <Letter value={"V"} />
-        <Letter value={"B"} />
-        <Letter value={"N"} />
-        <Letter value={"M"} />
-        <Letter value={<IconBackspace />} />
-      </div>
+      {KEYBOARD_LAYOUT.map((row, rowIndex) => (
+        <div key={rowIndex} className={styles.row}>
+          {row.map((key) => (
+            <KeyButton key={key} value={key} onClick={setCurrentCellValue}>
+              {renderKey(key)}
+            </KeyButton>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }

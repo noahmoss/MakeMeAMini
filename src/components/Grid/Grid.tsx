@@ -246,6 +246,7 @@ function Grid({
 
   return (
     <>
+      {/* TODO: can probably get rid of this hidden input */}
       <input
         className={styles.hiddenInput}
         ref={hiddenInputRef}
@@ -257,6 +258,7 @@ function Grid({
         onKeyDown={handleKeyDown}
         onChange={() => {}}
         autoFocus
+        readOnly
         value=""
       />
 
