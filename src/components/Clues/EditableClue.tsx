@@ -5,6 +5,9 @@ import { ClueDirection, NumberedClue, updateClueFn } from "./Clues";
 import styles from "./Clues.module.css";
 import { Textarea } from "@mantine/core";
 
+const FADE_IN_DURATION_MS = 800;
+const FADE_OUT_DURATION_MS = 400;
+
 interface ClueTextProps {
   clue: NumberedClue;
   mode: Mode;
@@ -13,6 +16,7 @@ interface ClueTextProps {
 function ClueText({ clue, mode }: ClueTextProps) {
   const [animationClass, setAnimationClass] = useState(styles.textInvisible);
   const mountedRef = useRef(false);
+  const prevMode = useRef<Mode>("editing");
 
   useEffect(() => {
     if (!mountedRef.current) {
@@ -20,12 +24,23 @@ function ClueText({ clue, mode }: ClueTextProps) {
       return;
     }
 
+    const modeChanged = mode !== prevMode.current;
+    if (!modeChanged) return;
+
+    prevMode.current = mode;
+
     if (mode === "editing") {
       setAnimationClass(styles.fadeOut);
-      setTimeout(() => setAnimationClass(styles.textInvisible), 400);
+      setTimeout(
+        () => setAnimationClass(styles.textInvisible),
+        FADE_OUT_DURATION_MS,
+      );
     } else {
       setAnimationClass(styles.fadeIn);
-      setTimeout(() => setAnimationClass(styles.textVisible), 400);
+      setTimeout(
+        () => setAnimationClass(styles.textVisible),
+        FADE_IN_DURATION_MS,
+      );
     }
   }, [mode]);
 
@@ -50,9 +65,7 @@ interface ClueInputProps extends ClueTextProps {
 function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
   const [animationClass, setAnimationClass] = useState(styles.textVisible);
   const mountedRef = useRef(false);
-
-  const fadeInDurationMs = 800;
-  const fadeOutDurationMs = 400;
+  const prevMode = useRef<Mode | undefined>("editing");
 
   useEffect(() => {
     if (!mountedRef.current) {
@@ -60,14 +73,22 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
       return;
     }
 
+    const modeChanged = mode !== prevMode.current;
+    if (!modeChanged) return;
+
+    prevMode.current = mode;
+
     if (mode === "editing") {
       setAnimationClass(styles.fadeIn);
-      setTimeout(() => setAnimationClass(styles.textVisible), fadeInDurationMs);
+      setTimeout(
+        () => setAnimationClass(styles.textVisible),
+        FADE_IN_DURATION_MS,
+      );
     } else {
       setAnimationClass(styles.fadeOut);
       setTimeout(
         () => setAnimationClass(styles.textInvisible),
-        fadeOutDurationMs,
+        FADE_OUT_DURATION_MS,
       );
     }
   }, [mode]);
