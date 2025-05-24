@@ -1,6 +1,5 @@
 Easy & concrete
 ===========
-Mobile black square keyboard mode — make it a toggle
 Standardize on one icon set
 Cycle clue input tabbing between across/down
 Don't require two tab hits to switch between across/down clues
@@ -9,7 +8,6 @@ Delete should not back up cursor
 
 Medium
 ============
-General solving mode functionality (reset, check, reveal)
 Sharing with URL-encoded data
 Help message
 QR codes
