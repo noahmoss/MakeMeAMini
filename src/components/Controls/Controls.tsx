@@ -68,10 +68,10 @@ function ClearControls({
   );
 }
 
-type CheckControlsProps = {
+interface CheckControlsProps {
   autocheck: boolean;
   check: (option: CheckOption | null) => void;
-};
+}
 
 function CheckControls({ autocheck, check }: CheckControlsProps) {
   const combobox = useCombobox();
@@ -123,9 +123,9 @@ function CheckControls({ autocheck, check }: CheckControlsProps) {
   );
 }
 
-type RevealControlsProps = {
+interface RevealControlsProps {
   reveal: (option: RevealOption) => void;
-};
+}
 
 function RevealControls({ reveal }: RevealControlsProps) {
   const combobox = useCombobox();

@@ -1,2 +1,1 @@
-export * from "./Logo";
-export { default } from "./Logo";
+export { Logo, LogoSpace } from "./Logo";

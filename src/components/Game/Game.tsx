@@ -5,25 +5,27 @@ import Header from "../Header";
 import {
   stepCursor,
   startOfAdjacentWord,
-  isStartOfAnyWord,
   isCurrentCell,
   isCurrentWord,
 } from "../Grid/utils";
 
 import styles from "./Game.module.css";
 
-import {
-  Clues,
-  ClueBox,
-  ClueDirection,
-  getActiveClue,
-  ClueStarts,
-  ClueList,
-} from "../Clues";
+import { Clues, ClueBox, ClueDirection, ClueStarts, ClueList } from "../Clues";
 import ActiveClue from "../ActiveClue";
 import Controls, { CheckOption, RevealOption } from "../Controls";
-import { clueStartLocations, extractClues } from "../Clues/utils";
-import Keyboard from "../Keyboard";
+import {
+  clueStartLocations,
+  extractClues,
+  getActiveClue,
+} from "../Clues/utils";
+import { Keyboard } from "../Keyboard";
+import {
+  incorrectValue,
+  initialCells,
+  initialSolvingCells,
+  numberCells,
+} from "./utils";
 
 const DEFAULT_ROW_COUNT = 5;
 
@@ -37,51 +39,6 @@ export interface Cursor {
   row: number;
   col: number;
   direction: CursorDirection;
-}
-
-export function numberCells<T extends Cell>(cells: readonly T[][]): T[][] {
-  let num = 1;
-  return cells.map((rowArray, rowIndex) =>
-    rowArray.map((cell, colIndex) => ({
-      ...cell,
-      number: isStartOfAnyWord(cells, rowIndex, colIndex) ? num++ : null,
-    })),
-  );
-}
-
-export function incorrectValue(cell: Cell, solvingCell: SolvingCell) {
-  if (
-    cell.value &&
-    cell.value != " " &&
-    solvingCell.value &&
-    solvingCell.value != " "
-  ) {
-    return cell.value !== solvingCell.value;
-  } else return false;
-}
-
-function initialCells(rows: number): Cell[][] {
-  return numberCells(
-    Array.from({ length: rows }, () =>
-      Array.from({ length: rows }, () => ({
-        filled: false,
-        value: "",
-      })),
-    ),
-  );
-}
-
-function initialSolvingCells(rows: number): SolvingCell[][] {
-  return numberCells(
-    Array.from({ length: rows }, () =>
-      Array.from({ length: rows }, () => ({
-        filled: false,
-        value: "",
-        check: false,
-        incorrect: false,
-      })),
-    ),
-  );
 }
 
 function Game() {
@@ -212,12 +169,12 @@ function Game() {
     newCells[cursor.row][cursor.col].value = value;
 
     if (mode === "solving") {
-      (newCells[cursor.row][cursor.col] as SolvingCell).incorrect = false;
+      const solvingCells = newCells as SolvingCell[][];
+      solvingCells[cursor.row][cursor.col].incorrect = false;
+      setSolvingCells(solvingCells);
+    } else if (mode === "editing") {
+      setCells(newCells);
     }
-
-    mode === "editing"
-      ? setCells(newCells)
-      : setSolvingCells(newCells as SolvingCell[][]);
   };
 
   const setActiveClue = (clueNumber: number, direction: ClueDirection) => {
@@ -242,9 +199,18 @@ function Game() {
     direction: ClueDirection,
     clue: string,
   ) => {
-    const updatedClues = JSON.parse(JSON.stringify(clues));
-    updatedClues[direction][clueNumber].value = clue;
-    setClues(updatedClues);
+    const newClues = {
+      ...clues,
+      [direction]: {
+        ...clues[direction],
+        [clueNumber]: {
+          ...clues[direction][clueNumber],
+          value: clue,
+        },
+      },
+    };
+
+    setClues(newClues);
   };
 
   const clearSolvingGrid = () => {

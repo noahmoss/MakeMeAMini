@@ -1,9 +1,10 @@
 import styles from "./Grid.module.css";
 
-import { Cursor, incorrectValue, Mode, MovementDirection } from "../Game";
+import { Cursor, Mode, MovementDirection } from "../Game";
 import { isCurrentCell, isCurrentWord } from "./utils";
 import { useKeydownListener } from "./hooks";
 import { useEffect, useRef, useState } from "react";
+import { incorrectValue } from "../Game/utils";
 
 export interface Cell {
   filled: boolean;
@@ -15,9 +16,9 @@ export interface SolvingCell extends Cell {
   incorrect: boolean;
 }
 
-type FilledCellProps = {
+interface FilledCellProps {
   handleClick: () => void;
-};
+}
 
 function FilledCell({ handleClick }: FilledCellProps) {
   return (
@@ -28,7 +29,7 @@ function FilledCell({ handleClick }: FilledCellProps) {
   );
 }
 
-type CellProps = {
+interface CellProps {
   cell: Cell;
   solvingCell: Cell;
   className: string;
@@ -39,7 +40,7 @@ type CellProps = {
   handleCellClick: (mode: Mode, rowIndex: number, colIndex: number) => void;
   isHoveredCell: boolean;
   setHoveredCell: (hovered: { row: number; col: number } | null) => void;
-};
+}
 
 function Cell({
   cell,
@@ -82,7 +83,7 @@ function Cell({
       setSolvingAnimationClass(styles.fadeIn);
       setTimeout(() => setSolvingAnimationClass(styles.textVisible), 800);
     }
-  }, [mode]);
+  }, [mode, mounted]);
 
   return (
     <div
@@ -257,7 +258,6 @@ function Grid({
         autoCapitalize="none"
         spellCheck="false"
         onKeyDown={handleKeyDown}
-        onChange={() => {}}
         autoFocus
         readOnly
         value=""

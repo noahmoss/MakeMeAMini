@@ -27,7 +27,7 @@ function ClueText({ clue, mode }: ClueTextProps) {
       setAnimationClass(styles.fadeIn);
       setTimeout(() => setAnimationClass(styles.textVisible), 400);
     }
-  }, [mode]);
+  }, [mode, mounted]);
 
   if (!clue.value) {
     return (
@@ -70,7 +70,7 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
         fadeOutDurationMs,
       );
     }
-  }, [mode]);
+  }, [mode, mounted]);
 
   return (
     <Textarea

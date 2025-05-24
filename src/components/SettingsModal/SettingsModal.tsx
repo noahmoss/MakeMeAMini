@@ -71,9 +71,9 @@ function Settings({
     <Stack gap={"md"}>
       <Select
         label="Grid dimensions"
-        value={`${tentativeRowCount || rowCount}`}
+        value={`${tentativeRowCount ?? rowCount}`}
         onChange={(value) => {
-          value && setTentativeRowCount(parseInt(value));
+          if (value) setTentativeRowCount(parseInt(value));
         }}
         data={[
           { value: "5", label: "5x5" },

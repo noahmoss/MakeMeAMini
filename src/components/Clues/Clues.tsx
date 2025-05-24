@@ -1,6 +1,4 @@
-import { Cursor, Mode } from "../Game";
-import { Cell } from "../Grid";
-import { allFilled, findWordBoundaries } from "../Grid/utils";
+import { Mode } from "../Game";
 
 import { Tabs } from "@mantine/core";
 
@@ -35,30 +33,6 @@ export interface ClueStarts {
 }
 
 export type ClueDirection = "across" | "down";
-
-export function getActiveClue(
-  cells: Cell[][],
-  clues: Clues,
-  cursor: Cursor,
-): NumberedClue | undefined {
-  if (allFilled(cells)) {
-    return undefined;
-  }
-
-  const { startCursor } = findWordBoundaries(cells, cursor);
-
-  const clueNumber = cells[startCursor.row][startCursor.col]?.number;
-  if (!clueNumber) {
-    return undefined;
-  }
-  const clueDir = cursor.direction === "row" ? "across" : "down";
-
-  return {
-    ...clues[clueDir][clueNumber],
-    number: clueNumber,
-    direction: clueDir,
-  };
-}
 
 export type updateClueFn = (
   clueNumber: number,
@@ -193,14 +167,14 @@ export function ClueBox({
   ...rest
 }: CluesProps) {
   const [activeTab, setActiveTab] = useState<string | null>(
-    activeClue?.direction || "across",
+    activeClue?.direction ?? "across",
   );
 
   useEffect(() => {
     if (activeClue?.direction && activeClue.direction !== activeTab) {
       setActiveTab(activeClue.direction);
     }
-  }, [activeClue]);
+  }, [activeClue, activeTab]);
 
   function toggleDirection(direction: ClueDirection) {
     return orthogonalClue && setActiveClue(orthogonalClue.number, direction);

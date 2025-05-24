@@ -25,7 +25,7 @@ import {
   Title,
 } from "@mantine/core";
 
-import Logo from "../Logo";
+import { Logo } from "../Logo";
 import SettingsModal, { Settings } from "../SettingsModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
@@ -55,7 +55,7 @@ function Timer({ mode, seconds, setSeconds }: TimerProps) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [mode]);
+  }, [mode, setSeconds]);
 
   useEffect(() => {
     if (mode === "solving") {

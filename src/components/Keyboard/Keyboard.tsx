@@ -39,7 +39,7 @@ const KEYBOARD_LAYOUT = [
   ["BLACK", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"],
 ] as const;
 
-function Keyboard({
+export function Keyboard({
   mode,
   setCurrentCellValue,
   toggleCurrentFilledCell,
@@ -94,5 +94,3 @@ function Keyboard({
     </div>
   );
 }
-
-export default Keyboard;

@@ -12,7 +12,7 @@ export function LogoSpace() {
   return <span className={`${styles.letterSquare} ${styles.blackSquare}`} />;
 }
 
-function Logo() {
+export function Logo() {
   return (
     <div className={styles.logoWrapper}>
       <div className={styles.logo}>
@@ -34,5 +34,3 @@ function Logo() {
     </div>
   );
 }
-
-export default Logo;

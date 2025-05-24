@@ -1,6 +1,7 @@
+import { Cursor } from "../Game";
 import { Cell as Cell } from "../Grid";
-import { isStartOfWord } from "../Grid/utils";
-import { Clues, ClueStarts } from "./Clues";
+import { allFilled, findWordBoundaries, isStartOfWord } from "../Grid/utils";
+import { Clues, ClueStarts, NumberedClue } from "./Clues";
 
 export function extractClues(cells: Cell[][]): Clues {
   const clues: Clues = { down: {}, across: {} };
@@ -78,4 +79,28 @@ export function clueStartLocations(cells: Cell[][]): ClueStarts {
     });
   });
   return clueStarts;
+}
+
+export function getActiveClue(
+  cells: Cell[][],
+  clues: Clues,
+  cursor: Cursor,
+): NumberedClue | undefined {
+  if (allFilled(cells)) {
+    return undefined;
+  }
+
+  const { startCursor } = findWordBoundaries(cells, cursor);
+
+  const clueNumber = cells[startCursor.row][startCursor.col]?.number;
+  if (!clueNumber) {
+    return undefined;
+  }
+  const clueDir = cursor.direction === "row" ? "across" : "down";
+
+  return {
+    ...clues[clueDir][clueNumber],
+    number: clueNumber,
+    direction: clueDir,
+  };
 }

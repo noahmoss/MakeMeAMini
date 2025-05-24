@@ -86,6 +86,7 @@ export const isStartOfAnyWord = (
   col: number,
 ) => {
   return (
+    // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
     isStartOfWord(cells, { row, col, direction: "row" }) ||
     isStartOfWord(cells, { row, col, direction: "col" })
   );

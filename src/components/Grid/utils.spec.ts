@@ -1,7 +1,7 @@
 import { expect, test } from "vitest";
 import { findWordBoundaries, isStartOfWord, isStartOfAnyWord } from "./utils";
 import { Cell } from "./Grid";
-import { numberCells } from "../Game";
+import { numberCells } from "../Game/utils";
 
 const transformGrid = (cells: string[][]): Cell[][] => {
   return cells.map((row) =>
