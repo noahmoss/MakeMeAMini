@@ -123,12 +123,13 @@ function Game() {
   };
 
   const setRowCount = (rowCount: number) => {
-    // When changing row count, do a hard reset of grid and clues
+    // When changing row count, do a hard reset of grid, clues, and cursor
     const newCells = initialCells(rowCount);
     setCells(newCells);
     setSolvingCells(initialSolvingCells(rowCount));
     const newClues = extractClues(numberCells(newCells));
     setClues(newClues);
+    setCursor({ row: 0, col: 0, direction: "row" });
   };
 
   const updateCursorPosition = (row: number, col: number) => {
