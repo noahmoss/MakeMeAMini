@@ -27,6 +27,7 @@ import {
 
 import { Logo } from "../Logo";
 import SettingsModal, { Settings } from "../SettingsModal";
+import SharingModal from "../SharingModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
 
@@ -158,9 +159,15 @@ interface HeaderActionsProps {
   mode: Mode;
   setMode: (mode: Mode) => void;
   openSettings: () => void;
+  openSharing: () => void;
 }
 
-function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
+function HeaderActions({
+  mode,
+  setMode,
+  openSettings,
+  openSharing,
+}: HeaderActionsProps) {
   // Debounce editing/solving mode changes to prevent animation flicker
   const lastModeChangeRef = useRef<number>(Date.now());
   const throttleMs = 700;
@@ -194,7 +201,7 @@ function HeaderActions({ mode, setMode, openSettings }: HeaderActionsProps) {
           <div className={styles.actionButtonLabel}>Settings</div>
         </div>
       </ActionButton>
-      <ActionButton label="Share">
+      <ActionButton label="Share" onClick={openSharing}>
         <div className={styles.iconAndLabel}>
           <Link />
           <div className={styles.actionButtonLabel}>Share</div>
@@ -228,6 +235,8 @@ function Header({
   const [burgerOpen, { toggle: toggleBurger }] = useDisclosure(false);
   const [settingsOpen, { open: openSettings, close: closeSettings }] =
     useDisclosure(false);
+  const [sharingOpen, { open: openSharing, close: closeSharing }] =
+    useDisclosure(false);
 
   return (
     <>
@@ -237,6 +246,8 @@ function Header({
         settingsProps={settingsProps}
         setMode={setMode}
       />
+      <SharingModal isOpen={sharingOpen} closeSharing={closeSharing} />
+
       <div className={styles.siteHeader}>
         <Logo />
         <Timer mode={mode} seconds={seconds} setSeconds={setSeconds} />
@@ -272,15 +283,20 @@ function Header({
                 toggleBurger();
                 openSettings();
               }}
+              openSharing={() => {
+                toggleBurger();
+                openSharing();
+              }}
             />
           </div>
         </Drawer>
         {/* Large screens - actions are in the header */}
         <div className={styles.desktopHeaderActionsWrapper}>
           <HeaderActions
-            openSettings={openSettings}
             mode={mode}
             setMode={setMode}
+            openSettings={openSettings}
+            openSharing={openSharing}
           />
         </div>
       </div>

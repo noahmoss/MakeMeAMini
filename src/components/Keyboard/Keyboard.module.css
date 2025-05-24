@@ -3,6 +3,7 @@
   width: 100%;
   flex-direction: column;
   gap: 4px;
+  padding-bottom: 16px;
 }
 
 .row {
