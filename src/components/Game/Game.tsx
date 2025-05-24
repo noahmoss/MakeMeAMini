@@ -220,14 +220,17 @@ function Game() {
   const clearIncorrect = () => {
     const newSolvingCells = solvingCells.map((row, rowIndex) => {
       return row.map((solvingCell, colIndex) => {
-        const isIncorrect = incorrectValue(cells[rowIndex][colIndex], solvingCell);
+        const isIncorrect = incorrectValue(
+          cells[rowIndex][colIndex],
+          solvingCell,
+        );
         return {
           ...solvingCell,
-          value: isIncorrect ? '' : solvingCell.value,
+          value: isIncorrect ? "" : solvingCell.value,
           incorrect: false,
-        }
-      })
-    })
+        };
+      });
+    });
     setSolvingCells(newSolvingCells);
   };
 
