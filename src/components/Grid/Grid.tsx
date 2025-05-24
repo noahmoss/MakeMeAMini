@@ -120,6 +120,7 @@ interface GridProps {
   updateCursorPosition: (row: number, col: number) => void;
   toggleCursorDirection: () => void;
   toggleFilledCell: (row: number, col: number) => void;
+  clickToFill: boolean;
   setCurrentCellValue: (value: string) => void;
   advanceCursor: () => void;
   reverseCursor: () => void;
@@ -139,6 +140,7 @@ function Grid({
   updateCursorPosition,
   toggleCursorDirection,
   toggleFilledCell,
+  clickToFill,
   setCurrentCellValue,
   advanceCursor,
   reverseCursor,
@@ -168,7 +170,7 @@ function Grid({
 
     hiddenInputRef.current?.focus();
 
-    if (shiftDown && mode === "editing") {
+    if ((shiftDown || clickToFill) && mode === "editing") {
       toggleFilledCell(row, col);
 
       if (useSymmetry) {

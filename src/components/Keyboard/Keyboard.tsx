@@ -8,14 +8,20 @@ interface KeyButtonProps {
   value: string;
   children: ReactNode;
   onClick: (value: string) => void;
+  clickToFill: boolean;
 }
 
-function KeyButton({ value, children, onClick }: KeyButtonProps) {
+function KeyButton({ value, children, onClick, clickToFill }: KeyButtonProps) {
   const isFunctionKey = value === "BLACK" || value === "BACKSPACE";
+  const clickToFillEnabled = value === "BLACK" && clickToFill;
+
+  console.log(clickToFillEnabled);
 
   return (
     <button
-      className={`${styles.letter} ${isFunctionKey && styles.functionKey}`}
+      className={`${styles.letter}
+                  ${isFunctionKey && styles.functionKey}
+                  ${clickToFillEnabled && styles.clickToFillEnabled}`}
       onClick={() => onClick(value)}
       type="button"
       aria-label={`Key ${value}`}
@@ -28,9 +34,10 @@ function KeyButton({ value, children, onClick }: KeyButtonProps) {
 interface KeyboardProps {
   mode: Mode;
   setCurrentCellValue: (value: string) => void;
-  toggleCurrentFilledCell: () => void;
   advanceCursor: () => void;
   reverseCursor: () => void;
+  clickToFill: boolean;
+  setClickToFill: (enabled: boolean) => void;
 }
 
 const KEYBOARD_LAYOUT = [
@@ -42,9 +49,10 @@ const KEYBOARD_LAYOUT = [
 export function Keyboard({
   mode,
   setCurrentCellValue,
-  toggleCurrentFilledCell,
   advanceCursor,
   reverseCursor,
+  clickToFill,
+  setClickToFill,
 }: KeyboardProps) {
   const renderKey = (key: string) => {
     switch (key) {
@@ -60,7 +68,7 @@ export function Keyboard({
   const onClick = (key: string) => {
     switch (key) {
       case "BLACK": {
-        toggleCurrentFilledCell();
+        setClickToFill(!clickToFill);
         return;
       }
       case "BACKSPACE": {
@@ -81,9 +89,15 @@ export function Keyboard({
         <div key={rowIndex} className={styles.row}>
           {row.map((key) => {
             const keyElement = renderKey(key);
+
             return (
               keyElement && (
-                <KeyButton key={key} value={key} onClick={onClick}>
+                <KeyButton
+                  key={key}
+                  value={key}
+                  onClick={onClick}
+                  clickToFill={clickToFill}
+                >
                   {renderKey(key)}
                 </KeyButton>
               )

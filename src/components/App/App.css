@@ -3,10 +3,14 @@ body {
   --default-text-color: black;
   --active-cell-color: hsl(52deg 100% 91%);
   --active-clue-color: hsl(197deg 100% 90%);
-  --cursor-color: hsl(197deg 100% 90%);
 
   --light-gray: #d5d5d5;
-  --dark-blue: hsl(197deg 100% 40%);
+  --light-blue: hsl(197deg 100% 90%);
+  --medium-blue-1: hsl(197deg 100% 80%);
+  --medium-blue-2: hsl(197deg 100% 70%);
+  --dark-blue: hsl(197deg 100% 30%);
+
+  --cursor-color: var(--light-blue);
 
   --inactive-tab-header-color: hsl(210deg 14% 89%);
 

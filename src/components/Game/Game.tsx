@@ -70,6 +70,9 @@ function Game() {
   // Settings
   const [symmetry, setSymmetry] = useState<boolean>(false);
 
+  // Click to fill = true enables editing filled squares via mobile keyboard
+  const [clickToFill, setClickToFill] = useState<boolean>(false);
+
   const setModeAndRefocus = (newMode: Mode) => {
     setMode(newMode);
     hiddenInputRef.current?.focus();
@@ -366,6 +369,7 @@ function Game() {
             updateCursorPosition={updateCursorPosition}
             toggleCursorDirection={toggleCursorDirection}
             toggleFilledCell={toggleFilledCell}
+            clickToFill={clickToFill}
             setCurrentCellValue={setCurrentCellValue}
             advanceCursor={advanceCursor}
             reverseCursor={reverseCursor}
@@ -389,9 +393,10 @@ function Game() {
           <Keyboard
             mode={mode}
             setCurrentCellValue={setCurrentCellValue}
-            toggleCurrentFilledCell={toggleCurrentFilledCell}
             advanceCursor={advanceCursor}
             reverseCursor={reverseCursor}
+            clickToFill={clickToFill}
+            setClickToFill={setClickToFill}
           />
         </div>
       </div>

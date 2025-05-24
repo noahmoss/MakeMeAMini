@@ -42,3 +42,15 @@
 .functionKey {
   width: 3rem;
 }
+
+.clickToFillEnabled {
+  background-color: var(--light-blue);
+}
+
+.clickToFillEnabled:hover {
+  background-color: var(--medium-blue-1);
+}
+
+.clickToFillEnabled:active {
+  background-color: var(--medium-blue-2);
+}
