@@ -217,6 +217,20 @@ function Game() {
     setSolvingCells(initialSolvingCells(solvingCells.length));
   };
 
+  const clearIncorrect = () => {
+    const newSolvingCells = solvingCells.map((row, rowIndex) => {
+      return row.map((solvingCell, colIndex) => {
+        const isIncorrect = incorrectValue(cells[rowIndex][colIndex], solvingCell);
+        return {
+          ...solvingCell,
+          value: isIncorrect ? '' : solvingCell.value,
+          incorrect: false,
+        }
+      })
+    })
+    setSolvingCells(newSolvingCells);
+  };
+
   const check = (checkMode: CheckOption | null) => {
     if (!checkMode) {
       setAutocheck(false);
@@ -326,6 +340,7 @@ function Game() {
             mode={mode}
             clearPuzzle={clearSolvingGrid}
             clearTimer={() => setSeconds(0)}
+            clearIncorrect={clearIncorrect}
             autocheck={autocheck}
             check={check}
             reveal={reveal}

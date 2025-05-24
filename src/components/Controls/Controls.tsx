@@ -16,15 +16,17 @@ export type CheckOption = "Auto" | "Square" | "Word" | "Puzzle";
 export type RevealOption = "Square" | "Word" | "Puzzle";
 
 function ClearControls({
+  clearIncorrect,
   clearPuzzle,
   clearTimer,
 }: {
+  clearIncorrect: () => void;
   clearPuzzle: () => void;
   clearTimer: () => void;
 }) {
   const combobox = useCombobox();
   const options = {
-    Incorrect: () => {},
+    Incorrect: clearIncorrect,
     Puzzle: clearPuzzle,
     "Puzzle + Timer": () => {
       clearPuzzle();
@@ -168,6 +170,7 @@ function RevealControls({ reveal }: RevealControlsProps) {
 
 interface ControlsProps {
   mode: Mode;
+  clearIncorrect: () => void;
   clearPuzzle: () => void;
   clearTimer: () => void;
   autocheck: boolean;
@@ -177,6 +180,7 @@ interface ControlsProps {
 
 function Controls({
   mode,
+  clearIncorrect,
   clearPuzzle,
   clearTimer,
   autocheck,
@@ -204,7 +208,11 @@ function Controls({
 
   return (
     <div className={`${styles.controls} ${animationClass}`}>
-      <ClearControls clearPuzzle={clearPuzzle} clearTimer={clearTimer} />
+      <ClearControls
+        clearIncorrect={clearIncorrect}
+        clearPuzzle={clearPuzzle}
+        clearTimer={clearTimer}
+      />
       <CheckControls autocheck={autocheck} check={check} />
       <RevealControls reveal={reveal} />
     </div>
