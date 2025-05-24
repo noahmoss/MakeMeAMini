@@ -39,7 +39,6 @@
   transform: translateY(1px);
 }
 
-/*.letter:focus {*/
-/*  outline: 2px solid var(--focus-color, #007acc);*/
-/*  outline-offset: 2px;*/
-/*}*/
+.functionKey {
+  width: 3rem;
+}

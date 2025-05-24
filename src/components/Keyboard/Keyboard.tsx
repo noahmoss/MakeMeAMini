@@ -10,9 +10,11 @@ interface KeyButtonProps {
 }
 
 function KeyButton({ value, children, onClick }: KeyButtonProps) {
+  const isFunctionKey = value === "BLACK" || value === "BACKSPACE";
+
   return (
     <button
-      className={styles.letter}
+      className={`${styles.letter} ${isFunctionKey && styles.functionKey}`}
       onClick={() => onClick(value)}
       type="button"
       aria-label={`Key ${value}`}
@@ -24,18 +26,26 @@ function KeyButton({ value, children, onClick }: KeyButtonProps) {
 
 interface KeyboardProps {
   setCurrentCellValue: (value: string) => void;
+  toggleCurrentFilledCell: () => void;
+  advanceCursor: () => void;
+  reverseCursor: () => void;
 }
 
 const KEYBOARD_LAYOUT = [
   ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
   ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-  ["ENTER", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"],
+  ["BLACK", "Z", "X", "C", "V", "B", "N", "M", "BACKSPACE"],
 ] as const;
 
-function Keyboard({ setCurrentCellValue }: KeyboardProps) {
+function Keyboard({
+  setCurrentCellValue,
+  toggleCurrentFilledCell,
+  advanceCursor,
+  reverseCursor,
+}: KeyboardProps) {
   const renderKey = (key: string) => {
     switch (key) {
-      case "ENTER":
+      case "BLACK":
         return <LogoSpace />;
       case "BACKSPACE":
         return <IconBackspace />;
@@ -44,12 +54,30 @@ function Keyboard({ setCurrentCellValue }: KeyboardProps) {
     }
   };
 
+  const onClick = (key: string) => {
+    switch (key) {
+      case "BLACK": {
+        toggleCurrentFilledCell();
+        return;
+      }
+      case "BACKSPACE": {
+        setCurrentCellValue(" ");
+        reverseCursor();
+        return;
+      }
+      default: {
+        setCurrentCellValue(key);
+        advanceCursor();
+      }
+    }
+  };
+
   return (
     <div className={styles.keyboard}>
       {KEYBOARD_LAYOUT.map((row, rowIndex) => (
         <div key={rowIndex} className={styles.row}>
           {row.map((key) => (
-            <KeyButton key={key} value={key} onClick={setCurrentCellValue}>
+            <KeyButton key={key} value={key} onClick={onClick}>
               {renderKey(key)}
             </KeyButton>
           ))}

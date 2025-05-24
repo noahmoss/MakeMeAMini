@@ -201,6 +201,10 @@ function Game() {
     setClues(newClues);
   };
 
+  const toggleCurrentFilledCell = () => {
+    toggleFilledCell(cursor.row, cursor.col);
+  };
+
   // Maybe this doesn't need to be polymorphic for editing vs solving cells
   const setCurrentCellValue = (value: string) => {
     const newCells = [...(mode === "editing" ? cells : solvingCells)];
@@ -397,7 +401,12 @@ function Game() {
           />
         </div>
         <div className={styles.mobileKeyboard}>
-          <Keyboard setCurrentCellValue={setCurrentCellValue} />
+          <Keyboard
+            setCurrentCellValue={setCurrentCellValue}
+            toggleCurrentFilledCell={toggleCurrentFilledCell}
+            advanceCursor={advanceCursor}
+            reverseCursor={reverseCursor}
+          />
         </div>
       </div>
     </div>
