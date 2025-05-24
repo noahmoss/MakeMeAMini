@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Mode } from "../Game";
 import { ClueDirection, NumberedClue, updateClueFn } from "./Clues";
 
@@ -11,12 +11,12 @@ interface ClueTextProps {
 }
 
 function ClueText({ clue, mode }: ClueTextProps) {
-  const [mounted, setMounted] = useState(false);
   const [animationClass, setAnimationClass] = useState(styles.textInvisible);
+  const mountedRef = useRef(false);
 
   useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
+    if (!mountedRef.current) {
+      mountedRef.current = true;
       return;
     }
 
@@ -27,7 +27,7 @@ function ClueText({ clue, mode }: ClueTextProps) {
       setAnimationClass(styles.fadeIn);
       setTimeout(() => setAnimationClass(styles.textVisible), 400);
     }
-  }, [mode, mounted]);
+  }, [mode]);
 
   if (!clue.value) {
     return (
@@ -48,15 +48,15 @@ interface ClueInputProps extends ClueTextProps {
 }
 
 function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
-  const [mounted, setMounted] = useState(false);
-  const [animationClass, setAnimationClass] = useState("");
+  const [animationClass, setAnimationClass] = useState(styles.textVisible);
+  const mountedRef = useRef(false);
 
   const fadeInDurationMs = 800;
   const fadeOutDurationMs = 400;
 
   useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
+    if (!mountedRef.current) {
+      mountedRef.current = true;
       return;
     }
 
@@ -70,7 +70,7 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
         fadeOutDurationMs,
       );
     }
-  }, [mode, mounted]);
+  }, [mode]);
 
   return (
     <Textarea
