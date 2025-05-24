@@ -2,6 +2,7 @@ import { IconBackspace } from "@tabler/icons-react";
 import styles from "./Keyboard.module.css";
 import { ReactNode } from "react";
 import { LogoSpace } from "../Logo";
+import { Mode } from "../Game";
 
 interface KeyButtonProps {
   value: string;
@@ -25,6 +26,7 @@ function KeyButton({ value, children, onClick }: KeyButtonProps) {
 }
 
 interface KeyboardProps {
+  mode: Mode;
   setCurrentCellValue: (value: string) => void;
   toggleCurrentFilledCell: () => void;
   advanceCursor: () => void;
@@ -38,6 +40,7 @@ const KEYBOARD_LAYOUT = [
 ] as const;
 
 function Keyboard({
+  mode,
   setCurrentCellValue,
   toggleCurrentFilledCell,
   advanceCursor,
@@ -46,7 +49,7 @@ function Keyboard({
   const renderKey = (key: string) => {
     switch (key) {
       case "BLACK":
-        return <LogoSpace />;
+        return mode === "editing" && <LogoSpace />;
       case "BACKSPACE":
         return <IconBackspace />;
       default:
@@ -76,11 +79,16 @@ function Keyboard({
     <div className={styles.keyboard}>
       {KEYBOARD_LAYOUT.map((row, rowIndex) => (
         <div key={rowIndex} className={styles.row}>
-          {row.map((key) => (
-            <KeyButton key={key} value={key} onClick={onClick}>
-              {renderKey(key)}
-            </KeyButton>
-          ))}
+          {row.map((key) => {
+            const keyElement = renderKey(key);
+            return (
+              keyElement && (
+                <KeyButton key={key} value={key} onClick={onClick}>
+                  {renderKey(key)}
+                </KeyButton>
+              )
+            );
+          })}
         </div>
       ))}
     </div>

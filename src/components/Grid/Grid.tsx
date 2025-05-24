@@ -169,6 +169,7 @@ function Grid({
 
     if (shiftDown && mode === "editing") {
       toggleFilledCell(row, col);
+
       if (useSymmetry) {
         const { rotatedRow, rotatedCol } = rotate(cells, row, col);
         const isCenterSquare = row === rotatedRow && col === rotatedCol;

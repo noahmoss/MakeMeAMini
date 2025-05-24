@@ -403,6 +403,7 @@ function Game() {
         </div>
         <div className={styles.mobileKeyboard}>
           <Keyboard
+            mode={mode}
             setCurrentCellValue={setCurrentCellValue}
             toggleCurrentFilledCell={toggleCurrentFilledCell}
             advanceCursor={advanceCursor}

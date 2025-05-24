@@ -15,7 +15,7 @@
   font-size: 1.5rem;
   display: grid;
   place-content: center;
-  padding: 2px;
+  height: 3rem;
   width: 2rem;
   border-radius: 4px;
   background-color: var(--light-gray);
