@@ -60,30 +60,30 @@ function Game() {
   const [clues, setClues] = useState<Clues>(extractClues(numberedCells));
   const clueStarts: ClueStarts = clueStartLocations(numberedCells);
 
-  // Solving mode state
-  const [mode, setMode] = useState<Mode>("editing");
-  const [seconds, setSeconds] = useState(0);
-  const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(
-    initialSolvingCells(DEFAULT_ROW_COUNT),
-  );
-  const [autocheck, setAutocheck] = useState<boolean>(false);
-
   // Settings
   const [symmetry, setSymmetry] = useState<boolean>(false);
 
   // Click to fill = true enables editing filled squares via mobile keyboard
   const [clickToFill, setClickToFill] = useState<boolean>(false);
 
+  const params = new URLSearchParams(window.location.search);
+  const encodedData = params.get("puz");
+
+  // Solving mode state
+  const [mode, setMode] = useState<Mode>(encodedData ? "solving" : "editing");
+  const [seconds, setSeconds] = useState(0);
+  const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(
+    initialSolvingCells(DEFAULT_ROW_COUNT),
+  );
+  const [autocheck, setAutocheck] = useState<boolean>(false);
+
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const encodedData = params.get("puz");
     if (encodedData) {
       const { cells, clues } = deserializeCrossword(encodedData);
       setCells(cells);
       setClues(clues);
-      setMode("solving");
     }
-  }, []);
+  }, [encodedData]);
 
   const setModeAndRefocus = (newMode: Mode) => {
     setMode(newMode);

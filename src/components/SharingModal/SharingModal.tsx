@@ -41,7 +41,7 @@ function SharingModal({
   cells,
   clues,
 }: SharingModalProps) {
-  const longUrl = `https://makemeamini.com/?puz=${serializeCrossword(cells, clues)}`;
+  const longUrl = `${window.location.origin}/?puz=${serializeCrossword(cells, clues)}`;
   const longCopyButton = <Copy url={longUrl} />;
 
   return (

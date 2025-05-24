@@ -54,19 +54,29 @@ function Cell({
   isHoveredCell,
   setHoveredCell,
 }: CellProps) {
-  const [mounted, setMounted] = useState(false);
+  const mountedRef = useRef(false);
+  const prevMode = useRef<Mode | undefined>();
+
   const [editingAnimationClass, setEditingAnimationClass] = useState(
-    styles.textVisible,
+    mode === "editing" ? styles.textVisible : styles.textInvisible,
   );
   const [solvingAnimationClass, setSolvingAnimationClass] = useState(
-    styles.textInvisible,
+    mode === "solving" ? styles.textInvisible : styles.textVisible,
   );
 
   useEffect(() => {
-    if (!mounted) {
-      setMounted(true);
+    if (!mountedRef.current) {
+      mountedRef.current = true;
       return;
     }
+
+    const modeChanged = prevMode.current && mode !== prevMode.current;
+    if (!modeChanged) {
+      prevMode.current = mode;
+      return;
+    }
+
+    prevMode.current = mode;
 
     if (mode === "editing") {
       // Transition from solving -> editing
@@ -83,7 +93,7 @@ function Cell({
       setSolvingAnimationClass(styles.fadeIn);
       setTimeout(() => setSolvingAnimationClass(styles.textVisible), 800);
     }
-  }, [mode, mounted]);
+  }, [mode]);
 
   return (
     <div

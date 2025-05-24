@@ -14,9 +14,11 @@ interface ClueTextProps {
 }
 
 function ClueText({ clue, mode }: ClueTextProps) {
-  const [animationClass, setAnimationClass] = useState(styles.textInvisible);
+  const initialAnimationClass =
+    mode === "editing" ? styles.textInvisible : styles.textVisible;
+  const [animationClass, setAnimationClass] = useState(initialAnimationClass);
   const mountedRef = useRef(false);
-  const prevMode = useRef<Mode>("editing");
+  const prevMode = useRef<Mode | undefined>();
 
   useEffect(() => {
     if (!mountedRef.current) {
@@ -24,8 +26,11 @@ function ClueText({ clue, mode }: ClueTextProps) {
       return;
     }
 
-    const modeChanged = mode !== prevMode.current;
-    if (!modeChanged) return;
+    const modeChanged = prevMode.current && mode !== prevMode.current;
+    if (!modeChanged) {
+      prevMode.current = mode;
+      return;
+    }
 
     prevMode.current = mode;
 
@@ -63,9 +68,11 @@ interface ClueInputProps extends ClueTextProps {
 }
 
 function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
-  const [animationClass, setAnimationClass] = useState(styles.textVisible);
+  const initialAnimationClass =
+    mode === "editing" ? styles.textVisible : styles.textInvisible;
+  const [animationClass, setAnimationClass] = useState(initialAnimationClass);
   const mountedRef = useRef(false);
-  const prevMode = useRef<Mode | undefined>("editing");
+  const prevMode = useRef<Mode | undefined>();
 
   useEffect(() => {
     if (!mountedRef.current) {
@@ -73,8 +80,11 @@ function ClueInput({ clue, updateClue, setActiveClue, mode }: ClueInputProps) {
       return;
     }
 
-    const modeChanged = mode !== prevMode.current;
-    if (!modeChanged) return;
+    const modeChanged = prevMode.current && mode !== prevMode.current;
+    if (!modeChanged) {
+      prevMode.current = mode;
+      return;
+    }
 
     prevMode.current = mode;
 
