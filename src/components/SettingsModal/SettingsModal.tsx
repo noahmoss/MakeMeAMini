@@ -120,7 +120,7 @@ function SettingsModal({
   settingsProps,
 }: SettingsModalProps) {
   return (
-    <Modal opened={isOpen} onClose={closeSettings} title="Settings">
+    <Modal opened={isOpen} onClose={closeSettings} title="Settings" centered>
       <Settings
         {...settingsProps}
         closeSettings={closeSettings}

@@ -15,8 +15,6 @@ function KeyButton({ value, children, onClick, clickToFill }: KeyButtonProps) {
   const isFunctionKey = value === "BLACK" || value === "BACKSPACE";
   const clickToFillEnabled = value === "BLACK" && clickToFill;
 
-  console.log(clickToFillEnabled);
-
   return (
     <button
       className={`${styles.letter}

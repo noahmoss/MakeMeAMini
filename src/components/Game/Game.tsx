@@ -26,6 +26,7 @@ import {
   initialSolvingCells,
   numberCells,
 } from "./utils";
+import { deserializeCrossword } from "../SharingModal/utils";
 
 const DEFAULT_ROW_COUNT = 5;
 
@@ -72,6 +73,17 @@ function Game() {
 
   // Click to fill = true enables editing filled squares via mobile keyboard
   const [clickToFill, setClickToFill] = useState<boolean>(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const encodedData = params.get("puz");
+    if (encodedData) {
+      const { cells, clues } = deserializeCrossword(encodedData);
+      setCells(cells);
+      setClues(clues);
+      setMode("solving");
+    }
+  }, []);
 
   const setModeAndRefocus = (newMode: Mode) => {
     setMode(newMode);
@@ -335,6 +347,8 @@ function Game() {
         setMode={setModeAndRefocus}
         seconds={seconds}
         setSeconds={setSeconds}
+        cells={cells}
+        clues={clues}
       />
       <div className={styles.gridAndClues}>
         <div className={styles.controlsWrapper}>

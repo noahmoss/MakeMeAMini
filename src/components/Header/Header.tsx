@@ -30,6 +30,8 @@ import SettingsModal, { Settings } from "../SettingsModal";
 import SharingModal from "../SharingModal";
 import styles from "./Header.module.css";
 import { Mode } from "../Game";
+import { Clues } from "../Clues";
+import { Cell } from "../Grid";
 
 interface TimerProps {
   mode: Mode;
@@ -223,6 +225,8 @@ interface HeaderProps {
   setMode: (mode: Mode) => void;
   seconds: number;
   setSeconds: React.Dispatch<React.SetStateAction<number>>;
+  cells: Cell[][];
+  clues: Clues;
 }
 
 function Header({
@@ -231,6 +235,8 @@ function Header({
   mode,
   seconds,
   setSeconds,
+  cells,
+  clues,
 }: HeaderProps) {
   const [burgerOpen, { toggle: toggleBurger }] = useDisclosure(false);
   const [settingsOpen, { open: openSettings, close: closeSettings }] =
@@ -246,7 +252,12 @@ function Header({
         settingsProps={settingsProps}
         setMode={setMode}
       />
-      <SharingModal isOpen={sharingOpen} closeSharing={closeSharing} />
+      <SharingModal
+        isOpen={sharingOpen}
+        closeSharing={closeSharing}
+        cells={cells}
+        clues={clues}
+      />
 
       <div className={styles.siteHeader}>
         <Logo />
