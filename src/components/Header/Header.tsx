@@ -1,18 +1,6 @@
-import {
-  MouseEventHandler,
-  ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { MouseEventHandler, ReactNode, useEffect, useRef } from "react";
 
-import {
-  Edit3,
-  Settings as SettingsIcon,
-  Link,
-  HelpCircle,
-  Tool,
-} from "react-feather";
+import { Settings as SettingsIcon, Link, HelpCircle } from "react-feather";
 
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -40,8 +28,6 @@ interface TimerProps {
 }
 
 function Timer({ mode, seconds, setSeconds }: TimerProps) {
-  const [visible, setVisible] = useState(false);
-  const [animationClass, setAnimationClass] = useState("");
   const [opened, { open, close }] = useDisclosure(false);
   const isPausedRef = useRef(false);
 
@@ -60,19 +46,7 @@ function Timer({ mode, seconds, setSeconds }: TimerProps) {
     return () => clearInterval(interval);
   }, [mode, setSeconds]);
 
-  useEffect(() => {
-    if (mode === "solving") {
-      setVisible(true);
-      setAnimationClass("fadeIn");
-    } else {
-      setAnimationClass("fadeOut");
-      // delay hiding until fade-out finishes
-      const timeout = setTimeout(() => setVisible(false), 400);
-      return () => clearTimeout(timeout);
-    }
-  }, [mode]);
-
-  if (!visible) return null;
+  if (mode !== "solving") return null;
 
   const date = new Date(0);
   date.setSeconds(seconds);
@@ -94,8 +68,8 @@ function Timer({ mode, seconds, setSeconds }: TimerProps) {
 
   return (
     <>
-      <div className={`${styles.timerContainer} ${animationClass}`}>
-        <div className={`${styles.timer}`}>{timeString}</div>
+      <div className={styles.timerContainer}>
+        <div className={styles.timer}>{timeString}</div>
         <Button
           variant="transparent"
           px="0px"
@@ -158,45 +132,13 @@ function ActionButton({ label, onClick, children }: ActionButtonProps) {
 }
 
 interface HeaderActionsProps {
-  mode: Mode;
-  setMode: (mode: Mode) => void;
   openSettings: () => void;
   openSharing: () => void;
 }
 
-function HeaderActions({
-  mode,
-  setMode,
-  openSettings,
-  openSharing,
-}: HeaderActionsProps) {
-  // Debounce editing/solving mode changes to prevent animation flicker
-  const lastModeChangeRef = useRef<number>(Date.now());
-  const throttleMs = 700;
-  function setModeThrottled(mode: Mode) {
-    if (Date.now() - lastModeChangeRef.current < throttleMs) return;
-
-    setMode(mode);
-    lastModeChangeRef.current = Date.now();
-  }
-
+function HeaderActions({ openSettings, openSharing }: HeaderActionsProps) {
   return (
     <div className={styles.iconGroup}>
-      {mode === "editing" ? (
-        <ActionButton label="Solve" onClick={() => setModeThrottled("solving")}>
-          <div className={styles.iconAndLabel}>
-            <Edit3 />
-            <div className={styles.actionButtonLabel}>Solve</div>
-          </div>
-        </ActionButton>
-      ) : (
-        <ActionButton label="Edit" onClick={() => setModeThrottled("editing")}>
-          <div className={styles.iconAndLabel}>
-            <Tool />
-            <div className={styles.actionButtonLabel}>Edit</div>
-          </div>
-        </ActionButton>
-      )}
       <ActionButton label="Settings" onClick={openSettings}>
         <div className={styles.iconAndLabel}>
           <SettingsIcon />
@@ -285,11 +227,6 @@ function Header({
         >
           <div className={styles.mobileHeaderActionsWrapper}>
             <HeaderActions
-              mode={mode}
-              setMode={(mode: Mode) => {
-                toggleBurger();
-                setMode(mode);
-              }}
               openSettings={() => {
                 toggleBurger();
                 openSettings();
@@ -304,8 +241,6 @@ function Header({
         {/* Large screens - actions are in the header */}
         <div className={styles.desktopHeaderActionsWrapper}>
           <HeaderActions
-            mode={mode}
-            setMode={setMode}
             openSettings={openSettings}
             openSharing={openSharing}
           />

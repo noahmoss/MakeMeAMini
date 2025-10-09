@@ -70,7 +70,7 @@ function Game() {
   const encodedData = params.get("puz");
 
   // Solving mode state
-  const [mode, setMode] = useState<Mode>(encodedData ? "solving" : "editing");
+  const [mode, setMode] = useState<Mode>("editing");
   const [seconds, setSeconds] = useState(0);
   const [solvingCells, setSolvingCells] = useState<SolvingCell[][]>(
     initialSolvingCells(DEFAULT_ROW_COUNT),

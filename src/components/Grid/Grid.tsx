@@ -54,46 +54,7 @@ function Cell({
   isHoveredCell,
   setHoveredCell,
 }: CellProps) {
-  const mountedRef = useRef(false);
-  const prevMode = useRef<Mode | undefined>();
-
-  const [editingAnimationClass, setEditingAnimationClass] = useState(
-    mode === "editing" ? styles.textVisible : styles.textInvisible,
-  );
-  const [solvingAnimationClass, setSolvingAnimationClass] = useState(
-    mode === "solving" ? styles.textInvisible : styles.textVisible,
-  );
-
-  useEffect(() => {
-    if (!mountedRef.current) {
-      mountedRef.current = true;
-      return;
-    }
-
-    const modeChanged = prevMode.current && mode !== prevMode.current;
-    if (!modeChanged) {
-      prevMode.current = mode;
-      return;
-    }
-
-    prevMode.current = mode;
-
-    if (mode === "editing") {
-      // Transition from solving -> editing
-      setSolvingAnimationClass(styles.fadeOut);
-      setTimeout(() => setSolvingAnimationClass(styles.textInvisible), 400);
-
-      setEditingAnimationClass(styles.fadeIn);
-      setTimeout(() => setEditingAnimationClass(styles.textVisible), 800);
-    } else if (mode === "solving") {
-      // Transition from editing -> solving
-      setEditingAnimationClass(styles.fadeOut);
-      setTimeout(() => setEditingAnimationClass(styles.textInvisible), 400);
-
-      setSolvingAnimationClass(styles.fadeIn);
-      setTimeout(() => setSolvingAnimationClass(styles.textVisible), 800);
-    }
-  }, [mode]);
+  const displayValue = mode === "editing" ? cell?.value : solvingCell?.value;
 
   return (
     <div
@@ -106,17 +67,10 @@ function Cell({
       tabIndex={-1}
     >
       <div className={styles.gridCellNumber}>{cell?.number}</div>
-      <div className={styles.gridCellValueWrapper}>
-        <div className={`${editingAnimationClass} ${styles.gridCellValue}`}>
-          {cell?.value}
-        </div>
-        <div
-          className={`${solvingAnimationClass} 
-                      ${styles.gridCellValue}
-                      ${incorrect && styles.incorrectCell}`}
-        >
-          {solvingCell?.value}
-        </div>
+      <div
+        className={`${styles.gridCellValue} ${incorrect && styles.incorrectCell}`}
+      >
+        {displayValue}
       </div>
     </div>
   );

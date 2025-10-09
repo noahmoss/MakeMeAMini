@@ -9,7 +9,6 @@ import {
 
 import { Button, Combobox, Flex, Tooltip, useCombobox } from "@mantine/core";
 import { Mode } from "../Game";
-import { useEffect, useState } from "react";
 
 export type CheckOption = "Auto" | "Square" | "Word" | "Puzzle";
 
@@ -187,27 +186,10 @@ function Controls({
   check,
   reveal,
 }: ControlsProps) {
-  // TODO: extract animation logic into a hook
-  const [visible, setVisible] = useState(false);
-  const [animationClass, setAnimationClass] = useState("");
-
-  useEffect(() => {
-    if (mode === "solving") {
-      setVisible(true);
-      setAnimationClass(styles.fadeIn);
-    } else {
-      setAnimationClass(styles.fadeOut);
-      const timeout = setTimeout(() => {
-        setVisible(false);
-      }, 400);
-      return () => clearTimeout(timeout);
-    }
-  }, [mode]);
-
-  if (!visible) return;
+  if (mode !== "solving") return null;
 
   return (
-    <div className={`${styles.controls} ${animationClass}`}>
+    <div className={styles.controls}>
       <ClearControls
         clearIncorrect={clearIncorrect}
         clearPuzzle={clearPuzzle}
