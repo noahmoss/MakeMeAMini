@@ -193,7 +193,7 @@ function Grid({
       const cellWidth = gridWidth / cells.length;
       gridEl.style.setProperty(
         "--cell-value-font-size",
-        `${cellWidth * 0.6}px`,
+        `${cellWidth * 0.5}px`,
       );
       gridEl.style.setProperty(
         "--cell-number-font-size",

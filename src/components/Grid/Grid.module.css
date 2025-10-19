@@ -66,6 +66,9 @@
   grid-area: 1/1;
   text-align: center;
   width: 100%;
+  font-size: var(--cell-value-font-size);
+  /* Shift slightly down for better visual centering */
+  transform: translateY(0.08em);
 }
 
 .hiddenInput {
