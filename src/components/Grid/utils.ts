@@ -222,3 +222,11 @@ export function stepCursor(
   }
   return cursor;
 }
+
+export function wordLength(startCursor: Cursor, endCursor: Cursor): number {
+  const length =
+    startCursor.direction === "row"
+      ? endCursor.col - startCursor.col + 1
+      : endCursor.row - startCursor.row + 1;
+  return length;
+}

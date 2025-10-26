@@ -27,6 +27,7 @@ import {
   numberCells,
 } from "./utils";
 import { deserializeCrossword } from "../SharingModal/utils";
+import FillAssist from "../FillAssist/FillAssist";
 
 const DEFAULT_ROW_COUNT = 5;
 
@@ -400,6 +401,7 @@ function Game() {
             updateClue={updateClue}
           />
         </div>
+        <FillAssist cells={numberedCells} cursor={cursor} />
         <div className={styles.mobileKeyboard}>
           <Keyboard
             mode={mode}
